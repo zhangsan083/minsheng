@@ -1,0 +1,277 @@
+<template>
+  <div class="page">
+    <div class="header-bg">
+      <van-nav-bar
+        title="惠民补贴金"
+        left-arrow
+        @click-left="$router.back()"
+        :border="false"
+        class="nav-bar"
+      />
+    </div>
+
+    <div class="content">
+      <div class="balance-card">
+        <div class="balance-header">
+          <div class="balance-title">惠民补贴金余额</div>
+          <div class="channel-badge" @click="goFundDetails">资金明细</div>
+        </div>
+        <div class="balance-value">{{ subsidyData.welfareSubsidy || 0 }} 元</div>
+        <div class="balance-actions">
+          <van-button round class="primary-btn" @click="goCheckin">前往签到 ></van-button>
+          <van-button round class="primary-btn" @click="goMinshengTreasure">前往惠民宝 ></van-button>
+        </div>
+        <div class="balance-tip">签到得补贴，稳增长</div>
+      </div>
+
+      <div class="section-card">
+        <div class="section-tag">获取途径</div>
+        <div class="section-body">
+          <div class="route-item">
+            <div class="route-title"><span class="route-title-chip" data-index="1">新人专享</span></div>
+            <div class="route-desc">
+              新用户注册并完成实名认证即可获得 <span class="blue-text">{{ subsidyData.hmSubsidyVerified || 0 }}元</span> 惠民补贴金。
+            </div>
+          </div>
+          <div class="route-item">
+            <div class="route-title"><span class="route-title-chip" data-index="2">推荐有奖</span></div>
+            <div class="route-desc">
+              <span class="blue-text">首次推荐奖励:</span>首次推荐直属用户注册并实名，您与下级各获得 <span class="blue-text">{{ subsidyData.hmSubsidyFirstRecommend || 0 }}元</span> 惠民补贴金。<br>
+              <span class="blue-text">持续推荐收益:</span>每新增一位直属用户注册并实名即获得 <span class="blue-text">{{ subsidyData.hmSubsidyRecommend || 0 }}元</span> 惠民补贴金。
+            </div>
+          </div>
+          <div class="route-item">
+            <div class="route-title"><span class="route-title-chip" data-index="3">每日签到</span></div>
+            <div class="route-desc">
+              <span class="blue-text">每日签到:</span>每天签到完成及获得 <span class="blue-text">{{ subsidyData.hmSubsidyCheckin || 0 }}元</span> 惠民补贴金；<br>
+              <span class="blue-text">连续打卡:</span>坚持连续签到15天即获得 <span class="blue-text">{{ subsidyData.hmSubsidyCheckin15 || 0 }}元</span> 惠民补贴金。
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-card">
+        <div class="section-tag">规则说明</div>
+        <div class="section-body">
+          <div class="rule-desc">
+            <span class="blue-text">“惠民补贴金”仅限用于“惠民宝”定期理财到期后，由系统自动释放至个人账户方可提现。</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-card">
+        <div class="section-tag">活动介绍</div>
+        <div class="section-body">
+          <div class="activity-desc">
+            &emsp;&emsp;2025年是中国经济发展的关键节点，面对全球经济复苏承压、不确定性增多的复杂形势，中央秉持"以人民为中心"的发展理念，通过国家数字钱包这一战略性工具，将"稳增长、惠民生"的宏观目标转化为数字化治理的微观实践。
+            <br>
+            &emsp;&emsp;其中，"惠民补贴金"作为平台的核心模块，不仅承载着"提低扩中"的经济职能，更深刻体现了国家对弱势群体的精准关怀，通过数字化手段缩小收入差距，让每一位追梦人共享发展红利，切实改善民生基础生活质量。
+            <br>
+            &emsp;&emsp;惠民补贴金作为新时代民生保障的创新举措，其核心价值在于构建"政策温度"与"个体奋斗"的联结桥梁，通过精准滴灌实现"托底民生"与"激发动能"的双重效应。
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+import { showToast } from 'vant'
+import { getHmSubsidy } from '@/api/assets'
+
+const router = useRouter()
+const subsidyData = ref({})
+
+const loadSubsidyData = async () => {
+  try {
+    const res = await getHmSubsidy()
+    if (res.code === 200 && res.data) {
+      subsidyData.value = res.data
+    } else {
+      showToast(res.msg || '获取数据失败')
+    }
+  } catch (error) {
+    console.error('Failed to load subsidy data:', error)
+    showToast('获取数据失败，请稍后重试')
+  }
+}
+
+onMounted(() => {
+  loadSubsidyData()
+})
+
+const goCheckin = () => {
+  router.push({ name: 'checkin' })
+}
+
+const goMinshengTreasure = () => {
+  router.push({ name: 'minsheng-treasure' })
+}
+const goFundDetails = () => {
+  router.push({ name: 'fund-details' })
+}
+</script>
+
+<style scoped>
+.page {
+  min-height: 100vh;
+  background: #f7f8fa;
+  padding-bottom: 80px;
+}
+.header-bg {
+  height: 200px;
+  background: var(--blue-gradient);
+  position: relative;
+}
+.nav-bar {
+  background: transparent;
+  --van-nav-bar-title-text-color: #fff;
+  --van-nav-bar-icon-color: #fff;
+}
+.content {
+  padding: 0 16px;
+  margin-top: -140px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Balance Card */
+.balance-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 6px 16px rgba(9, 68, 252, 0.12);
+}
+.balance-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.balance-title {
+  font-weight: bold;
+  color: var(--blue-deep);
+}
+.channel-badge {
+  border: 0;
+  color: #fff;
+  border-radius: 999px;
+  font-size: 14px;
+  padding: 6px 12px;
+  background: var(--blue-gradient);
+}
+.balance-value {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 12px 0 8px;
+  color: var(--blue-deep);
+}
+.balance-actions {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+.primary-btn {
+  height: 36px;
+  background: var(--blue-gradient);
+  color: #fff;
+  border: none;
+  padding: 0 16px;
+}
+.balance-tip {
+  font-size: 14px;
+  color: #999;
+  text-align: center;
+}
+
+/* Section Card */
+.section-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 16px 12px 12px;
+  margin-bottom: 16px;
+  position: relative;
+  box-shadow: 0 6px 16px rgba(9, 68, 252, 0.12);
+}
+.section-tag {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 32px;
+  min-width: 80px;
+  padding: 0 24px;
+  color: #fff;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: url('@/assets/战略/标题.png') no-repeat center;
+  background-size: 100% 100%;
+}
+.section-body {
+  margin-top: 12px;
+}
+.route-item + .route-item {
+  margin-top: 12px;
+}
+.route-title {
+  font-weight: bold;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.route-title-chip {
+  display: inline-block;
+  height: 24px;
+  line-height: 24px;
+  padding: 3px 35px 3px 35px;
+  color: #fff;
+  font-weight: 700;
+  background: url('@/assets/惠民补助金/未标题-1.png') no-repeat center;
+  background-size: 100% 100%;
+  border-radius: 999px;
+  position: relative;
+}
+.route-title-chip::before {
+  content: attr(data-index);
+  position: absolute;
+  left: 11px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+}
+.badge {
+  background: var(--blue-deep);
+  color: #fff;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+}
+.route-desc {
+  font-size: 16px;
+  color: #333;
+  line-height: 2.0;
+  background: #f7fbff;
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+.rule-desc, .activity-desc {
+  font-size: 16px;
+  color: #333;
+  line-height: 2.0;
+}
+.blue-text {
+  color: var(--blue-deep);
+  font-weight: bold;
+}
+</style>

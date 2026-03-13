@@ -1,0 +1,34 @@
+:root {
+  --blue-deep: #0944fc;
+  --blue-light: #0680f4;
+  --blue-gradient: linear-gradient(180deg, #0944fc 0%, #0680f4 100%);
+  
+  --color-primary: var(--blue-deep);
+  --color-bg: #f7f8fa;
+  --color-text: #1f2329;
+
+  /* Vant Theme Overrides */
+  --van-primary-color: var(--blue-deep);
+  --van-button-primary-background: var(--blue-gradient);
+  --van-button-primary-border-color: var(--blue-deep);
+}
+
+[data-theme='dark'] {
+  --color-primary: var(--blue-deep);
+  --color-bg: #0f1115;
+  --color-text: #e6e6e6;
+}
+
+body {
+  color: var(--color-text);
+  background: var(--color-bg);
+}
+
+/* Global Utilities */
+.bg-gradient-blue {
+  background: var(--blue-gradient) !important;
+}
+
+.text-blue-deep {
+  color: var(--blue-deep) !important;
+}
