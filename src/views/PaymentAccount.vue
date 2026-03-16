@@ -186,7 +186,7 @@ const goBindBankCard = () => {
 */
 .alipay-card, .bank-card {
   border: 1px solid #2979ff; /* Matching the blue border in the image for cards */
-  height: 140px;
+  height: 160px;
   display: flex;
   flex-direction: column;
 }
@@ -222,10 +222,12 @@ const goBindBankCard = () => {
   display: flex;
   font-size: var(--font-size-small);
   color: #666;
+  align-items: center;
 }
 
 .label {
-  width: 80px;
+  min-width: 80px;
+  flex-shrink: 0;
 }
 
 .value {

@@ -6,6 +6,7 @@ import Components from 'unplugin-vue-components/vite'
 import { VantResolver } from 'unplugin-vue-components/resolvers'
 import path from 'node:path'
 import autoprefixer from 'autoprefixer'
+import { copyFileSync, existsSync, mkdirSync } from 'fs'
 
 export default defineConfig({
   base: './',
@@ -21,7 +22,28 @@ export default defineConfig({
     Components({
       resolvers: [VantResolver()],
       dts: false
-    })
+    }),
+    {
+      name: 'copy-chatlink',
+      writeBundle() {
+        const srcPath = path.resolve(__dirname, 'chatlink.html')
+        const distPath = path.resolve(__dirname, 'dist', 'chatlink.html')
+        
+        if (existsSync(srcPath)) {
+          // 确保dist目录存在
+          const distDir = path.resolve(__dirname, 'dist')
+          if (!existsSync(distDir)) {
+            mkdirSync(distDir, { recursive: true })
+          }
+          
+          // 复制文件
+          copyFileSync(srcPath, distPath)
+          console.log('✅ chatlink.html copied to dist directory')
+        } else {
+          console.warn('⚠️ chatlink.html not found, skipping copy')
+        }
+      }
+    }
   ],
   resolve: {
     alias: {

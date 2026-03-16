@@ -32,7 +32,7 @@
           </div>
           <div class="info-row">
             <span class="label">完成进度:</span>
-            <span class="value highlight">{{ reward.progress }}/{{ reward.num }}</span>
+            <span class="value highlight">{{ reward.isComplete === 1 ? '已完成' : `${reward.progress}/${reward.num}` }}</span>
           </div>
           <div class="info-row">
             <span class="label">任务奖励:</span>

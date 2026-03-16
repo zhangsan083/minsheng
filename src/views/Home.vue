@@ -174,6 +174,8 @@
         class="notice-dialog"
         :show-confirm-button="false"
         close-on-click-overlay
+        teleport="body"
+        :lock-scroll="false"
       >
         <div class="notice-dialog-content">
           <div class="notice-dialog-header">
@@ -181,8 +183,6 @@
           </div>
           <div class="notice-dialog-body">
             <div class="notice-content-container">
-              <img :src="noticeBg" class="notice-bg" alt="公告海报" />
-              <div class="notice-title" v-if="homeData.bulletin && homeData.bulletin.title">{{ homeData.bulletin.title }}</div>
               <div class="notice-content" v-if="homeData.bulletin && homeData.bulletin.content" v-html="homeData.bulletin.content"></div>
               <div class="notice-content" v-else>暂无公告内容</div>
             </div>
@@ -788,91 +788,92 @@ const recordCode = ref('')
   color: #333;
 }
 
-.notice-dialog-body {
-  padding: 0 16px;
+.notice-dialog {
+  /* 提高弹框层级，确保遮挡底部导航 */
+  z-index: 1000 !important;
 }
 
-.notice-content-container {
-  position: relative;
-  width: 100%;
-  border-radius: 8px;
+.notice-dialog-content {
+  padding: 0;
+  /* 确保弹框内容容器能够正确处理滚动 */
   overflow: hidden;
 }
 
-.notice-bg {
-  width: 100%;
-  height: auto;
-  display: block;
-  object-fit: cover;
-}
-
-.notice-title {
-  position: absolute;
-  top: 35%;
-  left: 10%;
-  right: 10%;
-  color: #1989fa;
-  font-size: 16px;
-  font-weight: 700;
-  font-family: 'STKaiti', 'Kaiti', 'KaiTi', 'LiSu', 'FangSong', 'SimSun', serif;
-  font-style: italic;
+.notice-dialog-header {
+  background: var(--blue-gradient);
+  color: white;
+  padding: 16px;
   text-align: center;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  z-index: 1;
-}
-
-.notice-content {
-  position: absolute;
-  top: 42%;
-  left: 10%;
-  right: 10%;
-  bottom: 20%;
-  color: #333;
-  font-size: 16px;
-  line-height: 2.0;
-  overflow-y: auto;
-  border-radius: 8px;
-  z-index: 1;
-}
-
-.notice-content h1, .notice-content h2, .notice-content h3 {
-  margin-top: 0;
-  margin-bottom: 10px;
+  font-size: var(--font-size-base);
   font-weight: bold;
 }
 
-.notice-content p {
-  margin: 10px 0;
+.notice-dialog-body {
+  padding: 0 16px;
+  margin-bottom: 20px;
+  /* 确保弹框内容区域能够正确处理滚动 */
+  overflow: hidden;
 }
 
-.notice-content ul, .notice-content ol {
-  margin: 10px 0;
-  padding-left: 20px;
+.notice-content-container {
+  width: 100%;
+  max-height: 60vh;
+  overflow-y: scroll;
+  background-color: #f9f9f9;
+  border-radius: 5px;
+  /* 确保内容可以滚动 */
+  -webkit-overflow-scrolling: touch;
+  /* 隐藏滚动条但保持滚动功能 */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
-/* 控制公告内容中的图片大小 */
-:deep(.notice-content img) {
-  max-width: 100% !important;
-  width: 100% !important;
-  height: auto !important;
-  display: block;
-  margin: 0 auto;
-  box-sizing: border-box;
-  object-fit: contain;
-  position: relative;
-  z-index: 2;
+/* 隐藏 Chrome, Safari 和 Opera 的滚动条 */
+.notice-content-container::-webkit-scrollbar {
+  display: none;
 }
 
-/* 确保公告内容容器没有水平滚动 */
 .notice-content {
+  color: #333;
+  font-size: var(--font-size-small);
+  line-height: 1.6;
+  position: relative;
+  z-index: 1;
+  /* 确保内容可以滚动 */
   overflow-x: hidden !important;
   word-wrap: break-word;
 }
 
+/* 增强图片样式的优先级，确保图片能够完整显示 */
+:deep(.notice-content img) {
+  max-width: 100% !important;
+  width: 100% !important;
+  height: auto !important;
+  display: block !important;
+  margin: 10px auto !important;
+  box-sizing: border-box !important;
+  object-fit: contain !important;
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+/* 确保富文本中的所有图片都能正确显示 */
+:deep(.ql-image) {
+  max-width: 100% !important;
+  width: 100% !important;
+  height: auto !important;
+  display: block !important;
+  margin: 10px auto !important;
+}
+
+/* 确保富文本中的容器不会限制图片宽度 */
+:deep(.ql-editor) {
+  max-width: 100% !important;
+  overflow-x: hidden !important;
+}
+
 .notice-dialog-footer {
-  padding: 20px 40px 0;
+  padding: 10px 40px 20px;
 }
 
 .notice-btn {
