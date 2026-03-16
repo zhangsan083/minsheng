@@ -191,14 +191,10 @@ const handleSelectInsurance = () => {
 
   .custom-nav {
     background: transparent;
-    
-    :deep(.van-nav-bar__title) {
-      color: #fff;
-      font-weight: bold;
-    }
-    :deep(.van-icon) {
-      color: #fff;
-    }
+    --van-nav-bar-title-text-color: #fff;
+    --van-nav-bar-icon-color: #fff;
+    --van-nav-bar-title-font-size: var(--font-size-large);
+    --van-nav-bar-title-font-weight: bold;
   }
 
   .content {
@@ -221,18 +217,18 @@ const handleSelectInsurance = () => {
         align-items: center;
 
         .title {
-          color: #fff;
-          font-size: 16px;
-          font-weight: bold;
-        }
+            color: #fff;
+            font-size: var(--font-size-base);
+            font-weight: bold;
+          }
 
-        .status-tag {
-          background: rgba(255, 255, 255, 0.2);
-          color: #fff;
-          font-size: 12px;
-          padding: 2px 8px;
-          border-radius: 4px;
-        }
+          .status-tag {
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            font-size: var(--font-size-xs);
+            padding: 2px 8px;
+            border-radius: 4px;
+          }
       }
 
       .card-body {
@@ -248,13 +244,13 @@ const handleSelectInsurance = () => {
 
           .bullet-point {
             color: #1989fa;
-            font-size: 12px;
+            font-size: var(--font-size-xs);
             margin-top: 2px;
           }
 
           .text {
             color: #666;
-            font-size: 13px;
+            font-size: var(--font-size-small);
             line-height: 1.6;
             text-align: justify;
           }
@@ -269,7 +265,7 @@ const handleSelectInsurance = () => {
             margin-bottom: 16px;
             padding-bottom: 12px;
             border-bottom: 1px solid #ebedf0;
-            font-size: 15px;
+            font-size: var(--font-size-base);
             font-weight: bold;
             color: #333;
 
@@ -296,7 +292,7 @@ const handleSelectInsurance = () => {
               
               .action-text {
                 color: #1989fa;
-                font-size: 13px;
+                font-size: var(--font-size-small);
                 font-weight: normal;
               }
 
@@ -307,7 +303,7 @@ const handleSelectInsurance = () => {
                 transition: all 0.3s;
                 
                 .action-text {
-                  font-size: 13px;
+                  font-size: var(--font-size-small);
                   font-weight: 500;
                   margin-left: 2px;
                 }
@@ -352,7 +348,7 @@ const handleSelectInsurance = () => {
           }
 
           .label-text {
-            font-size: 14px;
+            font-size: var(--font-size-small);
             color: #666;
             margin-bottom: 8px;
             font-weight: 500;
@@ -383,12 +379,12 @@ const handleSelectInsurance = () => {
                 
                 .placeholder-text {
                   color: #999;
-                  font-size: 14px;
+                  font-size: var(--font-size-small);
                 }
                 
                 .value-text {
                   color: #333;
-                  font-size: 14px;
+                  font-size: var(--font-size-small);
                 }
               }
               
@@ -396,7 +392,7 @@ const handleSelectInsurance = () => {
                 width: 100%;
                 border: none;
                 background: transparent;
-                font-size: 14px;
+                font-size: var(--font-size-small);
                 color: #333;
                 
                 &::placeholder {
@@ -414,6 +410,8 @@ const handleSelectInsurance = () => {
               border-radius: 6px;
               background: #0099ff; // Slightly lighter blue as in screenshot
               border: none;
+              font-size: var(--font-size-small);
+              height: var(--button-small-height);
             }
           }
         }
@@ -428,9 +426,9 @@ const handleSelectInsurance = () => {
 
       .footer-btn {
         width: 140px;
-        height: 44px;
+        height: var(--button-normal-height);
         border-radius: 22px;
-        font-size: 16px;
+        font-size: var(--font-size-base);
         border: none;
 
         &.save {

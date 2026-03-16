@@ -38,7 +38,7 @@
             <span class="label">任务奖励:</span>
             <span class="value">{{ reward.reward }}</span>
           </div>
-          <div class="btn-container" v-if="reward.progress >= reward.num">
+          <div class="btn-container" v-if="reward.progress >= reward.num || reward.isComplete === 1">
             <van-button 
               type="primary" 
               color="var(--blue-gradient)" 
@@ -129,11 +129,13 @@ onMounted(() => {
   background: transparent;
   --van-nav-bar-title-text-color: #fff;
   --van-nav-bar-icon-color: #fff;
+  --van-nav-bar-title-font-size: var(--font-size-large);
+  --van-nav-bar-title-font-weight: bold;
 }
 
 .nav-right-text {
   color: #fff;
-  font-size: 14px;
+  font-size: var(--font-size-small);
   text-decoration: underline;
 }
 
@@ -159,7 +161,7 @@ onMounted(() => {
   align-items: center;
   justify-content: center;
   color: #fff;
-  font-size: 16px;
+  font-size: var(--font-size-base);
   font-weight: bold;
 }
 
@@ -172,7 +174,7 @@ onMounted(() => {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 16px;
-  font-size: 14px;
+  font-size: var(--font-size-small);
   color: #666;
 }
 
@@ -201,7 +203,7 @@ onMounted(() => {
 .claim-btn {
   width: 160px;
   border-radius: 6px;
-  font-size: 16px;
+  font-size: var(--font-size-base);
   height: 40px;
 }
 
@@ -214,7 +216,7 @@ onMounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 16px;
+  font-size: var(--font-size-base);
 }
 
 .empty-state {
@@ -228,7 +230,7 @@ onMounted(() => {
 
 .empty-text {
   margin-top: 16px;
-  font-size: 14px;
+  font-size: var(--font-size-small);
   color: #999;
 }
 </style>

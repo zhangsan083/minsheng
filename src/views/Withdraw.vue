@@ -330,10 +330,11 @@ const handleConfirmPassword = async () => {
   background: transparent;
   --van-nav-bar-title-text-color: #fff;
   --van-nav-bar-icon-color: #fff;
+  --van-nav-bar-title-font-size: var(--font-size-large);
+  --van-nav-bar-title-font-weight: bold;
 }
 
-.nav-right-text { color: #fff; font-size: 14px; }
-:deep(.van-nav-bar__title) { color: #fff; font-weight: bold; font-size: 18px; }
+.nav-right-text { color: #fff; font-size: var(--font-size-small); }
 :deep(.van-icon) { color: #fff; }
 
 .content {
@@ -383,7 +384,7 @@ const handleConfirmPassword = async () => {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 16px;
+  font-size: var(--font-size-base);
   font-weight: bold;
   color: var(--blue-deep);
   margin-bottom: 12px;
@@ -406,7 +407,7 @@ const handleConfirmPassword = async () => {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 15px;
+  font-size: var(--font-size-base);
   color: #333;
 }
 
@@ -441,7 +442,7 @@ const handleConfirmPassword = async () => {
 }
 
 .balance-value {
-  font-size: 13px;
+  font-size: var(--font-size-small);
   color: #666;
 }
 
@@ -460,7 +461,7 @@ const handleConfirmPassword = async () => {
   text-align: center;
   padding: 8px 0;
   font-weight: bold;
-  font-size: 15px;
+  font-size: var(--font-size-base);
 }
 
 .rights-grid {
@@ -474,7 +475,7 @@ const handleConfirmPassword = async () => {
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 12px;
+  font-size: var(--font-size-xs);
   color: #666;
 }
 
@@ -486,7 +487,7 @@ const handleConfirmPassword = async () => {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 16px;
+  font-size: var(--font-size-base);
   font-weight: bold;
   color: var(--blue-deep);
   margin-bottom: 12px;
@@ -518,12 +519,12 @@ const handleConfirmPassword = async () => {
 .custom-input {
   background: transparent;
   padding: 12px 0;
-  font-size: 16px;
+  font-size: var(--font-size-base);
 }
 
 .all-btn {
   color: var(--blue-deep);
-  font-size: 14px;
+  font-size: var(--font-size-small);
   font-weight: bold;
   padding-left: 12px;
   border-left: 1px solid #ddd;
@@ -554,13 +555,13 @@ const handleConfirmPassword = async () => {
 }
 
 .account-name {
-  font-size: 14px;
+  font-size: var(--font-size-small);
   color: #333;
   font-weight: bold;
 }
 
 .account-num {
-  font-size: 12px;
+  font-size: var(--font-size-xs);
   color: #999;
   margin-top: 2px;
 }
@@ -572,7 +573,7 @@ const handleConfirmPassword = async () => {
   gap: 8px;
   padding: 16px 0;
   color: var(--blue-deep);
-  font-size: 14px;
+  font-size: var(--font-size-small);
   cursor: pointer;
   border: 1px dashed var(--blue-deep);
   border-radius: 8px;
@@ -581,9 +582,10 @@ const handleConfirmPassword = async () => {
 
 .submit-btn {
   margin-top: 30px;
-  font-size: 16px;
+  font-size: var(--font-size-base);
   background: var(--blue-gradient);
   border: none;
+  height: var(--button-normal-height);
 }
 
 /* 支付密码弹框样式 */
@@ -597,7 +599,7 @@ const handleConfirmPassword = async () => {
 }
 
 .password-field :deep(.van-field__control) {
-  font-size: 16px;
+  font-size: var(--font-size-base);
   color: #333;
   letter-spacing: 4px;
 }
@@ -607,7 +609,7 @@ const handleConfirmPassword = async () => {
 }
 
 :deep(.van-dialog.password-dialog .van-dialog__header) {
-  font-size: 16px;
+  font-size: var(--font-size-base);
   font-weight: bold;
   padding-top: 20px;
 }
@@ -621,7 +623,7 @@ const handleConfirmPassword = async () => {
   color: #fff;
   border: none;
   border-radius: 8px;
-  height: 40px;
+  height: var(--button-mini-height);
 }
 
 :deep(.van-dialog.password-dialog .van-dialog__cancel) {
@@ -629,7 +631,7 @@ const handleConfirmPassword = async () => {
   color: #666;
   border: none;
   border-radius: 8px;
-  height: 40px;
+  height: var(--button-mini-height);
   margin-right: 8px;
 }
 </style>

@@ -233,6 +233,8 @@ onMounted(() => {
   background: transparent;
   --van-nav-bar-title-text-color: #fff;
   --van-nav-bar-icon-color: #fff;
+  --van-nav-bar-title-font-size: var(--font-size-large);
+  --van-nav-bar-title-font-weight: bold;
 }
 
 .content {
@@ -267,28 +269,13 @@ onMounted(() => {
   background: var(--blue-gradient);
   color: #fff;
   padding: 6px 32px;
-  border-radius: 20px 20px 0 0; /* Semi-circle look or tab look */
-  /* To achieve the trapezoid/tab look in screenshot might need clip-path or simple border-radius */
-  border-radius: 8px 8px 0 0; /* Simpler version */
+  border-radius: 20px 20px 0 0;
   clip-path: polygon(10% 0, 90% 0, 100% 100%, 0% 100%);
   width: 120px;
   text-align: center;
   font-weight: bold;
-  font-size: 16px;
+  font-size: var(--font-size-base);
   box-shadow: 0 -2px 4px rgba(0,0,0,0.1);
-}
-
-/* Better Badge Styling to match screenshot */
-.badge {
-  background: var(--blue-gradient);
-  width: 160px;
-  padding: 8px 0;
-  clip-path: none;
-  border-radius: 0 0 12px 12px; /* Screenshot looks like it hangs from top? No, it sits on top */
-  /* Let's look closely at screenshot. It looks like a tab sticking UP from the card. */
-  border-radius: 12px 12px 0 0;
-  top: -36px; /* Move it up */
-  /* Actually, simply putting it inside with negative margin or absolute positioning is fine */
 }
 
 /* Inner layout for the top card */
@@ -324,7 +311,7 @@ onMounted(() => {
 }
 
 .meeting-desc {
-  font-size: 13px;
+  font-size: var(--font-size-small);
   color: #666;
   line-height: 1.4;
   overflow: hidden;
@@ -337,7 +324,7 @@ onMounted(() => {
 .meeting-time-row {
   display: flex;
   justify-content: space-between;
-  font-size: 12px;
+  font-size: var(--font-size-xs);
   color: #666;
   border-top: 1px solid #eee;
   padding-top: 8px;
@@ -350,8 +337,8 @@ onMounted(() => {
 
 .action-btn {
   border-radius: 8px;
-  font-size: 16px;
-  height: 44px;
+  font-size: var(--font-size-base);
+  height: var(--button-normal-height);
 }
 
 /* List Items */
@@ -367,7 +354,7 @@ onMounted(() => {
   background: var(--blue-gradient);
   color: #fff;
   padding: 10px 12px;
-  font-size: 15px;
+  font-size: var(--font-size-base);
   font-weight: bold;
   white-space: nowrap;
   overflow: hidden;
@@ -417,7 +404,7 @@ onMounted(() => {
   padding: 12px;
   display: flex;
   justify-content: space-between;
-  font-size: 13px;
+  font-size: var(--font-size-small);
   color: #999;
 }
 </style>

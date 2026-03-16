@@ -145,6 +145,14 @@ const onRefresh = () => {
   background: transparent;
   --van-nav-bar-title-text-color: #fff;
   --van-nav-bar-icon-color: #fff;
+  --van-nav-bar-title-font-size: var(--font-size-large);
+  --van-nav-bar-title-font-weight: bold;
+}
+
+:deep(.van-nav-bar__title) {
+  font-size: var(--font-size-large);
+  font-weight: bold;
+  color: #fff;
 }
 
 .content {
@@ -172,15 +180,17 @@ const onRefresh = () => {
   align-items: center;
   height: 44px;
   border-bottom: 1px solid #f5f5f5;
-  font-size: 14px;
+  font-size: var(--font-size-small);
 }
 
 .card-header .label {
   color: #666;
+  font-weight: 500;
 }
 
 .card-header .time {
   color: #999;
+  font-size: var(--font-size-xs);
 }
 
 .card-body {
@@ -219,9 +229,10 @@ const onRefresh = () => {
 }
 
 .name {
-  font-size: 15px;
+  font-size: var(--font-size-small);
   color: #333;
   font-weight: 500;
+  line-height: 1.4;
 }
 
 .price-row {
@@ -239,8 +250,8 @@ const onRefresh = () => {
 
   .status-box {
     border: 1px solid currentColor;
-    font-size: 12px;
-    padding: 2px 8px;
+    font-size: var(--font-size-xs);
+    padding: 4px 12px;
     border-radius: 4px;
     font-weight: 500;
   }
@@ -269,9 +280,10 @@ const onRefresh = () => {
 .tag {
   border: 1px solid #ff4d4f;
   color: #ff4d4f;
-  font-size: 12px;
-  padding: 0 4px;
+  font-size: var(--font-size-xs);
+  padding: 2px 6px;
   border-radius: 2px;
+  font-weight: 500;
 }
 
 .card-footer {
@@ -279,14 +291,16 @@ const onRefresh = () => {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  font-size: 14px;
+  font-size: var(--font-size-small);
   color: #666;
+  font-weight: 500;
 }
 
 .total-points {
   color: #333;
   font-weight: bold;
   margin-left: 4px;
-  font-size: 16px;
+  font-size: var(--font-size-base);
+  text-shadow: 0 1px 2px rgba(0,0,0,0.1);
 }
 </style>

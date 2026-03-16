@@ -106,14 +106,14 @@ const onClickLeft = () => {
 
 .title {
   text-align: center;
-  font-size: 18px;
+  font-size: var(--font-size-large);
   font-weight: bold;
   margin-bottom: 24px;
   color: #333;
 }
 
 .content {
-  font-size: 14px;
+  font-size: var(--font-size-base);
   line-height: 1.8;
   color: #333;
   white-space: pre-wrap; /* 保留换行符 */

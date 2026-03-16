@@ -116,7 +116,7 @@ const getBgStyle = (item) => {
 .nav-bar {
   background: transparent;
   --van-nav-bar-title-text-color: #fff;
-  --van-nav-bar-title-font-size: 18px;
+  --van-nav-bar-title-font-size: var(--font-size-large);
   --van-nav-bar-title-font-weight: bold;
 }
 
@@ -146,7 +146,7 @@ const getBgStyle = (item) => {
 
 .card-title-overlay {
   color: #fff;
-  font-size: 26px;
+  font-size: 28px;
   font-weight: 900;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
   letter-spacing: 1px;
@@ -166,16 +166,16 @@ const getBgStyle = (item) => {
 
 .project-name {
   color: white;
-  font-size: 16px;
+  font-size: var(--font-size-base);
   font-weight: bold;
 }
 
 .enter-btn {
   background-color: white;
   color: var(--blue-deep);
-  padding: 4px 12px;
+  padding: 6px 16px;
   border-radius: 16px;
-  font-size: 12px;
+  font-size: var(--font-size-small);
   font-weight: bold;
   display: flex;
   align-items: center;

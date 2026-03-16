@@ -146,15 +146,10 @@ const goToAdd = () => {
 
 .nav-bar {
   background: transparent;
-  :deep(.van-nav-bar__title) {
-    color: #fff;
-    font-size: 18px;
-    font-weight: bold;
-  }
-  :deep(.van-icon) {
-    color: #fff;
-    font-size: 20px;
-  }
+  --van-nav-bar-title-text-color: #fff;
+  --van-nav-bar-icon-color: #fff;
+  --van-nav-bar-title-font-size: var(--font-size-large);
+  --van-nav-bar-title-font-weight: bold;
 }
 
 .content {
@@ -185,13 +180,13 @@ const goToAdd = () => {
     gap: 8px;
 
     .label {
-      font-size: 16px;
+      font-size: var(--font-size-base);
       font-weight: bold;
       color: #333;
     }
 
     .switch-link {
-      font-size: 12px;
+      font-size: var(--font-size-xs);
       color: #1989fa;
       display: flex;
       align-items: center;
@@ -200,9 +195,9 @@ const goToAdd = () => {
   }
 
   .detail-btn {
-    height: 24px;
+    height: var(--button-small-height);
     padding: 0 8px;
-    font-size: 12px;
+    font-size: var(--font-size-xs);
     border-radius: 4px;
     background: #1989fa;
     border-color: #1989fa;
@@ -248,11 +243,11 @@ const goToAdd = () => {
     font-weight: 500;
     
     .name {
-      font-size: 16px;
+      font-size: var(--font-size-base);
     }
     
     .account {
-      font-size: 16px;
+      font-size: var(--font-size-small);
       letter-spacing: 1px;
     }
   }
@@ -286,11 +281,11 @@ const goToAdd = () => {
     font-weight: 500;
     
     .name {
-      font-size: 16px;
+      font-size: var(--font-size-base);
     }
     
     .account {
-      font-size: 16px;
+      font-size: var(--font-size-small);
       letter-spacing: 1px;
     }
   }
@@ -327,7 +322,7 @@ const goToAdd = () => {
 
   .empty-text {
     color: #d32f2f; /* Red warning text */
-    font-size: 14px;
+    font-size: var(--font-size-small);
     font-weight: 500;
   }
 }
@@ -336,7 +331,7 @@ const goToAdd = () => {
   margin-bottom: 30px;
 
   .label {
-    font-size: 14px;
+    font-size: var(--font-size-small);
     color: #333;
     margin-bottom: 12px;
     font-weight: 500;
@@ -353,31 +348,31 @@ const goToAdd = () => {
     .amount-input {
       background: transparent;
       padding: 12px 16px;
-      font-size: 16px;
+      font-size: var(--font-size-base);
     }
 
     .all-btn {
       color: #1989fa;
-      font-size: 14px;
+      font-size: var(--font-size-small);
       font-weight: bold;
       white-space: nowrap;
     }
   }
 
   .hint {
-    font-size: 12px;
+    font-size: var(--font-size-xs);
     color: #999;
   }
 }
 
 .submit-btn {
-  font-size: 16px;
+  font-size: var(--font-size-base);
   font-weight: bold;
-  height: 44px;
+  height: var(--button-normal-height);
 }
 
 .footer-text {
-  font-size: 12px;
+  font-size: var(--font-size-xs);
   color: #666;
   line-height: 1.6;
   padding: 0 4px;

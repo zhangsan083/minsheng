@@ -351,7 +351,7 @@ const handleSubmit = async () => {
 
 .header-bg {
   height: 240px;
-  background: url('@/assets/资产/资产备案登记底图.png') no-repeat top center;
+  background: url('@/assets/资产/asset-filing-header-bg.png') no-repeat top center;
   background-size: 100% auto;
   position: relative;
 }
@@ -360,7 +360,7 @@ const handleSubmit = async () => {
   background: transparent;
   --van-nav-bar-title-text-color: #fff;
   --van-nav-bar-icon-color: #fff;
-  --van-nav-bar-title-font-size: 18px;
+  --van-nav-bar-title-font-size: var(--font-size-large);
   --van-nav-bar-title-font-weight: bold;
 }
 
@@ -398,7 +398,7 @@ const handleSubmit = async () => {
   display: flex;
   align-items: center;
   margin-bottom: 12px;
-  font-size: 14px;
+  font-size: var(--font-size-small);
   color: #333;
 }
 
@@ -432,7 +432,7 @@ const handleSubmit = async () => {
   align-items: center;
   margin-bottom: 12px;
   font-weight: bold;
-  font-size: 16px;
+  font-size: var(--font-size-base);
   color: #333;
 }
 
@@ -453,7 +453,7 @@ const handleSubmit = async () => {
   align-items: center;
   padding: 20px 0;
   border-bottom: 1px solid #eee;
-  font-size: 14px;
+  font-size: var(--font-size-small);
 }
 
 .form-item:last-child {
@@ -482,13 +482,13 @@ const handleSubmit = async () => {
   background: #2b7afb;
   border: none;
   height: 48px;
-  font-size: 16px;
+  font-size: var(--font-size-base);
   font-weight: bold;
   box-shadow: 0 4px 10px rgba(43, 122, 251, 0.3);
 }
 
 .notice {
-  font-size: 12px;
+  font-size: var(--font-size-xs);
   color: #333;
   line-height: 1.6;
   text-align: justify;
@@ -511,7 +511,7 @@ const handleSubmit = async () => {
 }
 
 .header-title {
-  font-size: 16px;
+  font-size: var(--font-size-base);
   font-weight: bold;
   color: #333;
   text-align: center;
@@ -521,7 +521,7 @@ const handleSubmit = async () => {
   padding: 40px 0;
   text-align: center;
   color: #999;
-  font-size: 14px;
+  font-size: var(--font-size-small);
 }
 
 .search-container {
@@ -537,7 +537,7 @@ const handleSubmit = async () => {
 }
 
 .search-container .van-field__control {
-  font-size: 14px;
+  font-size: var(--font-size-small);
 }
 
 .picker-content {
@@ -549,7 +549,7 @@ const handleSubmit = async () => {
 .picker-item {
   padding: 16px;
   border-bottom: 1px solid #f0f0f0;
-  font-size: 14px;
+  font-size: var(--font-size-small);
   color: #333;
   cursor: pointer;
   position: relative;
@@ -572,7 +572,7 @@ const handleSubmit = async () => {
 
 .picker-footer .van-button {
   height: 44px;
-  font-size: 16px;
+  font-size: var(--font-size-base);
   font-weight: bold;
   background-color: #2b7afb;
   border: none;

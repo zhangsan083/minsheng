@@ -162,10 +162,11 @@ const contactService = () => {
 
 .nav-right-text {
   color: #fff;
-  font-size: 14px;
+  font-size: var(--font-size-small);
+  font-weight: bold;
 }
 
-:deep(.van-nav-bar__title) { color: #fff; font-weight: bold; font-size: 18px; }
+:deep(.van-nav-bar__title) { color: #fff; font-weight: bold; font-size: var(--font-size-large); }
 :deep(.van-icon) { color: #fff; }
 
 .content {
@@ -186,7 +187,7 @@ const contactService = () => {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 16px;
+  font-size: var(--font-size-base);
   font-weight: bold;
   color: var(--blue-deep);
   margin-bottom: 12px;
@@ -233,7 +234,8 @@ const contactService = () => {
 .custom-input {
   background: transparent;
   padding: 10px 0;
-  font-size: 16px;
+  font-size: var(--font-size-base);
+  font-weight: bold;
 }
 
 .payment-item {
@@ -253,8 +255,9 @@ const contactService = () => {
   display: flex;
   align-items: center;
   gap: 12px;
-  font-size: 15px;
+  font-size: var(--font-size-small);
   color: #333;
+  font-weight: 500;
 }
 
 .method-section {
@@ -276,7 +279,7 @@ const contactService = () => {
 
 .instructions {
   color: #666;
-  font-size: 13px;
+  font-size: var(--font-size-xs);
   line-height: 1.6;
 }
 
@@ -285,6 +288,7 @@ const contactService = () => {
   font-weight: bold;
   margin-bottom: 8px;
   margin-top: 16px;
+  font-size: var(--font-size-small);
 }
 
 .inst-title:first-child {

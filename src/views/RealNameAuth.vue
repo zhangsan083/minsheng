@@ -182,6 +182,14 @@ const handleAuth = () => {
   background: transparent;
   --van-nav-bar-title-text-color: #fff;
   --van-nav-bar-icon-color: #fff;
+  --van-nav-bar-title-font-size: var(--font-size-large);
+  --van-nav-bar-title-font-weight: bold;
+}
+
+:deep(.van-nav-bar__title) {
+  font-size: var(--font-size-large);
+  font-weight: bold;
+  color: #fff;
 }
 
 /* Unauthenticated Styles */
@@ -210,7 +218,7 @@ const handleAuth = () => {
 }
 
 .form-label {
-  font-size: 15px;
+  font-size: var(--font-size-base);
   font-weight: bold;
   color: #333;
   margin-bottom: 8px;
@@ -221,10 +229,11 @@ const handleAuth = () => {
   background: #f5f7fa;
   border: none;
   border-radius: 8px;
-  padding: 12px 16px;
-  font-size: 14px;
+  padding: 14px 16px;
+  font-size: var(--font-size-small);
   color: #333;
   outline: none;
+  font-weight: 500;
 }
 
 .custom-input::placeholder {
@@ -239,7 +248,7 @@ const handleAuth = () => {
 .notes-title {
   display: flex;
   align-items: center;
-  font-size: 18px;
+  font-size: var(--font-size-base);
   font-weight: bold;
   color: #1989fa; /* Or var(--blue-deep) if defined */
   margin-bottom: 12px;
@@ -254,10 +263,11 @@ const handleAuth = () => {
 }
 
 .notes-content {
-  font-size: 16px;
-  color: #999;
+  font-size: var(--font-size-xs);
+  color: #666;
   line-height: 1.6;
   text-align: justify;
+  font-weight: 500;
 }
 
 .submit-btn-wrapper {
@@ -265,9 +275,10 @@ const handleAuth = () => {
 }
 
 .submit-btn {
-  height: 44px;
-  font-size: 16px;
+  height: 48px;
+  font-size: var(--font-size-base);
   font-weight: bold;
+  box-shadow: 0 4px 10px rgba(43, 122, 251, 0.3);
 }
 
 /* Authenticated Styles */
@@ -291,15 +302,17 @@ const handleAuth = () => {
 }
 
 .banner-title {
-  font-size: 24px;
+  font-size: 28px;
   font-weight: bold;
   margin-bottom: 10px;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .banner-desc {
-  font-size: 12px;
+  font-size: var(--font-size-xs);
   opacity: 0.9;
   line-height: 1.4;
+  font-weight: 500;
 }
 
 .banner-icon-wrapper {
@@ -353,14 +366,15 @@ const handleAuth = () => {
 }
 
 .info-label {
-  font-size: 15px;
+  font-size: var(--font-size-small);
   color: #333;
   font-weight: 500;
 }
 
 .info-value {
-  font-size: 15px;
+  font-size: var(--font-size-small);
   color: #666;
+  font-weight: 500;
 }
 
 .auth-status-btn {
@@ -370,7 +384,9 @@ const handleAuth = () => {
 
 .status-btn {
   height: 48px;
-  font-size: 18px;
+  font-size: var(--font-size-base);
   border-radius: 8px;
+  font-weight: bold;
+  box-shadow: 0 4px 10px rgba(64, 128, 255, 0.3);
 }
 </style>

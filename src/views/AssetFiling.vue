@@ -223,7 +223,7 @@ const getStatusClass = (status) => {
 
 .header-bg {
   height: 240px; /* Adjust based on image aspect ratio */
-  background: url('@/assets/资产/asset-filing-header-bg.png') no-repeat top center;
+  background: url('@/assets/资产/资产备案登记底图.png') no-repeat top center;
   background-size: 100% auto;
   position: relative;
 }
@@ -232,7 +232,7 @@ const getStatusClass = (status) => {
   background: transparent;
   --van-nav-bar-title-text-color: #fff;
   --van-nav-bar-icon-color: #fff;
-  --van-nav-bar-title-font-size: 18px;
+  --van-nav-bar-title-font-size: var(--font-size-large);
   --van-nav-bar-title-font-weight: bold;
 }
 
@@ -242,7 +242,7 @@ const getStatusClass = (status) => {
 
 .content {
   padding: 0 16px;
-  margin-top: -60px; /* Adjust to overlap header */
+  margin-top: -30px; /* Adjust to overlap header */
   position: relative;
   z-index: 1;
 }
@@ -270,15 +270,17 @@ const getStatusClass = (status) => {
 }
 
 .info .label {
-  font-size: 14px;
+  font-size: var(--font-size-small);
   color: #333; /* Darker text */
   margin-bottom: 12px;
+  font-weight: 500;
 }
 
 .info .amount {
-  font-size: 32px; /* Larger amount text */
+  font-size: 36px; /* Larger amount text */
   font-weight: bold;
   color: #2b70fa;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.1);
 }
 
 .logo img {
@@ -289,18 +291,19 @@ const getStatusClass = (status) => {
 .status-badge {
   background: linear-gradient(to right, #2b7afb, #0056e0);
   color: white;
-  font-size: 13px;
+  font-size: var(--font-size-xs);
   padding: 8px 16px;
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
   box-shadow: 0 4px 8px rgba(43, 122, 251, 0.3);
   margin-right: -16px; /* Pull to edge */
   margin-top: 2px;
+  font-weight: 500;
 }
 
 .action-btn {
   font-weight: bold;
-  font-size: 16px;
+  font-size: var(--font-size-base);
   border: none;
   box-shadow: 0 4px 10px rgba(43, 122, 251, 0.3); /* Add shadow to button */
   height: 48px; /* Taller button */
@@ -316,7 +319,7 @@ const getStatusClass = (status) => {
   align-items: center;
   margin-bottom: 12px;
   font-weight: bold;
-  font-size: 16px;
+  font-size: var(--font-size-base);
   color: #333;
 }
 
@@ -345,7 +348,7 @@ const getStatusClass = (status) => {
   display: flex;
   background: #f5f7fa;
   padding: 12px 16px;
-  font-size: 13px;
+  font-size: var(--font-size-xs);
   font-weight: bold;
   color: #2b7afb;
   flex-shrink: 0;
@@ -378,8 +381,9 @@ const getStatusClass = (status) => {
   display: flex;
   padding: 12px 0;
   border-bottom: 1px solid #f0f0f0;
-  font-size: 13px;
+  font-size: var(--font-size-xs);
   align-items: center;
+  line-height: 1.4;
 }
 
 .table-row:nth-child(even) {
@@ -405,13 +409,14 @@ const getStatusClass = (status) => {
 }
 
 .status-tag {
-  padding: 2px 8px;
+  padding: 4px 12px;
   border-radius: 12px;
-  font-size: 12px;
+  font-size: var(--font-size-xs);
   display: inline-block;
-  min-width: 50px;
+  min-width: 60px;
   text-align: center;
   color: white;
+  font-weight: 500;
 }
 
 .status-tag.passed {
@@ -438,10 +443,11 @@ const getStatusClass = (status) => {
 }
 
 .board-header {
-  font-size: 14px;
+  font-size: var(--font-size-small);
   color: #666;
   margin-bottom: 12px;
   text-align: center;
+  font-weight: 500;
 }
 
 .message-container {
@@ -464,9 +470,10 @@ const getStatusClass = (status) => {
   background: white;
   padding: 8px 12px;
   border-radius: 4px;
-  font-size: 13px;
+  font-size: var(--font-size-xs);
   color: #333;
   text-align: center;
+  line-height: 1.4;
 }
 
 .highlight {

@@ -153,6 +153,8 @@ onMounted(() => {
   background: transparent;
   --van-nav-bar-title-text-color: #ffffff;
   --van-nav-bar-icon-color: #ffffff;
+  --van-nav-bar-title-font-size: var(--font-size-large);
+  --van-nav-bar-title-font-weight: bold;
   border-bottom: none;
 }
 
@@ -188,7 +190,7 @@ onMounted(() => {
 .cert-row {
   display: flex;
   justify-content: space-between;
-  font-size: 15px;
+  font-size: var(--font-size-small);
   color: #333;
   margin-bottom: 12px;
   font-weight: 500;
@@ -196,7 +198,7 @@ onMounted(() => {
 
 .cert-row--no {
   margin-bottom: 20px;
-  font-size: 12px;
+  font-size: var(--font-size-xs);
   color: #666;
   position: absolute;
   top: 20px;
@@ -205,18 +207,18 @@ onMounted(() => {
 
 .cert-row--name {
   margin-bottom: 24px;
-  font-size: 18px;
+  font-size: var(--font-size-base);
   justify-content: flex-start;
 }
 
 .cert-name {
   margin-left: 12px;
   font-weight: bold;
-  font-size: 20px;
+  font-size: var(--font-size-large);
 }
 
 .cert-text {
-  font-size: 14px;
+  font-size: var(--font-size-small);
   color: #555;
   line-height: 1.8;
   margin-bottom: 40px;
@@ -233,7 +235,7 @@ onMounted(() => {
 }
 
 .cert-company {
-  font-size: 16px;
+  font-size: var(--font-size-base);
   font-weight: bold;
   color: #333;
   margin-bottom: 8px;
@@ -242,7 +244,7 @@ onMounted(() => {
 }
 
 .cert-date {
-  font-size: 14px;
+  font-size: var(--font-size-small);
   color: #666;
   position: relative;
   z-index: 2;
@@ -269,7 +271,7 @@ onMounted(() => {
   top: 50px;
   left: 40px;
   right: auto;
-  font-size: 13px;
+  font-size: var(--font-size-xs);
   color: #666;
 }
 
@@ -290,7 +292,7 @@ onMounted(() => {
 .asset-info-row {
   display: flex;
   margin-bottom: 16px;
-  font-size: 16px;
+  font-size: var(--font-size-small);
   color: #333;
   line-height: 1.6;
 }
@@ -323,7 +325,7 @@ onMounted(() => {
   top: 60px;
   left: 50px;
   right: auto;
-  font-size: 13px;
+  font-size: var(--font-size-xs);
   color: #666;
 }
 
@@ -338,7 +340,7 @@ onMounted(() => {
 .priority-award-row {
   text-align: left;
   margin-bottom: 40px;
-  font-size: 18px;
+  font-size: var(--font-size-base);
   color: #333;
   padding-left: 10px;
   display: flex;
@@ -346,7 +348,7 @@ onMounted(() => {
 }
 
 .priority-name {
-  font-size: 22px;
+  font-size: var(--font-size-large);
   font-weight: bold;
   border-bottom: 1px solid #333;
   padding: 0 10px;
@@ -357,7 +359,7 @@ onMounted(() => {
 
 .priority-text {
   text-align: justify;
-  font-size: 16px;
+  font-size: var(--font-size-small);
   line-height: 2;
   color: #555;
   text-indent: 2em;

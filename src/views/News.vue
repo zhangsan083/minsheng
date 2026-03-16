@@ -131,6 +131,8 @@ onMounted(() => {
   background: transparent;
   --van-nav-bar-title-text-color: #fff;
   --van-nav-bar-icon-color: #fff;
+  --van-nav-bar-title-font-size: var(--font-size-large);
+  --van-nav-bar-title-font-weight: bold;
 }
 
 .content {
@@ -184,13 +186,14 @@ onMounted(() => {
 }
 
 .title {
-  font-size: 14px;
+  font-size: var(--font-size-small);
   color: #333;
   line-height: 1.4;
+  font-weight: 500;
 }
 
 .time {
-  font-size: 12px;
+  font-size: var(--font-size-xs);
   color: #999;
   margin-top: 6px;
 }

@@ -301,6 +301,8 @@ const onSubmit = async () => {
   background: transparent;
   --van-nav-bar-title-text-color: #fff;
   --van-nav-bar-icon-color: #fff;
+  --van-nav-bar-title-font-size: var(--font-size-large);
+  --van-nav-bar-title-font-weight: bold;
 }
 
 .content {
@@ -335,7 +337,7 @@ const onSubmit = async () => {
 
 .empty-text {
   color: #999;
-  font-size: 14px;
+  font-size: var(--font-size-small);
 }
 
 .action-btn {
@@ -360,7 +362,7 @@ const onSubmit = async () => {
 }
 
 .card-title {
-  font-size: 16px;
+  font-size: var(--font-size-base);
   font-weight: bold;
   margin-bottom: 12px;
   display: flex;
@@ -372,7 +374,7 @@ const onSubmit = async () => {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 8px;
-  font-size: 14px;
+  font-size: var(--font-size-small);
 }
 
 .address-row {
@@ -383,11 +385,13 @@ const onSubmit = async () => {
 .name {
   color: #333;
   margin-right: 12px;
+  font-weight: 500;
 }
 
 .phone {
   color: #333;
   flex: 1;
+  font-weight: 500;
 }
 
 .address-text {
@@ -395,6 +399,7 @@ const onSubmit = async () => {
   flex: 1;
   margin-right: 12px;
   line-height: 1.4;
+  font-size: var(--font-size-small);
 }
 
 .actions {
@@ -404,10 +409,11 @@ const onSubmit = async () => {
 
 .action-item {
   color: #666;
-  font-size: 12px;
+  font-size: var(--font-size-xs);
   display: flex;
   align-items: center;
   gap: 4px;
+  font-weight: 500;
 }
 
 .default-row {
@@ -433,7 +439,7 @@ const onSubmit = async () => {
 }
 
 .form-title {
-  font-size: 16px;
+  font-size: var(--font-size-base);
   font-weight: bold;
   margin-bottom: 16px;
   padding-left: 16px;

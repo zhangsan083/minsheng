@@ -284,6 +284,8 @@ onMounted(() => {
   background: transparent;
   --van-nav-bar-title-text-color: #fff;
   --van-nav-bar-icon-color: #fff;
+  --van-nav-bar-title-font-size: var(--font-size-large);
+  --van-nav-bar-title-font-weight: bold;
 }
 .content {
   padding: 0 16px;
@@ -302,9 +304,9 @@ onMounted(() => {
   margin-bottom: 12px;
 }
 .chip {
-  padding: 6px 12px;
+  padding: 8px 16px;
   border-radius: 999px;
-  font-size: 14px;
+  font-size: var(--font-size-small);
   color: #1989fa;
   background: #eef5ff;
 }
@@ -321,19 +323,19 @@ onMounted(() => {
 .month {
   background: #eef5ff;
   color: var(--blue-deep);
-  padding: 8px 12px;
+  padding: 12px 16px;
   font-weight: 600;
+  font-size: var(--font-size-base);
 }
-.month.selectable {
-  cursor: pointer;
-}
+
 .summary {
   display: flex;
   justify-content: space-between;
-  padding: 8px 12px;
-  font-size: 14px;
+  padding: 12px 16px;
+  font-size: var(--font-size-base);
   color: #666;
 }
+
 .summary .income {
   color: #1989fa;
 }
@@ -381,25 +383,33 @@ onMounted(() => {
   font-weight: 600;
   color: #333;
   margin-bottom: 6px;
+  font-size: var(--font-size-base);
 }
+
 .left .desc {
-  font-size: 14px;
+  font-size: var(--font-size-small);
   color: #999;
 }
+
 .right {
   text-align: right;
 }
+
 .right .amount {
   font-weight: 600;
+  font-size: var(--font-size-base);
 }
+
 .right .amount.income {
   color: #1989fa;
 }
+
 .right .amount.expense {
   color: #ff4d4f;
 }
+
 .right .time {
-  font-size: 12px;
+  font-size: var(--font-size-xs);
   color: #999;
 }
 
@@ -414,7 +424,7 @@ onMounted(() => {
   align-items: center;
   justify-content: space-between;
   padding: 12px 16px;
-  font-size: 14px;
+  font-size: var(--font-size-base);
 }
 .picker-header .nav {
   color: #1989fa;
@@ -444,7 +454,7 @@ onMounted(() => {
   justify-content: center;
   height: 56px;
   aspect-ratio: 1 / 1;
-  font-size: 14px;
+  font-size: var(--font-size-base);
 }
 .mcell.active {
   background: var(--blue-deep);
@@ -458,7 +468,7 @@ onMounted(() => {
 .picker-selected {
   text-align: center;
   color: #666;
-  font-size: 14px;
+  font-size: var(--font-size-base);
   margin: 4px 0 8px;
 }
 .picker-footer {
@@ -471,7 +481,8 @@ onMounted(() => {
 .confirm-btn {
   background: var(--blue-gradient);
   border: none;
-  height: 44px;
+  height: var(--button-normal-height);
+  font-size: var(--font-size-base);
   box-shadow: 0 6px 12px rgba(9, 68, 252, 0.2);
 }
 </style>

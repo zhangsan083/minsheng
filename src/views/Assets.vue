@@ -118,7 +118,7 @@ const updateAssetFilingQty = () => {
   background: transparent;
   --van-nav-bar-title-text-color: #fff;
   --van-nav-bar-icon-color: #fff;
-  --van-nav-bar-title-font-size: 18px;
+  --van-nav-bar-title-font-size: var(--font-size-large);
   --van-nav-bar-title-font-weight: bold;
 }
 
@@ -174,7 +174,7 @@ const updateAssetFilingQty = () => {
 }
 
 .text-content {
-  font-size: 16px;
+  font-size: var(--font-size-base);
   line-height: 2.0;
   color: var(--blue-deep); /* Blue text as seen in image */
   text-align: justify;
@@ -183,7 +183,7 @@ const updateAssetFilingQty = () => {
 
 .action-btn {
   font-weight: bold;
-  font-size: 16px;
+  font-size: var(--font-size-base);
   box-shadow: 0 4px 8px rgba(22, 119, 255, 0.3);
 }
 
@@ -201,7 +201,7 @@ const updateAssetFilingQty = () => {
 .step-label .num {
   background: var(--blue-deep);
   color: white;
-  font-size: 12px;
+  font-size: var(--font-size-xs);
   padding: 2px 6px;
   border-top-left-radius: 8px;
   border-bottom-right-radius: 8px;
@@ -212,7 +212,7 @@ const updateAssetFilingQty = () => {
 .step-label .text {
   font-weight: bold;
   color: var(--blue-deep);
-  font-size: 16px;
+  font-size: var(--font-size-base);
 }
 
 .count-box {
@@ -221,19 +221,19 @@ const updateAssetFilingQty = () => {
   border-radius: 8px;
   padding: 12px;
   text-align: center;
-  font-size: 16px;
+  font-size: var(--font-size-base);
   font-weight: bold;
   color: #333;
 }
 
 .count-box .count {
   color: var(--blue-deep);
-  font-size: 20px;
+  font-size: var(--font-size-large);
   margin: 0 4px;
 }
 
 .step-desc {
-  font-size: 16px;
+  font-size: var(--font-size-base);
   color: #666;
   line-height: 2.0;
   padding-left: 0;

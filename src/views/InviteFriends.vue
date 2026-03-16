@@ -380,6 +380,8 @@ const generatePoster = () => {
   background: transparent;
   --van-nav-bar-title-text-color: #fff;
   --van-nav-bar-icon-color: #fff;
+  --van-nav-bar-title-font-size: var(--font-size-large);
+  --van-nav-bar-title-font-weight: bold;
 }
 
 .header-bg {
@@ -493,7 +495,7 @@ const generatePoster = () => {
 
 .action-btn {
   flex: 1;
-  height: 44px;
+  height: var(--button-normal-height);
   border-radius: 8px;
   background: #2979ff; /* Fallback */
   background: var(--blue-gradient);
@@ -501,7 +503,7 @@ const generatePoster = () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 16px;
+  font-size: var(--font-size-base);
   font-weight: bold;
   box-shadow: 0 4px 8px rgba(41, 121, 255, 0.3);
   cursor: pointer;
@@ -537,13 +539,13 @@ const generatePoster = () => {
 }
 
 .stat-label {
-  font-size: 14px;
+  font-size: var(--font-size-small);
   color: #666;
   margin-bottom: 4px;
 }
 
 .stat-value {
-  font-size: 20px;
+  font-size: 24px;
   font-weight: bold;
   color: #2979ff;
 }
@@ -574,7 +576,7 @@ const generatePoster = () => {
   color: #2979ff;
   background: white;
   border-radius: 4px;
-  font-size: 14px;
+  font-size: var(--font-size-base);
   font-weight: bold;
   cursor: pointer;
 }
@@ -595,7 +597,7 @@ const generatePoster = () => {
   background: #2979ff;
   color: white;
   padding: 12px 16px;
-  font-size: 15px;
+  font-size: var(--font-size-base);
   font-weight: bold;
 }
 
@@ -603,7 +605,7 @@ const generatePoster = () => {
   display: flex;
   padding: 12px 16px;
   border-bottom: 1px solid #eee;
-  font-size: 13px;
+  font-size: var(--font-size-small);
   color: #333;
   font-weight: bold;
   text-align: center;
@@ -613,7 +615,7 @@ const generatePoster = () => {
   display: flex;
   padding: 12px 16px;
   border-bottom: 1px solid #f5f5f5;
-  font-size: 12px;
+  font-size: var(--font-size-small);
   color: #666;
   text-align: center;
   align-items: center;
@@ -643,6 +645,6 @@ const generatePoster = () => {
   padding: 40px 0;
   text-align: center;
   color: #999;
-  font-size: 14px;
+  font-size: var(--font-size-small);
 }
 </style>

@@ -65,16 +65,10 @@ const list = ref([
 
   .custom-nav {
     background: transparent;
-    
-    :deep(.van-nav-bar__title) {
-      color: #fff;
-      font-weight: bold;
-      font-size: 18px;
-    }
-    :deep(.van-icon) {
-      color: #fff;
-      font-size: 20px;
-    }
+    --van-nav-bar-title-text-color: #fff;
+    --van-nav-bar-icon-color: #fff;
+    --van-nav-bar-title-font-size: var(--font-size-large);
+    --van-nav-bar-title-font-weight: bold;
   }
 
   .content {
@@ -146,20 +140,20 @@ const list = ref([
           flex: 1;
           
           .title {
-            font-size: 14px;
+            font-size: var(--font-size-base);
             color: #333;
             font-weight: 500;
             margin-bottom: 6px;
           }
           
           .time {
-            font-size: 12px;
+            font-size: var(--font-size-xs);
             color: #999;
           }
         }
 
         .amount {
-          font-size: 16px;
+          font-size: var(--font-size-large);
           color: #1989fa;
           font-weight: bold;
         }

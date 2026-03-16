@@ -73,11 +73,15 @@ onMounted(() => {
   background: transparent;
   --van-nav-bar-title-text-color: #fff;
   --van-nav-bar-icon-color: #fff;
+  --van-nav-bar-title-font-size: var(--font-size-large);
+  --van-nav-bar-title-font-weight: bold;
 }
 
 /* Deep selector to ensure title color is correct if variable doesn't work */
 :deep(.van-nav-bar__title) {
   color: #fff;
+  font-size: var(--font-size-large);
+  font-weight: bold;
 }
 :deep(.van-icon) {
   color: #fff;
@@ -102,7 +106,7 @@ onMounted(() => {
 }
 
 .title {
-  font-size: 18px;
+  font-size: var(--font-size-large);
   font-weight: 700;
   color: #333;
   line-height: 1.4;
@@ -111,14 +115,14 @@ onMounted(() => {
 }
 
 .time {
-  font-size: 12px;
+  font-size: var(--font-size-xs);
   color: #999;
   text-align: center;
   margin-bottom: 12px;
 }
 
 .body {
-  font-size: 14px;
+  font-size: var(--font-size-small);
   color: #333;
   line-height: 1.7;
   overflow-x: hidden;

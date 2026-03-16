@@ -298,6 +298,8 @@ const handleSubmit = async () => {
 
 :deep(.van-nav-bar__title) {
   color: #fff !important;
+  font-size: var(--font-size-large) !important;
+  font-weight: bold !important;
 }
 
 :deep(.van-nav-bar .van-icon) {
@@ -326,19 +328,19 @@ const handleSubmit = async () => {
 .card-title {
   color: var(--blue-deep);
   font-weight: bold;
-  font-size: 16px;
+  font-size: var(--font-size-base);
   text-align: center;
   margin-bottom: 10px;
   line-height: 1.5;
 }
 
 .subtitle {
-  font-size: 14px;
+  font-size: var(--font-size-small);
   font-weight: normal;
 }
 
 .card-content {
-  font-size: 14px;
+  font-size: var(--font-size-small);
   color: #333;
   line-height: 1.6;
   text-align: justify;
@@ -346,7 +348,7 @@ const handleSubmit = async () => {
 
 /* Rules Section Styles */
 .rules-content {
-  font-size: 14px;
+  font-size: var(--font-size-small);
   color: #333;
 }
 
@@ -366,17 +368,18 @@ const handleSubmit = async () => {
   background: var(--blue-deep);
   color: white;
   border-radius: 50%;
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   margin-right: 8px;
-  font-size: 12px;
+  font-size: var(--font-size-xs);
+  font-weight: bold;
 }
 
 .rule-note {
-  font-size: 12px;
+  font-size: var(--font-size-xs);
   color: #666;
   margin-bottom: 8px;
   padding-left: 5px;
@@ -384,7 +387,7 @@ const handleSubmit = async () => {
 
 .rules-content ol {
   padding-left: 20px;
-  font-size: 13px;
+  font-size: var(--font-size-small);
   color: #333;
   margin: 0;
 }
@@ -395,7 +398,7 @@ const handleSubmit = async () => {
 }
 
 .rule-footer {
-  font-size: 12px;
+  font-size: var(--font-size-xs);
   color: #999;
   margin-top: 10px;
   line-height: 1.5;
@@ -406,7 +409,7 @@ const handleSubmit = async () => {
 
 /* Form Styles */
 .form-title {
-  font-size: 16px;
+  font-size: var(--font-size-base);
   font-weight: bold;
   color: var(--blue-deep);
   margin-bottom: 16px;
@@ -429,7 +432,7 @@ const handleSubmit = async () => {
 }
 
 .field-label {
-  font-size: 14px;
+  font-size: var(--font-size-small);
   color: #646566;
   width: auto;
   margin-right: 12px;
@@ -437,7 +440,7 @@ const handleSubmit = async () => {
 
 .form-note {
   padding: 10px 16px;
-  font-size: 12px;
+  font-size: var(--font-size-xs);
   color: #333;
   font-weight: bold;
   line-height: 1.5;
@@ -445,7 +448,7 @@ const handleSubmit = async () => {
 
 /* Upload Styles */
 .upload-title {
-  font-size: 14px;
+  font-size: var(--font-size-small);
   font-weight: bold;
   margin: 16px 0 12px;
   color: #333;
@@ -474,7 +477,7 @@ const handleSubmit = async () => {
 }
 
 .upload-text {
-  font-size: 14px;
+  font-size: var(--font-size-small);
   color: #999;
   margin-top: 8px;
 }

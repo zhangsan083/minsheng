@@ -177,19 +177,19 @@ const goAddressManage = () => {
 }
 
 .points-label {
-  font-size: 14px;
+  font-size: var(--font-size-xs);
   color: #6c6969;
   margin-bottom: 4px;
 }
 
 .points-value {
-  font-size: 24px;
+  font-size: 28px;
   font-weight: bold;
   color: #1890ff;
 }
 
 .points-unit {
-  font-size: 14px;
+  font-size: var(--font-size-xs);
   margin-left: 2px;
   color: #1890ff;
 }
@@ -201,11 +201,12 @@ const goAddressManage = () => {
 
 .action-btn {
   padding: 0 12px;
-  height: 32px;
-  line-height: 30px;
+  height: var(--button-mini-height);
+  line-height: var(--button-mini-height);
   border-radius: 6px;
   background: var(--blue-gradient);
   border: none;
+  font-size: var(--font-size-small);
 }
 
 .product-grid {
@@ -240,14 +241,14 @@ const goAddressManage = () => {
 }
 
 .product-name {
-  font-size: 14px;
+  font-size: var(--font-size-small);
   color: #333;
   font-weight: 500;
   flex: 1;
 }
 
 .product-score {
-  font-size: 14px;
+  font-size: var(--font-size-small);
   color: #1890ff;
   font-weight: bold;
 }
@@ -271,7 +272,7 @@ const goAddressManage = () => {
 }
 
 .product-stock {
-  font-size: 12px;
+  font-size: var(--font-size-xs);
   color: #666;
 }
 </style>

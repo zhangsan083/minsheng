@@ -201,6 +201,8 @@ const copyLink = async (platform) => {
   background: transparent;
   --van-nav-bar-title-text-color: #fff;
   --van-nav-bar-icon-color: #fff;
+  --van-nav-bar-title-font-size: var(--font-size-large);
+  --van-nav-bar-title-font-weight: bold;
 }
 
 .content {
@@ -289,7 +291,7 @@ const copyLink = async (platform) => {
 
 .btn-primary, .btn-secondary {
   height: 34px;
-  font-size: 13px;
+  font-size: var(--font-size-small);
   font-weight: bold;
   border: 1px solid #fff !important;
   border-radius: 4px; /* Slight radius but not round */

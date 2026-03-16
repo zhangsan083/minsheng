@@ -175,6 +175,8 @@ onMounted(() => {
   background: transparent;
   --van-nav-bar-title-text-color: #fff;
   --van-nav-bar-icon-color: #fff;
+  --van-nav-bar-title-font-size: var(--font-size-large);
+  --van-nav-bar-title-font-weight: bold;
 }
 
 .content {
@@ -230,14 +232,14 @@ onMounted(() => {
 }
 
 .record-amount {
-  font-size: 16px;
+  font-size: var(--font-size-base);
   font-weight: bold;
   color: #333;
   margin-bottom: 4px;
 }
 
 .record-time {
-  font-size: 12px;
+  font-size: var(--font-size-xs);
   color: #999;
   display: flex;
   align-items: center;
@@ -246,7 +248,7 @@ onMounted(() => {
 }
 
 .reject-reason {
-  font-size: 12px;
+  font-size: var(--font-size-xs);
   color: #ff4d4f;
   background: #fff2f0;
   padding: 2px 8px;
@@ -256,7 +258,7 @@ onMounted(() => {
 .status-tag {
   padding: 4px 12px;
   border-radius: 12px;
-  font-size: 12px;
+  font-size: var(--font-size-xs);
   font-weight: bold;
 }
 
@@ -290,7 +292,7 @@ onMounted(() => {
   padding: 16px;
   text-align: center;
   color: #1890ff;
-  font-size: 14px;
+  font-size: var(--font-size-small);
   cursor: pointer;
 }
 
@@ -298,7 +300,7 @@ onMounted(() => {
   padding: 16px;
   text-align: center;
   color: #999;
-  font-size: 14px;
+  font-size: var(--font-size-small);
 }
 
 .empty-state {

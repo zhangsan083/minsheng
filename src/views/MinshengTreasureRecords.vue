@@ -143,6 +143,8 @@ watch(activeTab, () => {
   background: transparent;
   --van-nav-bar-title-text-color: #fff;
   --van-nav-bar-icon-color: #fff;
+  --van-nav-bar-title-font-size: var(--font-size-large);
+  --van-nav-bar-title-font-weight: bold;
 }
 .content {
   padding: 0 16px;
@@ -162,11 +164,12 @@ watch(activeTab, () => {
   border-radius: 999px;
   background: #fff;
   color: #666;
-  font-size: 12px;
+  font-size: var(--font-size-xs);
   display: flex;
   align-items: center;
   justify-content: center;
 }
+
 .tab.active {
   background: #fff;
   color: #2b7afb;
@@ -187,7 +190,7 @@ watch(activeTab, () => {
   background: #2b7afb;
   color: #fff;
   padding: 8px 12px;
-  font-size: 12px;
+  font-size: var(--font-size-small);
   font-weight: 700;
 }
 .card-body {
@@ -205,43 +208,49 @@ watch(activeTab, () => {
   padding: 8px;
 }
 .label {
-  font-size: 12px;
+  font-size: var(--font-size-xs);
   color: #666;
 }
+
 .value {
-  font-size: 14px;
+  font-size: var(--font-size-base);
   font-weight: 900;
   color: #2b7afb;
   margin-top: 4px;
 }
+
 .date {
-  font-size: 12px;
+  font-size: var(--font-size-xs);
   color: #999;
 }
 .empty {
   text-align: center;
   padding: 40px 0;
   color: #999;
-  font-size: 14px;
+  font-size: var(--font-size-small);
 }
+
 .empty-text {
   margin-top: 10px;
 }
+
 .loading-more {
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 20px 0;
-  font-size: 14px;
+  font-size: var(--font-size-small);
   color: #999;
 }
+
 .loading-text {
   margin-left: 8px;
 }
+
 .no-more {
   text-align: center;
   padding: 20px 0;
-  font-size: 14px;
+  font-size: var(--font-size-small);
   color: #999;
 }
 </style>

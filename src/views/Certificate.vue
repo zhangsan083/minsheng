@@ -134,6 +134,8 @@ const onLoad = async () => {
    Here we use scoped style. */
 :deep(.van-nav-bar__title) {
   color: #ffffff;
+  font-size: var(--font-size-large);
+  font-weight: bold;
 }
 :deep(.van-icon) {
   color: #ffffff;
@@ -163,13 +165,13 @@ const onLoad = async () => {
 }
 
 .card-title {
-  font-size: 16px;
+  font-size: var(--font-size-base);
   font-weight: bold;
   color: #333;
 }
 
 .card-no {
-  font-size: 12px;
+  font-size: var(--font-size-xs);
   color: #999;
 }
 
@@ -181,26 +183,32 @@ const onLoad = async () => {
   display: flex;
   justify-content: space-between;
   margin-bottom: 12px;
-  font-size: 14px;
+  font-size: var(--font-size-small);
 }
 
 .label {
   color: #666;
+  font-weight: 500;
 }
 
 .value {
   color: #333;
+  font-weight: 500;
 }
 
 .value-blue {
   color: var(--blue-deep);
   font-weight: bold;
-  font-size: 18px;
+  font-size: 20px;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.1);
 }
 
 .action-btn {
   margin-top: 16px;
   border-radius: 4px;
-  font-size: 16px;
+  font-size: var(--font-size-base);
+  font-weight: bold;
+  height: 48px;
+  box-shadow: 0 4px 10px rgba(43, 122, 251, 0.3);
 }
 </style>

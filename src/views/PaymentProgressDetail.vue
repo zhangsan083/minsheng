@@ -93,7 +93,7 @@ const getStatusText = (status) => {
   background: transparent;
   --van-nav-bar-title-text-color: #fff;
   --van-nav-bar-icon-color: #fff;
-  --van-nav-bar-title-font-size: 18px;
+  --van-nav-bar-title-font-size: var(--font-size-large);
   --van-nav-bar-title-font-weight: bold;
 }
 
@@ -135,7 +135,7 @@ const getStatusText = (status) => {
   right: 0;
   background: rgba(255, 255, 255, 0.8);
   color: #2b7afb;
-  font-size: 12px;
+  font-size: var(--font-size-xs);
   padding: 4px 12px;
   border-top-left-radius: 12px;
   border-bottom-left-radius: 12px;
@@ -161,7 +161,7 @@ const getStatusText = (status) => {
 
 .balance-label {
   color: white;
-  font-size: 18px;
+  font-size: var(--font-size-large);
   font-weight: bold;
   margin-bottom: 8px;
   text-shadow: 0 1px 2px rgba(0,0,0,0.3);
@@ -172,7 +172,7 @@ const getStatusText = (status) => {
 .balance-value-box {
   background: white;
   color: #2b7afb;
-  font-size: 24px;
+  font-size: 28px;
   font-weight: bold;
   padding: 8px 0;
   border-radius: 8px;
@@ -190,14 +190,14 @@ const getStatusText = (status) => {
 }
 
 .card-logo {
-  font-size: 20px;
+  font-size: 24px;
   font-weight: bold;
   opacity: 0.9;
   text-shadow: 0 1px 2px rgba(0,0,0,0.3);
 }
 
 .card-slogan {
-  font-size: 12px;
+  font-size: var(--font-size-small);
   opacity: 0.8;
   text-shadow: 0 1px 2px rgba(0,0,0,0.3);
 }
@@ -207,8 +207,8 @@ const getStatusText = (status) => {
 }
 
 .action-btn {
-  height: 50px;
-  font-size: 18px;
+  height: var(--button-large-height);
+  font-size: var(--font-size-base);
   font-weight: bold;
   background: var(--blue-gradient);
   border: 1px solid rgba(255, 255, 255, 0.3);
@@ -226,7 +226,7 @@ const getStatusText = (status) => {
 
 .card-title {
   text-align: center;
-  font-size: 20px;
+  font-size: var(--font-size-large);
   font-weight: bold;
   color: #2b7afb;
   margin-bottom: 30px;
@@ -285,13 +285,13 @@ const getStatusText = (status) => {
 }
 
 .step-name {
-  font-size: 16px;
+  font-size: var(--font-size-base);
   color: #333;
   font-weight: 500;
 }
 
 .step-status {
-  font-size: 14px;
+  font-size: var(--font-size-small);
 }
 
 .step-status.completed {

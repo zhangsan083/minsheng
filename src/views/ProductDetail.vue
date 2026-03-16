@@ -306,6 +306,7 @@ onMounted(() => {
 :deep(.van-nav-bar__title) {
   color: #fff;
   font-weight: 600;
+  font-size: var(--font-size-large);
 }
 :deep(.van-nav-bar__arrow) {
   color: #fff;
@@ -338,7 +339,7 @@ onMounted(() => {
 }
 
 .p-name {
-  font-size: 16px;
+  font-size: var(--font-size-base);
   font-weight: bold;
   color: #333;
   margin-bottom: 8px;
@@ -346,7 +347,7 @@ onMounted(() => {
 
 .p-score {
   color: #ff4d4f;
-  font-size: 16px;
+  font-size: var(--font-size-base);
   font-weight: bold;
   margin-bottom: 8px;
 }
@@ -362,14 +363,14 @@ onMounted(() => {
   border: 1px solid #1890ff;
   background: #e6f7ff;
   color: #1890ff;
-  font-size: 10px;
+  font-size: var(--font-size-xs);
   padding: 2px 6px;
   border-radius: 4px;
   white-space: nowrap;
 }
 
 .p-stock {
-  font-size: 12px;
+  font-size: var(--font-size-xs);
   color: #666;
 }
 
@@ -380,7 +381,7 @@ onMounted(() => {
 }
 
 .desc-title {
-  font-size: 15px;
+  font-size: var(--font-size-base);
   font-weight: bold;
   margin-bottom: 12px;
   color: #333;
@@ -420,19 +421,19 @@ onMounted(() => {
 }
 
 .price-display .label {
-  font-size: 12px;
+  font-size: var(--font-size-xs);
 }
 .price-display .points-label {
   color: #ff4d4f;
-  font-size: 16px;
+  font-size: var(--font-size-base);
   font-weight: bold;
 }
 
 .redeem-btn {
   width: 120px;
-  height: 40px;
-  border-radius: 4px; /* Screenshot shows slightly rounded */
-  font-size: 14px;
+  height: var(--button-normal-height);
+  border-radius: 4px;
+  font-size: var(--font-size-base);
   background: linear-gradient(to right, #ff6034, #ee0a24);
   border: none;
 }
@@ -468,11 +469,11 @@ onMounted(() => {
 
 .ph-text {
   font-weight: bold;
-  font-size: 14px;
+  font-size: var(--font-size-small);
 }
 
 .ph-slogan {
-  font-size: 12px;
+  font-size: var(--font-size-xs);
   opacity: 0.9;
 }
 
@@ -503,7 +504,7 @@ onMounted(() => {
 }
 
 .pp-name {
-  font-size: 14px;
+  font-size: var(--font-size-small);
   color: #333;
 }
 
@@ -514,7 +515,7 @@ onMounted(() => {
 
 .pp-tag {
   border: 1px solid #ff4d4f;
-  font-size: 10px;
+  font-size: var(--font-size-xs);
   padding: 0 4px;
   border-radius: 2px;
   margin-left: 4px;
@@ -529,13 +530,13 @@ onMounted(() => {
 }
 
 .row-label {
-  font-size: 14px;
+  font-size: var(--font-size-small);
   color: #333;
   font-weight: bold;
 }
 
 .my-points {
-  font-size: 12px;
+  font-size: var(--font-size-xs);
   color: #666;
 }
 
@@ -551,13 +552,13 @@ onMounted(() => {
 
 .stepper-label {
   margin-left: 12px;
-  font-size: 14px;
+  font-size: var(--font-size-small);
   font-weight: bold;
 }
 
 .total-row {
   margin-bottom: 20px;
-  font-size: 14px;
+  font-size: var(--font-size-small);
 }
 
 .total-label {
@@ -567,7 +568,7 @@ onMounted(() => {
 
 .total-value {
   color: #ff4d4f;
-  font-size: 16px;
+  font-size: var(--font-size-base);
   font-weight: bold;
 }
 
@@ -584,7 +585,7 @@ onMounted(() => {
 
 .addr-text {
   color: #999;
-  font-size: 14px;
+  font-size: var(--font-size-small);
 }
 
 .popup-footer {
@@ -592,9 +593,9 @@ onMounted(() => {
 }
 
 .confirm-btn {
-  height: 44px;
+  height: var(--button-normal-height);
   border-radius: 6px;
-  font-size: 16px;
+  font-size: var(--font-size-base);
   background: var(--blue-gradient);
   border: none;
 }
@@ -627,17 +628,17 @@ onMounted(() => {
 
 .addr-name {
   font-weight: bold;
-  font-size: 14px;
+  font-size: var(--font-size-small);
   color: #333;
 }
 
 .addr-phone {
-  font-size: 14px;
+  font-size: var(--font-size-small);
   color: #666;
 }
 
 .addr-detail {
-  font-size: 12px;
+  font-size: var(--font-size-xs);
   color: #666;
   line-height: 1.4;
 }

@@ -357,6 +357,8 @@ onMounted(() => {
   background: transparent;
   --van-nav-bar-title-text-color: #fff;
   --van-nav-bar-icon-color: #fff;
+  --van-nav-bar-title-font-size: var(--font-size-large);
+  --van-nav-bar-title-font-weight: bold;
 }
 
 .content {
@@ -391,7 +393,7 @@ onMounted(() => {
 }
 
 .letter-content {
-  font-size: 16px;
+  font-size: var(--font-size-base);
   color: #333;
   line-height: 2.0;
   text-align: justify;
@@ -417,7 +419,7 @@ onMounted(() => {
 
 .point-title-chip {
   display: inline-block;
-  height: 24px;
+  height: 30px;
   line-height: 24px;
   padding: 3px 45px 3px 35px;
   color: #fff;
@@ -448,7 +450,7 @@ onMounted(() => {
 }
 
 .form-title {
-  font-size: 20px;
+  font-size: var(--font-size-large);
   font-weight: bold;
   color: var(--blue-deep);
   margin-bottom: 16px;
@@ -471,6 +473,7 @@ onMounted(() => {
   width: 80px;
   color: #333;
   font-weight: 500;
+  font-size: var(--font-size-base);
 }
 
 .upload-grid {
@@ -537,7 +540,7 @@ onMounted(() => {
 }
 
 .upload-text {
-  font-size: 12px;
+  font-size: var(--font-size-xs);
   color: #999;
   text-align: center;
   width:150px;
@@ -552,6 +555,8 @@ onMounted(() => {
   background: var(--blue-gradient);
   border: none;
   font-weight: bold;
+  font-size: var(--font-size-base);
+  height: var(--button-normal-height);
   box-shadow: 0 4px 12px rgba(9, 68, 252, 0.3);
 }
 </style>

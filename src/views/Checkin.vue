@@ -248,6 +248,8 @@ const goLog = () => {
   background: transparent;
   --van-nav-bar-title-text-color: #fff;
   --van-nav-bar-icon-color: #fff;
+  --van-nav-bar-title-font-size: var(--font-size-large);
+  --van-nav-bar-title-font-weight: bold;
 }
 
 .content {
@@ -277,7 +279,7 @@ const goLog = () => {
 }
 
 .stats .label {
-  font-size: 14px;
+  font-size: var(--font-size-small);
   color: #999;
   margin-bottom: 2px;
 }
@@ -290,20 +292,20 @@ const goLog = () => {
 }
 
 .stats .unit {
-  font-size: 12px;
+  font-size: var(--font-size-xs);
   font-weight: 400;
   margin-left: 2px;
   color: #333;
 }
 
 .date-title {
-  font-size: 16px;
+  font-size: var(--font-size-base);
   font-weight: 600;
   color: #333;
 }
 
 .btn-log {
-  font-size: 14px;
+  font-size: var(--font-size-small);
   background: #f5f7fa;
   color: #666;
   padding: 4px 12px;
@@ -322,7 +324,7 @@ const goLog = () => {
 }
 
 .weekday {
-  font-size: 12px;
+  font-size: var(--font-size-xs);
   color: #8c8c8c;
 }
 
@@ -339,7 +341,7 @@ const goLog = () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 14px;
+  font-size: var(--font-size-small);
   color: #333;
   border-radius: 4px;
   position: relative;
@@ -368,21 +370,21 @@ const goLog = () => {
   padding: 12px 0;
   border-top: 1px solid #f5f5f5;
   color: #666;
-  font-size: 14px;
+  font-size: var(--font-size-small);
 }
 
 .highlight {
   color: var(--blue-deep);
   font-weight: 700;
   margin: 0 4px;
-  font-size: 16px;
+  font-size: var(--font-size-base);
 }
 
 /* 签到按钮 */
 .btn-checkin {
-  height: 44px;
+  height: var(--button-normal-height);
   border: none;
-  font-size: 16px;
+  font-size: var(--font-size-base);
   font-weight: 600;
   box-shadow: 0 4px 12px rgba(22, 119, 255, 0.3);
   margin-bottom: 24px;
@@ -396,7 +398,7 @@ const goLog = () => {
 }
 
 .rules-title {
-  font-size: 20px;
+  font-size: var(--font-size-base);
   font-weight: 600;
   color: #333;
   margin-bottom: 12px;
@@ -414,12 +416,12 @@ const goLog = () => {
 
 .rule-icon {
   color: var(--blue-deep);
-  font-size: 16px;
+  font-size: var(--font-size-base);
   margin-top: 2px;
 }
 
 .rule-text {
-  font-size: 16px;
+  font-size: var(--font-size-small);
   color: #666;
   line-height: 1.5;
   flex: 1;

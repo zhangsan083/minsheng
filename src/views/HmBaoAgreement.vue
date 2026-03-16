@@ -89,6 +89,8 @@ const onClickLeft = () => {
   background: transparent;
   --van-nav-bar-title-text-color: #fff;
   --van-nav-bar-icon-color: #fff;
+  --van-nav-bar-title-font-size: var(--font-size-large);
+  --van-nav-bar-title-font-weight: bold;
 }
 
 .content-wrapper {
@@ -109,14 +111,14 @@ const onClickLeft = () => {
 }
 
 .content {
-  font-size: 14px;
+  font-size: var(--font-size-base);
   line-height: 1.8;
   color: #333;
   white-space: pre-wrap; /* 保留换行符 */
 }
 
 .content h3 {
-  font-size: 16px;
+  font-size: var(--font-size-large);
   font-weight: bold;
   margin: 24px 0 16px;
   color: #333;

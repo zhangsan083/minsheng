@@ -59,12 +59,8 @@
   background: transparent;
   --van-nav-bar-title-text-color: #fff;
   --van-nav-bar-icon-color: #fff;
-  --van-nav-bar-title-font-size: 18px;
+  --van-nav-bar-title-font-size: var(--font-size-large);
   --van-nav-bar-title-font-weight: bold;
-}
-
-:deep(.van-nav-bar__title) {
-  color: #fff;
 }
 
 .success-icon-wrapper {
@@ -97,7 +93,7 @@
 .info-item {
   display: flex;
   margin-bottom: 20px;
-  font-size: 16px;
+  font-size: var(--font-size-base);
   color: #333;
 }
 
@@ -108,10 +104,12 @@
 .label {
   color: #666;
   width: 100px;
+  font-size: var(--font-size-small);
 }
 
 .value {
   color: #333;
   flex: 1;
+  font-size: var(--font-size-small);
 }
 </style>

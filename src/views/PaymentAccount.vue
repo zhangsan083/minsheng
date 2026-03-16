@@ -157,6 +157,8 @@ const goBindBankCard = () => {
   background: transparent;
   --van-nav-bar-title-text-color: #fff;
   --van-nav-bar-icon-color: #fff;
+  --van-nav-bar-title-font-size: var(--font-size-large);
+  --van-nav-bar-title-font-weight: bold;
 }
 
 .content {
@@ -202,7 +204,7 @@ const goBindBankCard = () => {
 }
 
 .card-title {
-  font-size: 18px;
+  font-size: var(--font-size-base);
   font-weight: 600;
   color: #333;
 }
@@ -218,7 +220,7 @@ const goBindBankCard = () => {
 
 .info-row {
   display: flex;
-  font-size: 14px;
+  font-size: var(--font-size-small);
   color: #666;
 }
 
@@ -228,6 +230,7 @@ const goBindBankCard = () => {
 
 .value {
   color: #333;
+  font-size: var(--font-size-small);
 }
 
 .card-action {

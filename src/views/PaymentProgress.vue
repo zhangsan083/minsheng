@@ -136,7 +136,7 @@ const showRefundPopup = ref(false)
   background: transparent;
   --van-nav-bar-title-text-color: #fff;
   --van-nav-bar-icon-color: #fff;
-  --van-nav-bar-title-font-size: 18px;
+  --van-nav-bar-title-font-size: var(--font-size-large);
   --van-nav-bar-title-font-weight: bold;
 }
 
@@ -177,7 +177,7 @@ const showRefundPopup = ref(false)
   right: 0;
   background: rgba(255, 255, 255, 0.8);
   color: #2b7afb;
-  font-size: 12px;
+  font-size: var(--font-size-xs);
   padding: 4px 12px;
   border-top-left-radius: 12px;
   border-bottom-left-radius: 12px;
@@ -203,7 +203,7 @@ const showRefundPopup = ref(false)
 
 .balance-label {
   color: white;
-  font-size: 18px;
+  font-size: var(--font-size-large);
   font-weight: bold;
   margin-bottom: 8px;
   text-shadow: 0 1px 2px rgba(0,0,0,0.3);
@@ -214,12 +214,12 @@ const showRefundPopup = ref(false)
 .balance-value-box {
   background: white;
   color: #2b7afb;
-  font-size: 24px;
+  font-size: 28px;
   font-weight: bold;
   padding: 8px 0;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-  width: 100%; /* Match width of balance-area */
+  width: 100%;
   text-align: center;
 }
 
@@ -232,14 +232,14 @@ const showRefundPopup = ref(false)
 }
 
 .card-logo {
-  font-size: 20px;
+  font-size: 24px;
   font-weight: bold;
   opacity: 0.9;
   text-shadow: 0 1px 2px rgba(0,0,0,0.3);
 }
 
 .card-slogan {
-  font-size: 12px;
+  font-size: var(--font-size-small);
   opacity: 0.8;
   text-shadow: 0 1px 2px rgba(0,0,0,0.3);
 }
@@ -268,11 +268,11 @@ const showRefundPopup = ref(false)
 }
 
 .action-btn {
-  height: 48px;
-  font-size: 16px;
+  height: var(--button-large-height);
+  font-size: var(--font-size-base);
   font-weight: bold;
   box-shadow: 0 4px 10px rgba(43, 122, 251, 0.3);
-  border: 1px solid rgba(255, 255, 255, 0.5); /* Subtle border */
+  border: 1px solid rgba(255, 255, 255, 0.5);
 }
 
 .notice-card {
@@ -284,14 +284,14 @@ const showRefundPopup = ref(false)
 
 .notice-title {
   text-align: center;
-  font-size: 18px;
+  font-size: var(--font-size-large);
   font-weight: bold;
   color: #2b7afb;
   margin-bottom: 20px;
 }
 
 .notice-content {
-  font-size: 13px;
+  font-size: var(--font-size-small);
   color: #333;
   line-height: 1.8;
   text-align: justify;
@@ -308,8 +308,8 @@ const showRefundPopup = ref(false)
 }
 
 .service-btn {
-  height: 44px;
-  font-size: 15px;
+  height: var(--button-normal-height);
+  font-size: var(--font-size-base);
   font-weight: bold;
   box-shadow: 0 4px 10px rgba(43, 122, 251, 0.3);
 }
@@ -347,7 +347,7 @@ const showRefundPopup = ref(false)
 }
 
 .popup-title {
-  font-size: 18px;
+  font-size: var(--font-size-large);
   font-weight: bold;
   color: #2b7afb;
 }
@@ -381,7 +381,7 @@ const showRefundPopup = ref(false)
 
 .form-row .label {
   width: 90px;
-  font-size: 15px;
+  font-size: var(--font-size-base);
   color: #333;
   font-weight: bold;
 }
@@ -394,8 +394,8 @@ const showRefundPopup = ref(false)
 }
 
 .submit-btn {
-  height: 50px;
-  font-size: 18px;
+  height: var(--button-large-height);
+  font-size: var(--font-size-base);
   font-weight: bold;
   background: var(--blue-gradient);
   box-shadow: 0 4px 12px rgba(9, 68, 252, 0.4);

@@ -281,6 +281,8 @@ onMounted(() => {
   background: transparent;
   --van-nav-bar-title-text-color: #fff;
   --van-nav-bar-icon-color: #fff;
+  --van-nav-bar-title-font-size: var(--font-size-large);
+  --van-nav-bar-title-font-weight: bold;
 }
 .content {
   padding: 0 16px;
@@ -302,17 +304,17 @@ onMounted(() => {
 }
 .term-row {
   display: flex;
-  gap: 8px;
+  gap: 25px;
   justify-content: center;
   padding: 6px 0 10px;
 }
 .term-pill {
-  min-width: 92px;
-  height: 28px;
+  min-width: 110px;
+  height: 36px;
   border-radius: 999px;
   background: #eef5ff;
   color: #2b7afb;
-  font-size: 15px;
+  font-size: var(--font-size-base);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -329,17 +331,19 @@ onMounted(() => {
   margin-bottom: 10px;
 }
 .rate-label {
-  font-size: 14px;
+  font-size: var(--font-size-small);
   color: #666;
 }
+
 .rate-value {
   color: #2b7afb;
   font-weight: 900;
-  font-size: 22px;
+  font-size: 28px;
   margin-top: 2px;
 }
+
 .rate-note {
-  font-size: 14px;
+  font-size: var(--font-size-small);
   color: #999;
   margin-top: 2px;
 }
@@ -355,7 +359,7 @@ onMounted(() => {
   padding: 10px 12px;
 }
 .balance-name {
-  font-size: 14px;
+  font-size: var(--font-size-small);
   color: #333;
   font-weight: 700;
 }
@@ -366,23 +370,24 @@ onMounted(() => {
 }
 .balance-num {
   margin-top: 6px;
-  font-size: 16px;
+  font-size: var(--font-size-base);
   font-weight: 900;
   color: #2b7afb;
 }
 .balance-sub {
   margin-top: 2px;
-  font-size: 14px;
+  font-size: var(--font-size-small);
   color: #2b7afb;
   transform: scale(0.9);
   transform-origin: left;
 }
 .detail-btn {
-  height: 38px;
+  height: var(--button-normal-height);
   background: var(--blue-gradient);
   border: none;
   color: #fff;
   font-weight: 700;
+  font-size: var(--font-size-base);
 }
 .transfer-panel {
   margin-top: 12px;
@@ -398,12 +403,13 @@ onMounted(() => {
   padding: 12px 2px 12px;
 }
 .profit-title {
-  font-size: 14px;
+  font-size: var(--font-size-base);
   font-weight: 800;
   color: #2b7afb;
 }
+
 .profit-date {
-  font-size: 14px;
+  font-size: var(--font-size-small);
   color: #8aa0b5;
   margin-top: 0;
 }
@@ -420,12 +426,13 @@ onMounted(() => {
   text-align: center;
 }
 .profit-label {
-  font-size: 14px;
+  font-size: var(--font-size-small);
   color: #666;
 }
+
 .profit-val {
   margin-top: 6px;
-  font-size: 16px;
+  font-size: var(--font-size-base);
   font-weight: 900;
   color: #2b7afb;
 }
@@ -441,13 +448,15 @@ onMounted(() => {
   font-size: 14px;
   color: #2b7afb;
 }
-.amount-field :deep(.van-field__control)::placeholder {
-  color: #8aa0b5;
+.amount-field :deep(.van-field__control) {
+  font-size: var(--font-size-base);
+  color: #2b7afb;
 }
+
 .all-btn {
   color: #2b7afb;
   font-weight: 700;
-  font-size: 14px;
+  font-size: var(--font-size-base);
   padding: 0 6px;
 }
 .agree-row {
@@ -455,15 +464,16 @@ onMounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 14px;
+  font-size: var(--font-size-small);
   color: #333;
 }
 .transfer-btn {
-  height: 44px;
+  height: var(--button-normal-height);
   background: var(--blue-gradient);
   border: none;
   color: #fff;
   font-weight: 800;
+  font-size: var(--font-size-base);
   box-shadow: 0 4px 12px rgba(9, 68, 252, 0.3);
 }
 .agree-link {
@@ -498,7 +508,7 @@ onMounted(() => {
   padding: 16px;
 }
 .service-text {
-  font-size: 16px;
+  font-size: var(--font-size-base);
   line-height: 2.0;
   color: #333;
   text-align: justify;
@@ -516,7 +526,7 @@ onMounted(() => {
 }
 
 .password-field :deep(.van-field__control) {
-  font-size: 16px;
+  font-size: var(--font-size-base);
   color: #333;
   letter-spacing: 4px;
 }
@@ -526,7 +536,7 @@ onMounted(() => {
 }
 
 :deep(.van-dialog.password-dialog .van-dialog__header) {
-  font-size: 16px;
+  font-size: var(--font-size-base);
   font-weight: bold;
   padding-top: 20px;
 }
@@ -540,7 +550,7 @@ onMounted(() => {
   color: #fff;
   border: none;
   border-radius: 8px;
-  height: 40px;
+  height: var(--button-mini-height);
 }
 
 :deep(.van-dialog.password-dialog .van-dialog__cancel) {
@@ -548,7 +558,7 @@ onMounted(() => {
   color: #666;
   border: none;
   border-radius: 8px;
-  height: 40px;
+  height: var(--button-mini-height);
   margin-right: 8px;
 }
 </style>

@@ -173,9 +173,11 @@ const handleConvert = async () => {
   background: transparent;
   --van-nav-bar-title-text-color: #fff;
   --van-nav-bar-icon-color: #fff;
+  --van-nav-bar-title-font-size: var(--font-size-large);
+  --van-nav-bar-title-font-weight: bold;
 }
 
-:deep(.van-nav-bar__title) { color: #fff; font-weight: bold; font-size: 18px; }
+:deep(.van-nav-bar__title) { color: #fff; font-weight: bold; font-size: var(--font-size-large); }
 :deep(.van-icon) { color: #fff; }
 
 .content {
@@ -197,7 +199,7 @@ const handleConvert = async () => {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 16px;
+  font-size: var(--font-size-base);
   font-weight: bold;
   color: #333;
   margin-bottom: 16px;
@@ -248,7 +250,7 @@ const handleConvert = async () => {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 15px;
+  font-size: var(--font-size-small);
   color: #333;
 }
 
@@ -275,11 +277,11 @@ const handleConvert = async () => {
   align-items: center;
   gap: 8px;
   font-weight: bold;
-  font-size: 16px;
+  font-size: var(--font-size-base);
 }
 
 .balance-value {
-  font-size: 13px;
+  font-size: var(--font-size-xs);
   color: #666;
 }
 
@@ -300,12 +302,12 @@ const handleConvert = async () => {
 .custom-input {
   background: transparent;
   padding: 12px 0;
-  font-size: 16px;
+  font-size: var(--font-size-base);
 }
 
 .all-btn {
   color: var(--blue-deep);
-  font-size: 14px;
+  font-size: var(--font-size-small);
   font-weight: bold;
   padding-left: 12px;
   border-left: 1px solid #ddd;
@@ -314,14 +316,14 @@ const handleConvert = async () => {
 
 .confirm-btn {
   margin-bottom: 24px;
-  font-size: 16px;
+  font-size: var(--font-size-base);
   background: var(--blue-gradient);
   border: none;
 }
 
 .reminder {
   color: #666;
-  font-size: 13px;
+  font-size: var(--font-size-xs);
   line-height: 1.6;
 }
 

@@ -138,7 +138,7 @@ const handleReserve = () => {
 .nav-bar {
   background: transparent;
   --van-nav-bar-title-text-color: #fff;
-  --van-nav-bar-title-font-size: 18px;
+  --van-nav-bar-title-font-size: var(--font-size-large);
   --van-nav-bar-title-font-weight: bold;
 }
 
@@ -236,7 +236,7 @@ const handleReserve = () => {
 }
 
 .legend-title {
-  font-size: 14px;
+  font-size: var(--font-size-small);
   font-weight: bold;
   color: #333;
   margin-bottom: 12px;
@@ -247,7 +247,7 @@ const handleReserve = () => {
   display: flex;
   align-items: center;
   margin-bottom: 8px;
-  font-size: 12px;
+  font-size: var(--font-size-xs);
 }
 
 .dot {
@@ -270,7 +270,7 @@ const handleReserve = () => {
 }
 
 .update-time {
-  font-size: 10px;
+  font-size: var(--font-size-xs);
   color: #999;
   margin-top: 12px;
   text-align: right;
@@ -305,7 +305,7 @@ const handleReserve = () => {
 }
 
 .label {
-  font-size: 14px;
+  font-size: var(--font-size-small);
   color: #666;
 }
 
@@ -371,7 +371,7 @@ const handleReserve = () => {
 }
 
 .symbol {
-  font-size: 14px;
+  font-size: var(--font-size-small);
   margin-right: 4px;
   color: #333;
 }
@@ -380,10 +380,11 @@ const handleReserve = () => {
   background: #1989fa;
   border: none;
   border-radius: 6px;
-  height: 28px;
-  line-height: 26px;
-  padding: 0 12px;
-  font-size: 12px;
+  height: 32px;
+  line-height: 30px;
+  padding: 0 16px;
+  font-size: var(--font-size-small);
+  font-weight: bold;
 }
 
 .btn-group {
@@ -404,7 +405,7 @@ const handleReserve = () => {
 
 .submit-btn {
   font-weight: bold;
-  font-size: 16px;
+  font-size: var(--font-size-base);
   box-shadow: 0 4px 10px rgba(25, 137, 250, 0.3);
 }
 
@@ -420,11 +421,11 @@ const handleReserve = () => {
   font-weight: bold;
   color: #1989fa;
   margin-bottom: 8px;
-  font-size: 14px;
+  font-size: var(--font-size-small);
 }
 
 .rules-content p {
-  font-size: 12px;
+  font-size: var(--font-size-xs);
   color: #666;
   line-height: 1.6;
   margin-bottom: 4px;

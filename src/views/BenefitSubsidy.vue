@@ -129,6 +129,8 @@ const goFundDetails = () => {
   background: transparent;
   --van-nav-bar-title-text-color: #fff;
   --van-nav-bar-icon-color: #fff;
+  --van-nav-bar-title-font-size: var(--font-size-large);
+  --van-nav-bar-title-font-weight: bold;
 }
 .content {
   padding: 0 16px;
@@ -153,12 +155,13 @@ const goFundDetails = () => {
 .balance-title {
   font-weight: bold;
   color: var(--blue-deep);
+  font-size: var(--font-size-base);
 }
 .channel-badge {
   border: 0;
   color: #fff;
   border-radius: 999px;
-  font-size: 14px;
+  font-size: var(--font-size-small);
   padding: 6px 12px;
   background: var(--blue-gradient);
 }
@@ -174,14 +177,15 @@ const goFundDetails = () => {
   margin-bottom: 8px;
 }
 .primary-btn {
-  height: 36px;
+  height: var(--button-small-height);
   background: var(--blue-gradient);
   color: #fff;
   border: none;
   padding: 0 16px;
+  font-size: var(--font-size-small);
 }
 .balance-tip {
-  font-size: 14px;
+  font-size: var(--font-size-small);
   color: #999;
   text-align: center;
 }
@@ -223,10 +227,11 @@ const goFundDetails = () => {
   display: flex;
   align-items: center;
   gap: 8px;
+  font-size: var(--font-size-base);
 }
 .route-title-chip {
   display: inline-block;
-  height: 24px;
+  height: 30px;
   line-height: 24px;
   padding: 3px 35px 3px 35px;
   color: #fff;
@@ -258,7 +263,7 @@ const goFundDetails = () => {
   font-size: 12px;
 }
 .route-desc {
-  font-size: 16px;
+  font-size: var(--font-size-small);
   color: #333;
   line-height: 2.0;
   background: #f7fbff;
@@ -266,7 +271,7 @@ const goFundDetails = () => {
   padding: 10px 12px;
 }
 .rule-desc, .activity-desc {
-  font-size: 16px;
+  font-size: var(--font-size-small);
   color: #333;
   line-height: 2.0;
 }

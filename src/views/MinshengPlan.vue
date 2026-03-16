@@ -112,8 +112,9 @@ const goDetail = () => {
 .nav-bar {
   background: transparent;
   --van-nav-bar-title-text-color: #fff;
-  --van-nav-bar-title-font-size: 18px;
+  --van-nav-bar-title-font-size: var(--font-size-large);
   --van-nav-bar-icon-color: #fff;
+  --van-nav-bar-title-font-weight: bold;
 }
 
 .content {
@@ -173,7 +174,7 @@ const goDetail = () => {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 16px;
+  font-size: var(--font-size-base);
   font-weight: bold;
 }
 
@@ -181,7 +182,7 @@ const goDetail = () => {
   border: 1px solid #fff;
   border-radius: 12px;
   padding: 2px 12px;
-  font-size: 12px;
+  font-size: var(--font-size-xs);
 }
 
 .wallet-body {
@@ -192,7 +193,7 @@ const goDetail = () => {
 }
 
 .wallet-label {
-  font-size: 14px;
+  font-size: var(--font-size-small);
   color: #333;
   margin-bottom: 8px;
   font-weight: bold;
@@ -204,16 +205,16 @@ const goDetail = () => {
 }
 
 .currency {
-  font-size: 16px;
+  font-size: var(--font-size-base);
   margin-right: 4px;
 }
 
 .amount {
-  font-size: 24px;
+  font-size: 28px;
 }
 
 .decimal {
-  font-size: 14px;
+  font-size: var(--font-size-small);
   color: #666;
 }
 
@@ -239,13 +240,13 @@ const goDetail = () => {
 }
 
 .plan-title {
-  font-size: 18px;
+  font-size: var(--font-size-large);
   font-weight: 900;
   text-shadow: 0 1px 2px rgba(0,0,0,0.3);
 }
 
 .plan-tag {
-  font-size: 12px;
+  font-size: var(--font-size-xs);
   opacity: 0.9;
 }
 
@@ -275,7 +276,7 @@ const goDetail = () => {
 }
 
 .info-value {
-  font-size: 14px;
+  font-size: var(--font-size-small);
   font-weight: bold;
 }
 
@@ -291,7 +292,7 @@ const goDetail = () => {
 }
 
 .benefit-title {
-  font-size: 12px;
+  font-size: var(--font-size-xs);
   font-weight: bold;
   display: flex;
   align-items: center;
@@ -343,12 +344,12 @@ const goDetail = () => {
 .price {
   color: #2b7afb;
   font-weight: bold;
-  font-size: 14px;
+  font-size: var(--font-size-small);
 }
 
 .enter-link {
   color: #2b7afb;
-  font-size: 14px;
+  font-size: var(--font-size-small);
   font-weight: bold;
 }
 </style>

@@ -101,6 +101,8 @@ onMounted(() => {
   background: transparent;
   --van-nav-bar-title-text-color: #fff;
   --van-nav-bar-icon-color: #fff;
+  --van-nav-bar-title-font-size: var(--font-size-large);
+  --van-nav-bar-title-font-weight: bold;
 }
 
 .content {
@@ -141,7 +143,7 @@ onMounted(() => {
 .tbody .tr {
   padding: 12px 16px;
   color: #666;
-  font-size: 14px;
+  font-size: var(--font-size-small);
 }
 
 .tbody .tr:nth-child(odd) {
@@ -155,12 +157,12 @@ onMounted(() => {
 .score-val {
   color: var(--blue-deep);
   font-weight: 600;
-  font-size: 16px;
+  font-size: var(--font-size-base);
 }
 
 .score-unit {
   color: #666;
-  font-size: 12px;
+  font-size: var(--font-size-xs);
   margin-left: 2px;
 }
 
@@ -174,7 +176,7 @@ onMounted(() => {
 }
 
 .pager-btn {
-  font-size: 14px;
+  font-size: var(--font-size-small);
   cursor: pointer;
   padding: 4px 12px;
 }
@@ -185,7 +187,7 @@ onMounted(() => {
 }
 
 .pageinfo {
-  font-size: 14px;
+  font-size: var(--font-size-small);
   color: #333;
 }
 

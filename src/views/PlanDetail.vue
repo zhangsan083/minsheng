@@ -167,6 +167,8 @@
   background: transparent;
   --van-nav-bar-title-text-color: #fff;
   --van-nav-bar-icon-color: #fff;
+  --van-nav-bar-title-font-size: var(--font-size-large);
+  --van-nav-bar-title-font-weight: bold;
   position: relative;
   z-index: 1;
 }
@@ -200,7 +202,7 @@
 .progress-header {
   display: flex;
   justify-content: space-between;
-  font-size: 14px;
+  font-size: var(--font-size-small);
   color: #2b7afb;
   margin-bottom: 8px;
   font-weight: bold;
@@ -222,20 +224,21 @@
 }
 
 .info-label {
-  font-size: 10px;
+  font-size: var(--font-size-xs);
   color: #666;
   margin-bottom: 4px;
 }
 
 .info-value {
-  font-size: 12px;
+  font-size: var(--font-size-small);
   color: #2b7afb;
   font-weight: bold;
 }
 
 .buy-btn {
   font-weight: bold;
-  font-size: 16px;
+  font-size: var(--font-size-base);
+  height: var(--button-normal-height);
 }
 
 .desc-card {
@@ -246,7 +249,7 @@
 }
 
 .desc-text {
-  font-size: 13px;
+  font-size: var(--font-size-small);
   line-height: 1.6;
   margin-bottom: 16px;
   color: #333;
@@ -262,18 +265,18 @@
 
 .desc-title {
   font-weight: bold;
-  font-size: 14px;
+  font-size: var(--font-size-small);
   margin-bottom: 4px;
 }
 
 .desc-content {
-  font-size: 12px;
+  font-size: var(--font-size-xs);
   color: #666;
   line-height: 1.5;
 }
 
 .section-intro {
-  font-size: 13px;
+  font-size: var(--font-size-small);
   line-height: 1.6;
   color: #333;
   margin-bottom: 20px;
@@ -281,7 +284,7 @@
 }
 
 .section-title {
-  font-size: 16px;
+  font-size: var(--font-size-base);
   font-weight: bold;
   display: flex;
   align-items: center;
@@ -312,7 +315,7 @@
 
 .tab-active {
   color: #fff;
-  font-size: 16px;
+  font-size: var(--font-size-base);
   font-weight: bold;
 }
 
@@ -321,7 +324,7 @@
   color: #2b7afb;
   padding: 2px 8px;
   border-radius: 4px;
-  font-size: 12px;
+  font-size: var(--font-size-xs);
 }
 
 .rate-display {
@@ -329,7 +332,7 @@
 }
 
 .rate-label {
-  font-size: 12px;
+  font-size: var(--font-size-xs);
   color: #666;
 }
 
@@ -353,7 +356,7 @@
 
 .feature-list {
   padding-left: 16px;
-  font-size: 12px;
+  font-size: var(--font-size-xs);
   color: #666;
   line-height: 1.8;
 }
@@ -369,16 +372,17 @@
 .sub-title {
   font-weight: bold;
   margin-bottom: 8px;
+  font-size: var(--font-size-small);
 }
 
 .compare-text {
-  font-size: 12px;
+  font-size: var(--font-size-xs);
   color: #666;
   line-height: 1.6;
 }
 
 .bg-text {
-  font-size: 13px;
+  font-size: var(--font-size-small);
   line-height: 1.6;
   color: #666;
   margin-bottom: 16px;
@@ -388,7 +392,7 @@
 .slogan {
   text-align: center;
   font-weight: bold;
-  font-size: 14px;
+  font-size: var(--font-size-small);
   line-height: 1.6;
 }
 

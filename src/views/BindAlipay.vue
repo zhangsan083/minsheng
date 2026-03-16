@@ -142,6 +142,8 @@ const handleSubmit = () => {
   background: transparent;
   --van-nav-bar-title-text-color: #fff;
   --van-nav-bar-icon-color: #fff;
+  --van-nav-bar-title-font-size: var(--font-size-large);
+  --van-nav-bar-title-font-weight: bold;
 }
 
 .content {
@@ -160,7 +162,7 @@ const handleSubmit = () => {
 }
 
 .card-title {
-  font-size: 18px;
+  font-size: var(--font-size-base);
   font-weight: 600;
   color: #333;
   margin-bottom: 30px;
@@ -204,12 +206,12 @@ const handleSubmit = () => {
 }
 
 .form-label {
-  font-size: 14px;
+  font-size: var(--font-size-small);
   color: #666;
 }
 
 .form-value {
-  font-size: 14px;
+  font-size: var(--font-size-small);
   color: #333;
   font-weight: 500;
 }
@@ -219,7 +221,7 @@ const handleSubmit = () => {
   text-align: right;
   border: none;
   background: transparent;
-  font-size: 14px;
+  font-size: var(--font-size-small);
   color: #333;
 }
 .input-plain::placeholder {
@@ -238,8 +240,8 @@ const handleSubmit = () => {
 .submit-btn {
   background: var(--blue-gradient);
   border: none;
-  font-size: 16px;
-  height: 44px;
+  font-size: var(--font-size-base);
+  height: var(--button-normal-height);
   opacity: 1 !important; /* Override disabled opacity for 'Bound' state look */
 }
 
@@ -250,7 +252,7 @@ const handleSubmit = () => {
 }
 
 .tips {
-  font-size: 12px;
+  font-size: var(--font-size-xs);
   color: #999;
   line-height: 1.6;
   text-align: justify;

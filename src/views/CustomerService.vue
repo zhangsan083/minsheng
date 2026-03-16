@@ -104,6 +104,7 @@ const handleContact = () => {
   background: transparent;
   --van-nav-bar-title-text-color: #fff;
   --van-nav-bar-icon-color: #fff;
+  --van-nav-bar-title-font-size: var(--font-size-large);
   --van-nav-bar-title-font-weight: bold;
 }
 
@@ -148,41 +149,41 @@ const handleContact = () => {
 
 .info-title {
   color: #0066ff;
-  font-size: 16px;
+  font-size: var(--font-size-base);
   font-weight: bold;
   margin-bottom: 4px;
 }
 
 .info-subtitle {
   color: #0066ff;
-  font-size: 15px;
+  font-size: var(--font-size-base);
   font-weight: bold;
   margin-bottom: 12px;
 }
 
 .info-desc {
-  font-size: 12px;
+  font-size: var(--font-size-small);
   color: #666;
   line-height: 1.5;
   margin-bottom: 12px;
 }
 
 .info-time {
-  font-size: 12px;
+  font-size: var(--font-size-small);
   color: #666;
   margin-bottom: 16px;
 }
 
 .info-time .time {
   color: #0066ff;
-  font-size: 18px;
+  font-size: var(--font-size-large);
   font-weight: bold;
   margin-top: 4px;
 }
 
 .contact-btn {
-  height: 36px;
-  font-size: 14px;
+  height: var(--button-normal-height);
+  font-size: var(--font-size-base);
 }
 
 .faq-section {
@@ -193,7 +194,7 @@ const handleContact = () => {
   display: flex;
   align-items: center;
   margin-bottom: 16px;
-  font-size: 16px;
+  font-size: var(--font-size-base);
   font-weight: bold;
   color: #0066ff;
 }
@@ -216,14 +217,14 @@ const handleContact = () => {
 
 .faq-q {
   color: #0066ff;
-  font-size: 15px;
+  font-size: var(--font-size-base);
   font-weight: bold;
   margin-bottom: 8px;
 }
 
 .faq-a {
   color: #333;
-  font-size: 13px;
+  font-size: var(--font-size-small);
   line-height: 1.6;
   text-align: justify;
 }

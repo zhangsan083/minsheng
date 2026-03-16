@@ -388,6 +388,8 @@ onMounted(() => {
   width: 100%;
   --van-nav-bar-title-text-color: #fff;
   --van-nav-bar-icon-color: #fff;
+  --van-nav-bar-title-font-size: var(--font-size-large);
+  --van-nav-bar-title-font-weight: bold;
 }
 :deep(.van-nav-bar__title) { color: #fff; }
 :deep(.van-icon) { color: #fff; }
@@ -421,7 +423,7 @@ onMounted(() => {
 }
 
 .team-total-info-large .label {
-  font-size: 14px;
+  font-size: var(--font-size-small);
   color: #666;
   margin-bottom: 8px;
 }
@@ -458,7 +460,7 @@ onMounted(() => {
 }
 
 .total-revenue .label {
-  font-size: 14px;
+  font-size: var(--font-size-small);
   color: #333;
   margin-bottom: 8px;
 }
@@ -495,13 +497,13 @@ onMounted(() => {
 }
 
 .stat-item .label {
-  font-size: 13px;
+  font-size: var(--font-size-xs);
   color: #666;
   margin-bottom: 6px;
 }
 
 .stat-item .value {
-  font-size: 18px;
+  font-size: var(--font-size-base);
   font-weight: bold;
   margin-bottom: 4px;
 }
@@ -534,14 +536,14 @@ onMounted(() => {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 14px;
+  font-size: var(--font-size-small);
 }
 
 .copy-btn {
   background: rgba(255, 255, 255, 0.2);
   padding: 4px 12px;
   border-radius: 12px;
-  font-size: 12px;
+  font-size: var(--font-size-xs);
   cursor: pointer;
 }
 
@@ -573,7 +575,7 @@ onMounted(() => {
   align-items: center;
   justify-content: center;
   color: #fff;
-  font-size: 18px;
+  font-size: var(--font-size-base);
   font-weight: 800;
   filter: drop-shadow(0 6px 12px rgba(25, 137, 250, 0.25));
 }
@@ -596,7 +598,7 @@ onMounted(() => {
   border-radius: 999px;
   padding: 0 18px;
   margin-bottom: 12px;
-  font-size: 16px;
+  font-size: var(--font-size-base);
   font-weight: 700;
   position: relative;
 }
@@ -645,7 +647,7 @@ onMounted(() => {
   gap: 8px;
   margin-bottom: 12px;
   font-weight: bold;
-  font-size: 16px;
+  font-size: var(--font-size-base);
   color: var(--blue-deep);
 }
 
@@ -670,7 +672,7 @@ onMounted(() => {
   color: #fff;
   padding: 6px 0;
   border-radius: 16px;
-  font-size: 14px;
+  font-size: var(--font-size-small);
   cursor: pointer;
 }
 
@@ -706,12 +708,12 @@ onMounted(() => {
 }
 
 .data-col .label {
-  font-size: 12px;
+  font-size: var(--font-size-xs);
   color: #666;
 }
 
 .data-col .val {
-  font-size: 14px;
+  font-size: var(--font-size-small);
   font-weight: bold;
 }
 
@@ -729,6 +731,7 @@ onMounted(() => {
   border: 1px solid var(--blue-deep);
   color: var(--blue-deep);
   font-weight: bold;
+  font-size: var(--font-size-small);
   cursor: pointer;
 }
 
@@ -785,7 +788,7 @@ onMounted(() => {
   padding: 10px;
   text-align: center;
   font-weight: bold;
-  font-size: 15px;
+  font-size: var(--font-size-small);
 }
 
 .table-header {
@@ -793,7 +796,7 @@ onMounted(() => {
   background: #fff;
   padding: 12px 8px;
   border-bottom: 1px solid #eee;
-  font-size: 13px;
+  font-size: var(--font-size-xs);
   font-weight: bold;
   color: #333;
 }
@@ -807,7 +810,7 @@ onMounted(() => {
   display: flex;
   padding: 12px 8px;
   border-bottom: 1px solid #eee;
-  font-size: 12px;
+  font-size: var(--font-size-xs);
   color: #666;
   align-items: center;
 }

@@ -235,7 +235,7 @@ const handleSubmit = async () => {
   --van-nav-bar-icon-color: #fff;
 }
 
-:deep(.van-nav-bar__title) { color: #fff; font-weight: bold; font-size: 18px; }
+:deep(.van-nav-bar__title) { color: #fff; font-weight: bold; font-size: var(--font-size-large); }
 :deep(.van-icon) { color: #fff; }
 
 .header-bg {
@@ -255,14 +255,15 @@ const handleSubmit = async () => {
 .tab-item {
   flex: 1;
   text-align: center;
-  padding: 10px 0;
-  font-size: 15px;
+  padding: 12px 0;
+  font-size: var(--font-size-small);
   color: #fff;
   background: transparent;
   cursor: pointer;
   border-radius: 6px;
   transition: all 0.3s;
   border: 1px solid #fff;
+  font-weight: 500;
 }
 
 .tab-item.active {
@@ -291,7 +292,7 @@ const handleSubmit = async () => {
 }
 
 .form-label {
-  font-size: 14px;
+  font-size: var(--font-size-small);
   color: #333;
   margin-bottom: 8px;
   font-weight: 500;
@@ -304,19 +305,28 @@ const handleSubmit = async () => {
 }
 
 :deep(.van-field__control) {
-  font-size: 14px;
+  font-size: var(--font-size-small);
+  font-weight: 500;
 }
 
 .service-link {
   text-align: right;
   color: var(--blue-deep);
-  font-size: 14px;
+  font-size: var(--font-size-small);
   margin-bottom: 30px;
   text-decoration: underline;
   cursor: pointer;
+  font-weight: 500;
 }
 
 .submit-btn {
   margin-bottom: 10px;
+}
+
+:deep(.van-button) {
+  font-size: var(--font-size-base);
+  font-weight: bold;
+  height: 48px;
+  box-shadow: 0 4px 10px rgba(43, 122, 251, 0.3);
 }
 </style>

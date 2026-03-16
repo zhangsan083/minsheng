@@ -86,6 +86,8 @@ onMounted(() => loadClaimList())
   background: transparent;
   --van-nav-bar-title-text-color: #fff;
   --van-nav-bar-icon-color: #fff;
+  --van-nav-bar-title-font-size: var(--font-size-large);
+  --van-nav-bar-title-font-weight: bold;
 }
 
 .content {
@@ -116,7 +118,7 @@ onMounted(() => loadClaimList())
 
 .header-title {
   color: #fff;
-  font-size: 16px;
+  font-size: var(--font-size-base);
   font-weight: 600;
 }
 
@@ -137,12 +139,12 @@ onMounted(() => loadClaimList())
 
 .label {
   color: #666;
-  font-size: 14px;
+  font-size: var(--font-size-small);
 }
 
 .value {
   color: #333;
-  font-size: 14px;
+  font-size: var(--font-size-small);
 }
 
 .value.completed {
@@ -161,7 +163,7 @@ onMounted(() => loadClaimList())
   color: #999;
   padding: 10px 40px;
   border-radius: 20px;
-  font-size: 14px;
+  font-size: var(--font-size-small);
   font-weight: 500;
 }
 

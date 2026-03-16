@@ -193,6 +193,7 @@ const handleCopy = async (platform) => {
 :deep(.van-nav-bar__title) {
   color: #fff;
   font-weight: 600;
+  font-size: var(--font-size-large);
 }
 :deep(.van-nav-bar__arrow) {
   color: #fff;
@@ -291,7 +292,7 @@ const handleCopy = async (platform) => {
 
 .btn-primary, .btn-secondary {
   height: 34px;
-  font-size: 13px;
+  font-size: var(--font-size-small);
   font-weight: bold;
   border: 1px solid #fff !important;
   border-radius: 4px;

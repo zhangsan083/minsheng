@@ -188,7 +188,7 @@ const handlePhoneInput = (e) => {
 }
 .footer {
   text-align: center;
-  font-size: 13px;
+  font-size: var(--font-size-xs);
   color: #8c8c8c;
   margin-top: 8px;
 }

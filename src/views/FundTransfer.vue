@@ -240,10 +240,9 @@ const handleTransfer = async () => {
   background: transparent;
   --van-nav-bar-title-text-color: #fff;
   --van-nav-bar-icon-color: #fff;
+  --van-nav-bar-title-font-size: var(--font-size-large);
+  --van-nav-bar-title-font-weight: bold;
 }
-
-:deep(.van-nav-bar__title) { color: #fff; font-weight: bold; font-size: 18px; }
-:deep(.van-icon) { color: #fff; }
 
 .content {
   padding: 0 16px;
@@ -265,7 +264,7 @@ const handleTransfer = async () => {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 16px;
+  font-size: var(--font-size-base);
   font-weight: bold;
   color: #333;
   margin-bottom: 16px;
@@ -323,7 +322,7 @@ const handleTransfer = async () => {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 15px;
+  font-size: var(--font-size-base);
   color: #333;
 }
 
@@ -355,11 +354,11 @@ const handleTransfer = async () => {
   align-items: center;
   gap: 8px;
   font-weight: bold;
-  font-size: 16px;
+  font-size: var(--font-size-base);
 }
 
 .balance-value {
-  font-size: 13px;
+  font-size: var(--font-size-small);
   color: #333;
 }
 
@@ -384,7 +383,7 @@ const handleTransfer = async () => {
 }
 
 .item-label {
-  font-size: 14px;
+  font-size: var(--font-size-small);
   color: #333;
   width: 110px;
   font-weight: bold;
@@ -392,7 +391,7 @@ const handleTransfer = async () => {
 }
 
 .item-value-text {
-  font-size: 14px;
+  font-size: var(--font-size-small);
   color: #333;
   font-weight: bold;
   flex: 1;
@@ -404,7 +403,7 @@ const handleTransfer = async () => {
   background: transparent;
   flex: 1;
   text-align: right;
-  font-size: 14px;
+  font-size: var(--font-size-small);
   outline: none;
 }
 
@@ -413,15 +412,16 @@ const handleTransfer = async () => {
 
 .confirm-btn {
   margin-top: 24px;
-  font-size: 16px;
+  font-size: var(--font-size-base);
   background: var(--blue-gradient);
   border: none;
+  height: var(--button-normal-height);
 }
 
 .reminder {
   padding: 0 4px;
   color: #666;
-  font-size: 13px;
+  font-size: var(--font-size-small);
   line-height: 1.6;
 }
 

@@ -103,7 +103,7 @@ onMounted(() => {
 }
 
 .title {
-  font-size: 18px;
+  font-size: var(--font-size-large);
   font-weight: 700;
   color: #333;
   line-height: 1.4;
@@ -112,14 +112,14 @@ onMounted(() => {
 }
 
 .time {
-  font-size: 16px;
+  font-size: var(--font-size-small);
   color: #999;
   text-align: center;
   margin-bottom: 12px;
 }
 
 .body {
-  font-size: 16px;
+  font-size: var(--font-size-base);
   color: #333;
   line-height: 1.7;
 }

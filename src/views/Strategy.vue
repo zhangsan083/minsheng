@@ -206,7 +206,7 @@ const planList = ref([
 .nav-bar {
   background: transparent;
   --van-nav-bar-title-text-color: #fff;
-  --van-nav-bar-title-font-size: 18px;
+  --van-nav-bar-title-font-size: var(--font-size-large);
   --van-nav-bar-title-font-weight: bold;
 }
 
@@ -242,13 +242,13 @@ const planList = ref([
 }
 
 .label {
-  font-size: 14px;
+  font-size: var(--font-size-small);
   color: #333;
   font-weight: bold;
 }
 
 .tag {
-  font-size: 10px;
+  font-size: var(--font-size-xs);
   color: #fff;
   background: #1989fa;
   padding: 1px 4px;
@@ -266,11 +266,11 @@ const planList = ref([
 .amount {
   color: #333;
   font-weight: bold;
-  font-size: 20px;
+  font-size: 22px;
 }
 
 .symbol {
-  font-size: 14px;
+  font-size: var(--font-size-small);
   margin-right: 4px;
 }
 
@@ -278,10 +278,11 @@ const planList = ref([
   background: #1989fa;
   border: none;
   border-radius: 6px;
-  height: 28px;
-  line-height: 26px;
-  padding: 0 12px;
-  font-size: 12px;
+  height: 32px;
+  line-height: 30px;
+  padding: 0 16px;
+  font-size: var(--font-size-small);
+  font-weight: bold;
 }
 
 .btn-group {
@@ -290,7 +291,7 @@ const planList = ref([
 }
 
 .desc {
-  font-size: 12px;
+  font-size: var(--font-size-xs);
   color: #666;
   line-height: 1.5;
   text-align: justify;
@@ -319,28 +320,29 @@ const planList = ref([
   right: 0;
   background: #1989fa;
   color: #fff;
-  font-size: 12px;
+  font-size: var(--font-size-xs);
   padding: 4px 12px;
   border-bottom-left-radius: 12px;
   border-top-right-radius: 12px;
+  font-weight: bold;
 }
 
 .plan-title {
-  font-size: 16px;
+  font-size: var(--font-size-base);
   font-weight: bold;
   color: #1989fa;
   margin-bottom: 6px;
 }
 
 .plan-subtitle {
-  font-size: 12px;
+  font-size: var(--font-size-xs);
   color: #1989fa;
   margin-bottom: 12px;
   font-weight: bold;
 }
 
 .plan-desc {
-  font-size: 12px;
+  font-size: var(--font-size-xs);
   color: #666;
   line-height: 1.6;
   margin-bottom: 12px;
@@ -353,7 +355,7 @@ const planList = ref([
 }
 
 .rights-title {
-  font-size: 14px;
+  font-size: var(--font-size-small);
   font-weight: bold;
   color: #333;
   margin-bottom: 8px;
@@ -362,7 +364,7 @@ const planList = ref([
 .right-item {
   display: flex;
   align-items: flex-start;
-  font-size: 12px;
+  font-size: var(--font-size-xs);
   color: #666;
   margin-bottom: 6px;
   line-height: 1.4;
@@ -378,9 +380,9 @@ const planList = ref([
 }
 
 .confirm-btn {
-  font-size: 16px;
+  font-size: var(--font-size-base);
   font-weight: bold;
-  height: 44px;
+  height: 48px;
   box-shadow: 0 4px 10px rgba(25, 137, 250, 0.3);
 }
 
@@ -395,7 +397,7 @@ const planList = ref([
   padding-top: 24px;
   font-weight: bold;
   color: #1989fa;
-  font-size: 18px;
+  font-size: var(--font-size-base);
 }
 
 .dialog-body {
@@ -407,7 +409,7 @@ const planList = ref([
   align-items: flex-start;
   margin-bottom: 24px;
   color: #333;
-  font-size: 14px;
+  font-size: var(--font-size-small);
   line-height: 1.6;
   text-align: justify;
 }
@@ -415,7 +417,7 @@ const planList = ref([
 .bullet {
   color: #1989fa;
   margin-right: 8px;
-  font-size: 12px;
+  font-size: var(--font-size-xs);
   line-height: 1.6;
 }
 
@@ -427,8 +429,8 @@ const planList = ref([
 
 .dialog-btn {
   flex: 1;
-  height: 40px;
-  font-size: 15px;
+  height: 44px;
+  font-size: var(--font-size-small);
   font-weight: bold;
   border-radius: 20px !important;
 }

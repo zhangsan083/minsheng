@@ -131,6 +131,8 @@ const goDetail = (item) => {
 /* Deep selector to ensure title color is correct if variable doesn't work */
 :deep(.van-nav-bar__title) {
   color: #fff;
+  font-size: var(--font-size-large);
+  font-weight: bold;
 }
 :deep(.van-icon) {
   color: #fff;
@@ -165,7 +167,7 @@ const goDetail = (item) => {
 }
 
 .card-title {
-  font-size: 16px;
+  font-size: var(--font-size-base);
   font-weight: bold;
   color: var(--blue-deep);
 }
@@ -204,7 +206,7 @@ const goDetail = (item) => {
 }
 
 .item-title {
-  font-size: 15px;
+  font-size: var(--font-size-small);
   font-weight: bold;
   color: #333;
   margin-bottom: 8px;
@@ -214,7 +216,7 @@ const goDetail = (item) => {
 }
 
 .item-desc {
-  font-size: 13px;
+  font-size: var(--font-size-xs);
   color: #666;
   line-height: 1.5;
   display: -webkit-box;
