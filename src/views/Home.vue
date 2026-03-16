@@ -427,7 +427,7 @@ const recordCode = ref('')
   border-radius: 4px;
 }
 .title {
-  font-size: 24px;
+  font-size: 28px;
   font-weight: 700;
   letter-spacing: 4px;
 }
@@ -518,20 +518,20 @@ const recordCode = ref('')
 }
 .notice-bar {
   padding: 0;
-  height: 24px;
-  line-height: 24px;
-  font-size: 12px;
+  height: 28px;
+  line-height: 28px;
+  font-size: var(--font-size-small);
 }
 
 /* Grid */
 .grid {
   background: #fff;
   border-radius: 12px;
-  padding: 16px 8px;
+  padding: var(--spacing-base) 8px;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 16px 8px;
-  margin-bottom: 16px;
+  gap: var(--spacing-base) 8px;
+  margin-bottom: var(--spacing-base);
 }
 .grid__item {
   display: flex;
@@ -540,23 +540,23 @@ const recordCode = ref('')
   gap: 8px;
 }
 .grid__icon-img {
-  width: 30px;
-  height: 30px;
+  width: var(--icon-size-base);
+  height: var(--icon-size-base);
   object-fit: contain;
 }
 .grid__text {
-  font-size: 12px;
+  font-size: var(--font-size-base);
   color: #333;
 }
 
 .quick-actions {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
-  margin-bottom: 16px;
+  gap: var(--spacing-small);
+  margin-bottom: var(--spacing-base);
 }
 .quick-actions__btn {
-  height: 48px;
+  height: var(--button-normal-height);
   border-radius: 10px;
   background: var(--blue-gradient);
   color: #fff;
@@ -575,12 +575,12 @@ const recordCode = ref('')
   background-size: 100% 100%;
 }
 .quick-actions__icon {
-  width: 20px;
-  height: 20px;
+  width: var(--icon-size-small);
+  height: var(--icon-size-small);
   object-fit: contain;
 }
 .quick-actions__text {
-  font-size: 16px;
+  font-size: var(--font-size-base);
   font-weight: 600;
 }
 
@@ -609,7 +609,7 @@ const recordCode = ref('')
   object-fit: contain;
 }
 .news__title-text {
-  font-size: 20px;
+  font-size: var(--font-size-large);
   font-family: 'STKaiti', 'Kaiti', serif;
   font-weight: 700;
   font-style: italic;
@@ -654,7 +654,7 @@ const recordCode = ref('')
   border-bottom: none;
 }
 .news__text {
-  font-size: 14px;
+  font-size: var(--font-size-small);
   color: #333;
   font-weight: 600;
   margin-bottom: 8px;
@@ -665,7 +665,7 @@ const recordCode = ref('')
   overflow: hidden;
 }
 .news__time {
-  font-size: 12px;
+  font-size: var(--font-size-xs);
   color: #999;
 }
 .news__thumb {
@@ -675,9 +675,9 @@ const recordCode = ref('')
 }
 .news__footer {
   text-align: center;
-  padding: 12px;
+  padding: var(--spacing-small);
   color: #666;
-  font-size: 12px;
+  font-size: var(--font-size-xs);
   display: flex;
   align-items: center;
   justify-content: center;

@@ -379,7 +379,7 @@ const confirmLogout = () => {
 }
 
 .user-phone {
-  font-size: 18px;
+  font-size: var(--font-size-large);
   font-weight: bold;
   color: var(--blue-deep);
 }
@@ -387,7 +387,7 @@ const confirmLogout = () => {
 .status-badge {
   background: var(--blue-gradient);
   color: white;
-  font-size: 12px;
+  font-size: var(--font-size-xs);
   padding: 4px 12px;
   border-top-left-radius: 16px;
   border-bottom-left-radius: 16px;
@@ -402,7 +402,7 @@ const confirmLogout = () => {
 }
 
 .invite-row {
-  font-size: 14px;
+  font-size: var(--font-size-base);
   color: #333;
   display: flex;
   align-items: center;
@@ -426,15 +426,15 @@ const confirmLogout = () => {
 .card-title {
   text-align: center;
   font-weight: bold;
-  margin-bottom: 16px;
-  font-size: 16px;
+  margin-bottom: var(--spacing-base);
+  font-size: var(--font-size-base);
 }
 
 .wallet-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  margin-bottom: 16px;
+  gap: var(--spacing-small);
+  margin-bottom: var(--spacing-base);
 }
 
 .wallet-item {
@@ -449,28 +449,28 @@ const confirmLogout = () => {
 }
 
 .wallet-icon {
-  font-size: 13px;
+  font-size: var(--font-size-small);
   display: flex;
   align-items: center;
   gap: 4px;
 }
 
 .wallet-value {
-  font-size: 16px;
+  font-size: var(--font-size-large);
   font-weight: bold;
 }
 
 .divider {
   height: 1px;
   background: #eee;
-  margin: 12px 0;
+  margin: var(--spacing-small) 0;
 }
 
 .verify-gold-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 14px;
+  font-size: var(--font-size-small);
 }
 
 .verify-label {
@@ -486,13 +486,13 @@ const confirmLogout = () => {
   color: var(--blue-deep);
   display: flex;
   align-items: center;
-  font-size: 12px;
+  font-size: var(--font-size-xs);
   cursor: pointer;
 }
 
 .more-icon {
-  width: 12px;
-  height: 12px;
+  width: var(--icon-size-small);
+  height: var(--icon-size-small);
   object-fit: contain;
   margin-left: 2px;
 }
@@ -501,12 +501,12 @@ const confirmLogout = () => {
 .subsidy-bar {
   background: var(--blue-gradient);
   border-radius: 8px;
-  padding: 12px 16px;
+  padding: var(--spacing-small) var(--spacing-base);
   display: flex;
   justify-content: space-between;
   align-items: center;
   color: white;
-  margin-bottom: 16px;
+  margin-bottom: var(--spacing-base);
   box-shadow: 0 4px 12px rgba(9, 68, 252, 0.2);
 }
 
@@ -519,21 +519,21 @@ const confirmLogout = () => {
 
 .subsidy-value {
   font-weight: bold;
-  font-size: 18px;
+  font-size: var(--font-size-large);
 }
 
 /* Action Grid */
 .action-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
-  margin-bottom: 16px;
+  gap: var(--spacing-small);
+  margin-bottom: var(--spacing-base);
 }
 
 .action-btn-item {
   background: #dbeafe; /* Light blue matching image */
   border-radius: 12px;
-  padding: 12px 4px;
+  padding: var(--spacing-small) 4px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -542,17 +542,17 @@ const confirmLogout = () => {
 }
 
 .action-icon {
-  width: 40px;
-  height: 30px;
+  width: var(--icon-size-base);
+  height: var(--icon-size-base);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 24px;
+  font-size: var(--font-size-base);
   background: transparent;
 }
 
 .action-text {
-  font-size: 12px;
+  font-size: var(--font-size-small);
   color: var(--blue-deep);
   font-weight: bold;
 }
@@ -561,7 +561,7 @@ const confirmLogout = () => {
 .ad-placeholder {
   background: #999;
   border-radius: 12px;
-  margin-bottom: 16px;
+  margin-bottom: var(--spacing-base);
   overflow: hidden;
   position: relative;
 }
@@ -575,23 +575,23 @@ const confirmLogout = () => {
 .section-group {
   background: white;
   border-radius: 16px;
-  padding: 16px;
-  margin-bottom: 16px;
+  padding: var(--spacing-base);
+  margin-bottom: var(--spacing-base);
 }
 
 .section-header {
   display: flex;
   align-items: center;
   gap: 6px;
-  margin-bottom: 16px;
+  margin-bottom: var(--spacing-base);
   font-weight: bold;
-  font-size: 15px;
+  font-size: var(--font-size-base);
 }
 
 .service-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 16px 8px;
+  gap: var(--spacing-base) 8px;
 }
 
 .service-item {
@@ -603,17 +603,17 @@ const confirmLogout = () => {
 }
 
 .service-icon {
-  font-size: 28px;
+  font-size: var(--icon-size-base);
 }
 
 .service-label {
-  font-size: 12px;
+  font-size: var(--font-size-small);
   color: #333;
 }
 
 /* Logout */
 .logout-wrapper {
-  margin-top: 24px;
+  margin-top: var(--spacing-large);
 }
 
 .btn-logout {
@@ -624,67 +624,67 @@ const confirmLogout = () => {
 
 /* Dialog */
 .switch-content {
-  padding: 20px;
+  padding: var(--spacing-base);
   text-align: center;
 }
 
 .dialog-title {
-  font-size: 18px;
+  font-size: var(--font-size-large);
   font-weight: bold;
-  margin-bottom: 12px;
+  margin-bottom: var(--spacing-small);
 }
 
 .dialog-msg {
-  font-size: 14px;
+  font-size: var(--font-size-small);
   color: #666;
-  margin-bottom: 24px;
+  margin-bottom: var(--spacing-base);
 }
 
 .dialog-actions {
   display: flex;
-  gap: 12px;
+  gap: var(--spacing-small);
 }
 
 .badge-icon {
-  width: 14px;
-  height: 14px;
+  width: var(--icon-size-small);
+  height: var(--icon-size-small);
   object-fit: contain;
 }
 
 .copy-icon-img {
-  width: 14px;
-  height: 14px;
+  width: var(--icon-size-small);
+  height: var(--icon-size-small);
   object-fit: contain;
   cursor: pointer;
 }
 
 .wallet-icon-img {
-  width: 16px;
-  height: 16px;
+  width: var(--icon-size-small);
+  height: var(--icon-size-small);
   object-fit: contain;
 }
 
 .subsidy-icon {
-  width: 20px;
-  height: 20px;
+  width: var(--icon-size-base);
+  height: var(--icon-size-base);
   object-fit: contain;
 }
 
 .action-img {
-  width: 28px;
-  height: 28px;
+  width: var(--icon-size-base);
+  height: var(--icon-size-base);
   object-fit: contain;
 }
 
 .header-icon {
-  width: 18px;
-  height: 18px;
+  width: var(--icon-size-base);
+  height: var(--icon-size-base);
   object-fit: contain;
 }
 
 .service-img {
-  width: 28px;
-  height: 28px;
+  width: var(--icon-size-base);
+  height: var(--icon-size-base);
   object-fit: contain;
 }
 </style>

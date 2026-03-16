@@ -69,10 +69,12 @@
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { showToast } from 'vant'
-import { register as registerApi, getCaptchaImage } from '@/api/auth'
+import { register as registerApi, login as loginApi, getCaptchaImage, getUserInfo } from '@/api/auth'
+import { useUserStore } from '@/stores/user'
 
 const router = useRouter()
 const route = useRoute()
+const user = useUserStore()
 const mobile = ref('')
 const password = ref('')
 const confirm = ref('')
@@ -153,16 +155,49 @@ const submit = () => {
   registerApi(payload)
     .then((resp) => {
       if (resp?.code === 200) {
-        showToast('注册成功')
-        router.replace({ name: 'login' })
+        showToast('注册成功，正在登录...')
+        loginAfterRegister()
       } else {
         showToast(resp?.msg || '注册失败')
-        getCaptcha() // 失败刷新验证码
+        getCaptcha()
       }
     })
     .catch(() => {
       showToast('网络异常或服务器错误')
       getCaptcha()
+    })
+    .finally(() => {
+      loading.value = false
+    })
+}
+
+const loginAfterRegister = () => {
+  loading.value = true
+  loginApi(mobile.value, password.value)
+    .then((resp) => {
+      if (resp?.code === 200 && resp?.data) {
+        user.setToken(resp.data)
+        
+        localStorage.setItem('remember_mobile', mobile.value)
+        localStorage.setItem('remember_password', password.value)
+
+        getUserInfo().then(infoResp => {
+          if (infoResp?.code === 200 && infoResp?.data) {
+            user.setUserInfo(infoResp.data)
+          }
+        }).catch(e => {
+          console.error('获取用户信息失败', e)
+        }).finally(() => {
+          router.replace('/home')
+        })
+      } else {
+        showToast(resp?.msg || '自动登录失败，请手动登录')
+        router.replace({ name: 'login' })
+      }
+    })
+    .catch(() => {
+      showToast('自动登录失败，请手动登录')
+      router.replace({ name: 'login' })
     })
     .finally(() => {
       loading.value = false

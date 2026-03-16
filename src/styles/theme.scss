@@ -2,15 +2,42 @@
   --blue-deep: #0944fc;
   --blue-light: #0680f4;
   --blue-gradient: linear-gradient(180deg, #0944fc 0%, #0680f4 100%);
-  
+
   --color-primary: var(--blue-deep);
   --color-bg: #f7f8fa;
   --color-text: #1f2329;
+
+  /* 老年人友好设计标准 */
+  --font-size-base: 18px;
+  --font-size-large: 20px;
+  --font-size-small: 16px;
+  --font-size-xs: 14px;
+  --icon-size-base: 32px;
+  --icon-size-small: 28px;
+  --button-height: 52px;
+  --button-large-height: 56px;
+  --button-normal-height: 48px;
+  --button-mini-height: 44px;
+  --spacing-base: 16px;
+  --spacing-small: 12px;
+  --spacing-large: 20px;
 
   /* Vant Theme Overrides */
   --van-primary-color: var(--blue-deep);
   --van-button-primary-background: var(--blue-gradient);
   --van-button-primary-border-color: var(--blue-deep);
+  --van-font-size-xs: var(--font-size-xs);
+  --van-font-size-sm: var(--font-size-small);
+  --van-font-size-md: var(--font-size-base);
+  --van-font-size-lg: var(--font-size-large);
+  --van-button-height: var(--button-height);
+  --van-button-large-height: var(--button-large-height);
+  --van-button-normal-height: var(--button-normal-height);
+  --van-button-mini-height: var(--button-mini-height);
+  --van-icon-size-xs: 24px;
+  --van-icon-size-sm: 28px;
+  --van-icon-size-md: 32px;
+  --van-icon-size-lg: 36px;
 }
 
 [data-theme='dark'] {
@@ -22,6 +49,90 @@
 body {
   color: var(--color-text);
   background: var(--color-bg);
+  font-size: var(--font-size-base);
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB',
+    'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* 老年人友好的全局样式 */
+* {
+  box-sizing: border-box;
+}
+
+/* 提升可读性 */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+/* 按钮通用样式 */
+.van-button {
+  font-size: var(--font-size-base) !important;
+  height: var(--button-height) !important;
+  line-height: var(--button-height) !important;
+}
+
+/* 输入框通用样式 */
+.van-field__control {
+  font-size: var(--font-size-base) !important;
+}
+
+/* 标签页通用样式 */
+.van-tab {
+  font-size: var(--font-size-base) !important;
+}
+
+/* 单元格通用样式 */
+.van-cell {
+  font-size: var(--font-size-base) !important;
+}
+
+/* 列表通用样式 */
+.van-list {
+  font-size: var(--font-size-base) !important;
+}
+
+/* 弹窗通用样式 */
+.van-popup {
+  font-size: var(--font-size-base) !important;
+}
+
+/* 提示通用样式 */
+.van-toast {
+  font-size: var(--font-size-base) !important;
+}
+
+/* 导航栏通用样式 */
+.van-nav-bar {
+  font-size: var(--font-size-base) !important;
+}
+
+/* 下拉菜单通用样式 */
+.van-dropdown-menu__item {
+  font-size: var(--font-size-base) !important;
+}
+
+/* 加载通用样式 */
+.van-loading {
+  font-size: var(--font-size-small) !important;
+}
+
+/* 步骤条通用样式 */
+.van-steps__title {
+  font-size: var(--font-size-base) !important;
+}
+
+/* 时间选择器通用样式 */
+.van-picker-column__item {
+  font-size: var(--font-size-base) !important;
 }
 
 /* Global Utilities */
@@ -31,4 +142,25 @@ body {
 
 .text-blue-deep {
   color: var(--blue-deep) !important;
+}
+
+/* 老年人友好工具类 */
+.text-large {
+  font-size: var(--font-size-large) !important;
+}
+
+.text-base {
+  font-size: var(--font-size-base) !important;
+}
+
+.text-small {
+  font-size: var(--font-size-small) !important;
+}
+
+.icon-large {
+  font-size: var(--icon-size-base) !important;
+}
+
+.icon-small {
+  font-size: var(--icon-size-small) !important;
 }
