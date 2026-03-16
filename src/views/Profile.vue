@@ -2,7 +2,7 @@
   <div class="page">
     <!-- Header -->
     <div class="header-bg">
-      <div class="header-title">我的</div>
+      <van-nav-bar title="我的" :border="false" class="nav-bar" />
     </div>
 
     <div class="page-content">
@@ -310,15 +310,20 @@ const confirmLogout = () => {
 .header-bg {
   height: 200px;
   background: var(--blue-gradient);
-  display: flex;
-  justify-content: center;
-  padding-top: 20px;
+  position: relative;
 }
 
-.header-title {
-  color: white;
-  font-size: 18px;
-  font-weight: bold;
+.nav-bar {
+  background: transparent;
+  --van-nav-bar-title-text-color: #fff;
+  --van-nav-bar-icon-color: #fff;
+  --van-nav-bar-title-font-size: 18px;
+  --van-nav-bar-title-font-weight: bold;
+}
+
+/* Deep selector to ensure title color is correct */
+:deep(.van-nav-bar__title) {
+  color: #fff;
 }
 
 .page-content {
