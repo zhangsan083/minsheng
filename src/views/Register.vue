@@ -154,28 +154,9 @@ const submit = () => {
   
   registerApi(payload)
     .then((resp) => {
-      if (resp?.code === 200) {
-        showToast('注册成功，正在登录...')
-        loginAfterRegister()
-      } else {
-        showToast(resp?.msg || '注册失败')
-        getCaptcha()
-      }
-    })
-    .catch(() => {
-      showToast('网络异常或服务器错误')
-      getCaptcha()
-    })
-    .finally(() => {
-      loading.value = false
-    })
-}
-
-const loginAfterRegister = () => {
-  loading.value = true
-  loginApi(mobile.value, password.value)
-    .then((resp) => {
       if (resp?.code === 200 && resp?.data) {
+        showToast('注册成功')
+        // 直接使用注册返回的token
         user.setToken(resp.data)
         
         localStorage.setItem('remember_mobile', mobile.value)
@@ -191,18 +172,20 @@ const loginAfterRegister = () => {
           router.replace('/home')
         })
       } else {
-        showToast(resp?.msg || '自动登录失败，请手动登录')
-        router.replace({ name: 'login' })
+        showToast(resp?.msg || '注册失败')
+        getCaptcha()
       }
     })
     .catch(() => {
-      showToast('自动登录失败，请手动登录')
-      router.replace({ name: 'login' })
+      showToast('网络异常或服务器错误')
+      getCaptcha()
     })
     .finally(() => {
       loading.value = false
     })
 }
+
+
 
 const goLogin = () => router.replace({ name: 'login' })
 const goBack = () => router.back()
