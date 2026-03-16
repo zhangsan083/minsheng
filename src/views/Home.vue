@@ -340,8 +340,10 @@ const goCert = () => {
     router.push({ name: 'certificate' })
   }
 }
+const serviceUrl = './chatlink.html'
+
 const goService = () => {
-  router.push({ name: 'online-service' })
+  window.location.href = serviceUrl
 }
 
 const goNews = () => {

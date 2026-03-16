@@ -316,12 +316,6 @@ const routes = [
         meta: { hideTabbar: true }
       },
       {
-        path: 'online-service',
-        name: 'online-service',
-        component: () => import('@/views/OnlineService.vue'),
-        meta: { hideTabbar: true }
-      },
-      {
         path: 'internal-browser',
         name: 'internal-browser',
         component: () => import('@/views/InternalBrowser.vue'),
@@ -366,7 +360,7 @@ const router = createRouter({
 
 router.beforeEach(to => {
   const user = useUserStore(pinia)
-  const whiteList = ['login', 'register', 'customer-service', 'online-service']
+  const whiteList = ['login', 'register', 'customer-service']
   
   if (!user.isAuthenticated && !whiteList.includes(to.name)) {
     return { name: 'login', query: { redirect: to.fullPath } }

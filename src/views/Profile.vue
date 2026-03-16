@@ -292,7 +292,8 @@ const confirmLogout = () => {
         const goFundConversion = () => router.push({ name: 'fund-conversion' })
         const goFundTransfer = () => router.push({ name: 'fund-transfer' })
         const goFundDetails = () => router.push({ name: 'fund-details' })
-        const goService = () => router.push({ name: 'online-service' })
+        const serviceUrl = './chatlink.html'
+        const goService = () => window.location.href = serviceUrl
 
         onMounted(() => {
   // 每次进入个人中心时刷新用户信息，确保资产和积分数据最新
