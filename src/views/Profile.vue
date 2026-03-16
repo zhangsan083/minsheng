@@ -292,7 +292,7 @@ const confirmLogout = () => {
         const goFundConversion = () => router.push({ name: 'fund-conversion' })
         const goFundTransfer = () => router.push({ name: 'fund-transfer' })
         const goFundDetails = () => router.push({ name: 'fund-details' })
-        const goService = () => showToast('联系客服 功能开发中')
+        const goService = () => router.push({ name: 'online-service' })
 
         onMounted(() => {
   // 每次进入个人中心时刷新用户信息，确保资产和积分数据最新

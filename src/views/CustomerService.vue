@@ -1,6 +1,6 @@
 <template>
   <div class="page">
-    <div class="header">
+    <div class="header" v-if="!showService">
       <van-nav-bar
         title="客服中心"
         left-arrow
@@ -9,8 +9,17 @@
         class="nav-bar"
       />
     </div>
+    <div class="header" v-else>
+      <van-nav-bar
+        title="在线客服"
+        left-arrow
+        @click-left="closeService"
+        :border="false"
+        class="nav-bar"
+      />
+    </div>
 
-    <div class="content">
+    <div class="content" v-if="!showService">
       <div class="service-card">
         <div class="service-header">
           <div class="service-avatar">
@@ -76,14 +85,20 @@
         </div>
       </div>
     </div>
+
+    <div class="service-iframe" v-if="showService">
+      <iframe :src="serviceUrl" class="iframe" frameborder="0"></iframe>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { showToast } from 'vant'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 
 const handleContact = () => {
-  showToast('正在连接客服...')
+  router.push({ name: 'online-service' })
 }
 </script>
 

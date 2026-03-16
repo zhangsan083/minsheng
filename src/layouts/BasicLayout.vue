@@ -119,7 +119,7 @@ const PROFILE_ROUTES = new Set([
   'invite-friends',
   'fund-details'
 ])
-const showTabbar = computed(() => true)
+const showTabbar = computed(() => !route.meta?.hideTabbar)
 watch(() => route.name, (name) => {
   if (HOME_ROUTES.has(String(name))) {
     active.value = 'home'

@@ -341,9 +341,7 @@ const goCert = () => {
   }
 }
 const goService = () => {
-  if (checkLogin()) {
-    showToast('联系客服 功能开发中')
-  }
+  router.push({ name: 'online-service' })
 }
 
 const goNews = () => {
