@@ -37,7 +37,17 @@ const loadDetail = async id => {
     const res = await getNewsDetail(id)
     if (res.code === 200 && res.data) {
       title.value = res.data.title || ''
-      content.value = res.data.content || ''
+      // 处理 content，移除图片的内联 width 属性，确保图片自适应
+      let processedContent = res.data.content || ''
+      // 移除图片的内联 width 属性
+      processedContent = processedContent.replace(/<img[^>]*width="[^"]*"[^>]*>/g, (match) => {
+        return match.replace(/width="[^"]*"/g, '')
+      })
+      // 移除图片的内联 style 属性中的 width
+      processedContent = processedContent.replace(/<img[^>]*style="[^"]*width:[^;]*;?[^"]*"[^>]*>/g, (match) => {
+        return match.replace(/width:[^;]*;?/g, '')
+      })
+      content.value = processedContent
       time.value = res.data.createDt || ''
     } else {
       showToast(res.msg || '获取资讯详情失败')
@@ -120,5 +130,14 @@ onMounted(() => {
 
 .body a {
   color: var(--blue-deep);
+}
+
+/* 确保样式能应用到 v-html 渲染的内容 */
+.content-card :deep(img) {
+  max-width: 100% !important;
+  height: auto !important;
+  display: block;
+  margin: 0 auto;
+  box-sizing: border-box;
 }
 </style>

@@ -230,9 +230,24 @@ const loadHomeData = async () => {
   try {
     const res = await getHomeIndex()
     if (res.code === 200 && res.data) {
+      // 处理公告内容，移除图片的内联 width 属性
+      let processedBulletin = res.data.bulletin
+      if (processedBulletin && processedBulletin.content) {
+        let processedContent = processedBulletin.content
+        // 移除图片的内联 width 属性
+        processedContent = processedContent.replace(/<img[^>]*width="[^"]*"[^>]*>/g, (match) => {
+          return match.replace(/width="[^"]*"/g, '')
+        })
+        // 移除图片的内联 style 属性中的 width
+        processedContent = processedContent.replace(/<img[^>]*style="[^"]*width:[^;]*;?[^"]*"[^>]*>/g, (match) => {
+          return match.replace(/width:[^;]*;?/g, '')
+        })
+        processedBulletin.content = processedContent
+      }
+      
       homeData.value = {
         publicizeVod: res.data.publicizeVod,
-        bulletin: res.data.bulletin,
+        bulletin: processedBulletin,
         newsList: res.data.newsList || []
       }
     }
@@ -835,6 +850,25 @@ const recordCode = ref('')
 .notice-content ul, .notice-content ol {
   margin: 10px 0;
   padding-left: 20px;
+}
+
+/* 控制公告内容中的图片大小 */
+:deep(.notice-content img) {
+  max-width: 100% !important;
+  width: 100% !important;
+  height: auto !important;
+  display: block;
+  margin: 0 auto;
+  box-sizing: border-box;
+  object-fit: contain;
+  position: relative;
+  z-index: 2;
+}
+
+/* 确保公告内容容器没有水平滚动 */
+.notice-content {
+  overflow-x: hidden !important;
+  word-wrap: break-word;
 }
 
 .notice-dialog-footer {
