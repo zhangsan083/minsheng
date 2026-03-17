@@ -84,7 +84,7 @@ export default defineConfig({
       '/api': {
         // 本地开发代理目标，仅开发环境生效
         // 生产环境由 config.json 控制，不使用此配置
-        target: 'http://101.32.176.15:18002',
+        target: 'http://43.129.68.128:18002',
         changeOrigin: true,
         rewrite: (p) => p.replace(/^\/api/, '')
       }
