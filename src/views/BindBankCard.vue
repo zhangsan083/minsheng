@@ -240,6 +240,7 @@ const handleSubmit = () => {
   background: transparent;
   font-size: var(--font-size-small);
   color: #333;
+  width:130px !important;
 }
 .input-plain::placeholder {
   color: #999;

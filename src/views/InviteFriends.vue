@@ -539,7 +539,7 @@ const generatePoster = () => {
 }
 
 .stat-label {
-  font-size: var(--font-size-small);
+  font-size: var(--font-size-xs);
   color: #666;
   margin-bottom: 4px;
 }
@@ -605,7 +605,7 @@ const generatePoster = () => {
   display: flex;
   padding: 12px 16px;
   border-bottom: 1px solid #eee;
-  font-size: var(--font-size-small);
+  font-size: var(--font-size-xs);
   color: #333;
   font-weight: bold;
   text-align: center;
@@ -615,7 +615,7 @@ const generatePoster = () => {
   display: flex;
   padding: 12px 16px;
   border-bottom: 1px solid #f5f5f5;
-  font-size: var(--font-size-small);
+  font-size: var(--font-size-xs);
   color: #666;
   text-align: center;
   align-items: center;
@@ -632,7 +632,7 @@ const generatePoster = () => {
   flex: 1.2;
 }
 
-.col.status {
+.col.name {
   flex: 0.8;
 }
 
