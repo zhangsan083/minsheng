@@ -183,7 +183,7 @@
           </div>
           <div class="notice-dialog-body">
             <div class="notice-content-container">
-              <div class="notice-content" v-if="homeData.bulletin && homeData.bulletin.content" v-html="homeData.bulletin.content"></div>
+              <div class="notice-content" v-if="homeData.bulletinPopup && homeData.bulletinPopup.content" v-html="homeData.bulletinPopup.content"></div>
             </div>
           </div>
           <div class="notice-dialog-footer">
@@ -219,6 +219,7 @@ const userStore = useUserStore()
 const showNoticeDialog = ref(false)
 const homeData = ref({
   publicizeVod: '',
+  bulletinPopup: null,
   bulletin: null,
   newsList: []
 })
@@ -230,7 +231,7 @@ const loadHomeData = async () => {
     const res = await getHomeIndex()
     if (res.code === 200 && res.data) {
       // 处理公告内容，移除图片的内联 width 属性
-      let processedBulletin = res.data.bulletin
+      let processedBulletin = res.data.bulletinPopup
       if (processedBulletin && processedBulletin.content) {
         let processedContent = processedBulletin.content
         // 移除图片的内联 width 属性
@@ -246,7 +247,8 @@ const loadHomeData = async () => {
       
       homeData.value = {
         publicizeVod: res.data.publicizeVod,
-        bulletin: processedBulletin,
+        bulletinPopup: processedBulletin,
+        bulletin: res.data.bulletin,
         newsList: res.data.newsList || []
       }
     }
@@ -519,7 +521,7 @@ const recordCode = ref('')
   padding: 0;
   height: 28px;
   line-height: 28px;
-  font-size: var(--font-size-small);
+  font-size: var(--font-size-base);
 }
 
 /* Grid */
@@ -653,7 +655,7 @@ const recordCode = ref('')
   border-bottom: none;
 }
 .news__text {
-  font-size: var(--font-size-small);
+  font-size: var(--font-size-base);
   color: #333;
   font-weight: 600;
   margin-bottom: 8px;

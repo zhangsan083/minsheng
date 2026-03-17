@@ -78,7 +78,7 @@ const onClickLeft = () => {
 
 .header-bg {
   background: linear-gradient(180deg, var(--blue-deep) 0%, var(--blue-deep) 70%, #f7f8fa 70%);
-  height: 315px;
+  height: 180px;
 }
 
 .nav-bar {
@@ -89,8 +89,8 @@ const onClickLeft = () => {
 
 .content-wrapper {
   flex: 1;
-  padding: 0 16px 16px;
-  margin-top: -235px;
+  padding: 0 16px 80px;
+  margin-top: -100px;
   display: flex;
   flex-direction: column;
 }
