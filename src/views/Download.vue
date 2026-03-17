@@ -270,7 +270,7 @@ const copyLink = async (platform) => {
   height: 60px;
   border-radius: 12px;
   overflow: hidden;
-  margin-bottom: 25px; /* Increase space between Logo and Buttons */
+  margin-bottom: 20px; /* Increase space between Logo and Buttons */
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
   background: #fff;
 }
@@ -290,7 +290,7 @@ const copyLink = async (platform) => {
 }
 
 .btn-primary, .btn-secondary {
-  height: 34px;
+  height: 34px !important;
   font-size: var(--font-size-small);
   font-weight: bold;
   border: 1px solid #fff !important;

@@ -184,7 +184,6 @@
           <div class="notice-dialog-body">
             <div class="notice-content-container">
               <div class="notice-content" v-if="homeData.bulletin && homeData.bulletin.content" v-html="homeData.bulletin.content"></div>
-              <div class="notice-content" v-else>暂无公告内容</div>
             </div>
           </div>
           <div class="notice-dialog-footer">

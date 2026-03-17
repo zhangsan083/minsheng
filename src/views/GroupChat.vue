@@ -291,7 +291,7 @@ const handleCopy = async (platform) => {
 }
 
 .btn-primary, .btn-secondary {
-  height: 34px;
+  height: 34px !important;
   font-size: var(--font-size-small);
   font-weight: bold;
   border: 1px solid #fff !important;
