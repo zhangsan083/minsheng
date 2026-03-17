@@ -152,7 +152,11 @@ const onChange = index => {
 }
 
 :deep(.van-tabbar-item__icon img) {
-  height: 24px;
+  height: var(--icon-size-small);
   width: auto;
+}
+
+:deep(.van-tabbar-item__text) {
+  font-size: var(--font-size-xs) !important;
 }
 </style>
