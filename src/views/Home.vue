@@ -650,6 +650,7 @@ const recordCode = ref('')
   grid-template-columns: 1fr 100px;
   gap: 12px;
   border-bottom: 1px solid #f0f0f0;
+  align-items: center;
 }
 .news__item:last-child {
   border-bottom: none;
