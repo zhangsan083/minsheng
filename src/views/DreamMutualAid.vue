@@ -59,7 +59,7 @@
         <van-form @submit="onSubmit">
           <van-field
             v-model="form.name"
-            label="姓　名："
+            label="姓　　名："
             placeholder="请输入您的真实姓名"
             input-align="right"
             :border="false"
@@ -470,7 +470,7 @@ onMounted(() => {
 }
 
 :deep(.van-field__label) {
-  width: 80px;
+  width: 100px;
   color: #333;
   font-weight: 500;
   font-size: var(--font-size-base);
