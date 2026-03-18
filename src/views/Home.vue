@@ -694,7 +694,6 @@ const recordCode = ref('')
 .team-plan__btn:hover {
   /* transform: translateY(-2px); */
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
-  background: var(--blue-gradient);
 }
 
 .team-btn__content {
