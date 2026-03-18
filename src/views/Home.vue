@@ -673,14 +673,19 @@ const recordCode = ref('')
 }
 
 .team-plan__btn {
+  height: var(--button-normal-height);
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   cursor: pointer;
   transition: all 0.3s ease;
   position: relative;
-  background: var(--blue-gradient);
-  padding: 16px;
+  background-color: #0944fc;
+  background-image: url('@/assets/首页/光效线条.png'), linear-gradient(180deg, #0944fc 0%, #0680f4 100%);
+  background-repeat: no-repeat;
+  background-position: bottom -18px center, center;
+  background-size: 100% auto, 100% 100%;
+  padding: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
