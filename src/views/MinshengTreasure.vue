@@ -464,7 +464,7 @@ onMounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: var(--font-size-small);
+  font-size: var(--font-size-xs);
   color: #333;
 }
 .transfer-btn {
