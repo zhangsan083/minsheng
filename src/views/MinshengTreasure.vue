@@ -304,12 +304,12 @@ onMounted(() => {
 }
 .term-row {
   display: flex;
-  gap: 25px;
+  gap: 8px;
   justify-content: center;
   padding: 6px 0 10px;
 }
 .term-pill {
-  min-width: 110px;
+  min-width: 100px;
   height: 36px;
   border-radius: 999px;
   background: #eef5ff;
@@ -426,7 +426,7 @@ onMounted(() => {
   text-align: center;
 }
 .profit-label {
-  font-size: var(--font-size-small);
+  font-size: var(--font-size-xs);
   color: #666;
 }
 

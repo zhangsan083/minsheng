@@ -101,6 +101,13 @@
         </div>
       </section>
 
+
+      <!-- 幸运大抽奖 -->
+      <section class="lucky-draw">
+        <div class="lucky-draw__container" @click="goLuckyDraw">
+          <img src="@/assets/首页/首页-幸运大抽奖.png" class="lucky-draw__img" alt="幸运大抽奖" />
+        </div>
+      </section>
       <section class="quick-actions">
         <div class="quick-actions__btn quick-actions__btn--subsidy" @click="goSubsidy">
           <img src="@\assets\首页\惠民补贴金.png" class="quick-actions__icon" alt="惠民补贴金" />
@@ -109,6 +116,27 @@
         <div class="quick-actions__btn quick-actions__btn--minsheng" @click="goMinshengTreasure">
           <img src="@\assets\首页\惠民宝.png" class="quick-actions__icon" alt="惠民宝" />
           <span class="quick-actions__text">惠民宝</span>
+        </div>
+      </section>
+
+      <!-- 团队长合作计划 -->
+      <section class="team-plan">
+        <div class="team-plan__header">
+          <img src="@/assets/首页/首页-团队长合作计划.png" class="team-plan__header-img" alt="团队长合作计划" />
+        </div>
+        <div class="team-plan__btns">
+          <div class="team-plan__btn" @click="goTeamRanking">
+            <div class="team-btn__content">
+              <img src="@/assets/首页/首页-团队长排行榜.png" class="team-btn__icon" alt="团队长排行榜" />
+              <span class="team-btn__text">团队长排行榜</span>
+            </div>
+          </div>
+          <div class="team-plan__btn" @click="goNationalWelfare">
+            <div class="team-btn__content">
+              <img src="@/assets/首页/首页-国家民生福祉.png" class="team-btn__icon" alt="国家民生福祉" />
+              <span class="team-btn__text">国家民生福祉</span>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -374,6 +402,24 @@ const goMinshengTreasure = () => {
   }
 }
 
+const goLuckyDraw = () => {
+  if (checkLogin()) {
+    router.push({ name: 'lucky-draw' })
+  }
+}
+
+const goTeamRanking = () => {
+  if (checkLogin()) {
+    router.push({ name: 'team-ranking' })
+  }
+}
+
+const goNationalWelfare = () => {
+  if (checkLogin()) {
+    router.push({ name: 'national-welfare' })
+  }
+}
+
 const recordCode = ref('')
 </script>
 
@@ -583,6 +629,90 @@ const recordCode = ref('')
 .quick-actions__text {
   font-size: var(--font-size-base);
   font-weight: 600;
+}
+
+.lucky-draw__container {
+  border-radius: 12px;
+  overflow: hidden;
+  /* box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); */
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.lucky-draw__container:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+.lucky-draw__img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* 团队长合作计划 */
+.team-plan {
+  margin-bottom: 12px;
+}
+
+.team-plan__header {
+  margin-bottom: 12px;
+}
+
+.team-plan__header-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 12px;
+}
+
+.team-plan__btns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.team-plan__btn {
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  background: var(--blue-gradient);
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.team-plan__btn:hover {
+  /* transform: translateY(-2px); */
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+  background: var(--blue-gradient);
+}
+
+.team-btn__content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+.team-btn__icon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.team-btn__text {
+  color: white;
+  font-size: var(--font-size-base);
+  font-weight: bold;
+  flex: 1;
+  text-align: center;
 }
 
 /* News */
