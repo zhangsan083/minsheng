@@ -58,15 +58,15 @@
         <span class="text">申请资料</span>
       </div>
       <div class="form-card">
+        <div class="form-item">
+          <div class="form-label">中国梦项目名称：</div>
+          <div class="form-value">{{ projectName }}</div>
+        </div>
+
         <div class="form-item" @click="showCalendar = true">
           <div class="form-label">预计参与日期：</div>
           <div class="form-value placeholder" v-if="!date">点击选择</div>
           <div class="form-value" v-else>{{ date }}</div>
-        </div>
-        
-        <div class="form-item">
-          <div class="form-label">中国梦项目名称：</div>
-          <div class="form-value">{{ projectName }}</div>
         </div>
         
         <div class="form-item" @click="showAssetPicker = true">
