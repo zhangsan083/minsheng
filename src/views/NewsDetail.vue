@@ -2,7 +2,7 @@
   <div class="page">
     <div class="header-bg">
       <van-nav-bar
-        title="人民资产资讯"
+        title="民生资产资讯"
         left-arrow
         @click-left="$router.back()"
         :border="false"

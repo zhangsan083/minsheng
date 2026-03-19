@@ -16,7 +16,7 @@
           <img
             class="card__banner-img"
             src="@/assets/注册/注册背景图.png"
-            alt="人民资产"
+            alt="民生资产"
           />
         </div>
         <div class="card__body">

@@ -2,7 +2,7 @@
   <div class="page">
     <div class="header-bg">
       <van-nav-bar
-        title="人民资产公告"
+        title="民生资产公告"
         left-arrow
         @click-left="onClickLeft"
         :border="false"
