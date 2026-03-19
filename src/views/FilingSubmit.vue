@@ -53,77 +53,92 @@
         </div>
       </div>
       
-      <div class="application-card">
-        <div class="section-header">申请资料</div>
-        
-        <div class="form-item">
-          <span class="form-label">中国梦项目名称:</span>
-          <span class="form-value">{{ projectName }}</span>
+      <div class="section-title">
+        <van-icon name="orders-o" color="#2b7afb" size="20" />
+        <span class="text">申请资料</span>
+      </div>
+      <div class="form-card">
+        <div class="form-item" @click="showCalendar = true">
+          <div class="form-label">预计参与日期：</div>
+          <div class="form-value placeholder" v-if="!date">点击选择</div>
+          <div class="form-value" v-else>{{ date }}</div>
         </div>
         
-        <div class="form-item" @click="showCalendar = true">
-          <span class="form-label">预计参与日期:</span>
-          <div class="form-value clickable">
-            点击选择
-          </div>
+        <div class="form-item">
+          <div class="form-label">中国梦项目名称：</div>
+          <div class="form-value">{{ projectName }}</div>
         </div>
         
         <div class="form-item" @click="showAssetPicker = true">
-          <span class="form-label">项目未下发资产:</span>
-          <div class="form-value clickable">
-            点击选择
-          </div>
-        </div>
-        
-        <div class="submit-btn-wrapper">
-          <van-button 
-            block 
-            type="primary" 
-            class="submit-btn"
-            @click="handleSubmit"
-            :disabled="!date || !asset"
-          >
-            提交审核
-          </van-button>
+          <div class="form-label">项目未下发资产：</div>
+          <div class="form-value placeholder" v-if="!asset">点击选择</div>
+          <div class="form-value" v-else>{{ asset }}</div>
         </div>
       </div>
-      
-      <div class="info-card">
-        <div class="letter-content">
-          <p class="note-content">
-            <span class="note-bullet">◆</span> 注意事项：根据《中华人民共和国数据安全法》等相关法律法规规定，您在填写本表格时，应保证所提交的相关资料真实、完整、有效。
-          </p>
-          <p class="note-content">
-            <span class="note-bullet">◆</span> 若发现弄虚作假、隐瞒实际情况，对干扰政府部门正常工作秩序、侵害国家利益的行为，将依法追究相关责任。
-          </p>
-          <p class="note-content">
-            <span class="note-bullet">◆</span> 本资产备案申请表格所有数据项均为必填项，应填写完整。数据提交前请认真核对，若因数据不完整或错误导致审核不通过，备案登记申请人自行承担一切法律责任及由此造成的经济损失。
-          </p>
-        </div>
+
+      <div class="submit-btn-wrapper">
+        <van-button 
+          block 
+          round 
+          type="primary" 
+          class="submit-btn"
+          @click="handleSubmit"
+          :disabled="!date || !asset"
+        >
+          提交审核
+        </van-button>
+      </div>
+
+      <div class="notice">
+        <span class="dot">●</span> 注意事项：根据《中华人民共和国统计法》等相关法律法规规定，登记人在填写资料时，应当依法如实提交申请资料，确保所提供信息的真实性、准确性和完整性。对于采取虚构事实、隐瞒真相等方式提交虚假材料的行为，国家数据局有权依法撤销相关申请认证，并按照有关规定采取信用惩戒等监管措施。因登记资料缺失实引发的项目受阻、权益受损等不利后果，均由登记申请人自行承担一切法律责任及由此造成的经济损失。
       </div>
     </div>
     
     <!-- 日期选择器 -->
     <van-calendar
       v-model:show="showCalendar"
-      type="date"
-      title="选择预计参与日期"
       @confirm="onDateConfirm"
+      color="#2b7afb"
     />
     
-    <!-- 资产选择器 -->
-    <van-popup
-      v-model:show="showAssetPicker"
-      position="bottom"
-      round
-      style="height: 80%"
-    >
-      <van-picker
-        title="选择项目未下发资产"
-        :columns="assetColumns"
-        @confirm="onAssetConfirm"
-        @cancel="showAssetPicker = false"
-      />
+    <!-- 资产范围搜索选择器 -->
+    <van-popup v-model:show="showAssetPicker" position="bottom" :style="{ height: '60%' }">
+      <div class="picker-header">
+        <div class="header-title">项目未下发资产选择</div>
+      </div>
+      <div class="search-container">
+        <van-field
+          v-model="assetSearchText"
+          placeholder="搜索选项"
+          @input="filterAssets"
+          clearable
+          @change="filterAssets"
+        />
+      </div>
+      <div class="picker-content">
+        <div
+          v-for="(item, index) in filteredAssets"
+          :key="item.value"
+          class="picker-item"
+          :class="{ active: selectedAsset === item.value }"
+          @click="selectedAsset = item.value"
+        >
+          {{ item.text }}
+        </div>
+        <div v-if="filteredAssets.length === 0" class="no-result">
+          无搜索结果
+        </div>
+      </div>
+      <div class="picker-footer">
+        <van-button 
+          block 
+          type="primary" 
+          round 
+          @click="confirmAssetSelection"
+        >
+          确认选择
+        </van-button>
+      </div>
     </van-popup>
   </div>
 </template>
@@ -143,27 +158,51 @@ const userStore = useUserStore()
 const projectName = ref(route.query.project || '')
 const date = ref('')
 const asset = ref('')
-const assetIndex = ref(0)
 
 const showCalendar = ref(false)
 const showAssetPicker = ref(false)
 
-const assetColumns = [
-  '0-100万','100万-500万','500万-1000万','1000万-5000万','5000万-1亿'
-]
+// 资产选择器相关
+const assetSearchText = ref('')
+const selectedAsset = ref('')
+const assets = ref([
+  { value: '1', text: '0-100万' },
+  { value: '2', text: '100万-500万' },
+  { value: '3', text: '500万-1000万' },
+  { value: '4', text: '1000万-5000万' },
+  { value: '5', text: '5000万-1亿' }
+])
+const filteredAssets = ref([...assets.value])
 
 const goBack = () => {
   router.back()
 }
 
-const onDateConfirm = (value) => {
-  date.value = value
+const onDateConfirm = (dateObj) => {
+  const year = dateObj.getFullYear()
+  const month = String(dateObj.getMonth() + 1).padStart(2, '0')
+  const day = String(dateObj.getDate()).padStart(2, '0')
+  date.value = `${year}-${month}-${day}`
   showCalendar.value = false
 }
 
-const onAssetConfirm = (value) => {
-  asset.value = value
-  assetIndex.value = assetColumns.indexOf(value) + 1
+const filterAssets = () => {
+  if (assetSearchText.value) {
+    filteredAssets.value = assets.value.filter(item => 
+      item.text.includes(assetSearchText.value)
+    )
+  } else {
+    filteredAssets.value = [...assets.value]
+  }
+}
+
+const confirmAssetSelection = () => {
+  if (selectedAsset.value) {
+    const selectedItem = assets.value.find(item => item.value === selectedAsset.value)
+    if (selectedItem) {
+      asset.value = selectedItem.text
+    }
+  }
   showAssetPicker.value = false
 }
 
@@ -174,8 +213,11 @@ const handleSubmit = async () => {
   }
   
   try {
+    const selectedItem = assets.value.find(item => item.text === asset.value)
+    const amountScope = selectedItem ? selectedItem.value : ''
+    
     const params = {
-      amountScope: assetIndex.value,
+      amountScope: amountScope,
       participateDt: date.value,
       projectName: projectName.value
     }
@@ -394,9 +436,9 @@ onMounted(() => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px;
+  padding: 20px 0;
   border-bottom: 1px solid #eee;
-  font-size: var(--font-size-base);
+  font-size: var(--font-size-small);
 }
 
 .form-item:last-child {
@@ -406,13 +448,20 @@ onMounted(() => {
 .form-label {
   color: #333;
   font-weight: 500;
-  width: 120px;
 }
 
 .form-value {
-  color: #666;
+  color: #333;
+  font-weight: 500;
   display: flex;
   align-items: center;
+  flex: 1;
+  justify-content: flex-end;
+}
+
+.form-value.placeholder {
+  color: #2b7afb;
+  cursor: pointer;
 }
 
 .clickable {
@@ -421,39 +470,135 @@ onMounted(() => {
 }
 
 .submit-btn-wrapper {
-  padding: 20px 16px;
+  margin-bottom: 24px;
 }
 
 .submit-btn {
   background: #2b7afb;
   border: none;
+  height: 48px;
+  font-size: var(--font-size-base);
+  font-weight: bold;
+  box-shadow: 0 4px 10px rgba(43, 122, 251, 0.3);
+}
+
+.form-card {
+  background: white;
+  border-radius: 12px;
+  padding: 0 20px;
+  margin-bottom: 30px;
+}
+
+.notice {
+  font-size: var(--font-size-xs);
+  color: #333;
+  line-height: 1.6;
+  text-align: justify;
+  padding: 0 4px;
+}
+
+.dot {
+  color: #2b7afb;
+  margin-right: 4px;
+  font-weight: bold;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
   font-weight: bold;
   font-size: var(--font-size-base);
-  height: 48px;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(43, 122, 251, 0.3);
+  color: #333;
 }
 
-.info-card {
-  background: #fff;
-  border-radius: 12px;
-  padding: 16px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  margin-bottom: 16px;
+.section-title .text {
+  margin-left: 8px;
 }
 
-.note-content {
-  font-size: var(--font-size-small);
-  color: #666;
-  line-height: 1.5;
-  margin-bottom: 8px;
+/* 自定义选择器样式 */
+.picker-header {
   display: flex;
-  align-items: flex-start;
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
+  border-bottom: 1px solid #f0f0f0;
+  background-color: #fff;
 }
 
-.note-bullet {
-  color: #2b7afb;
-  margin-right: 8px;
+.header-title {
+  font-size: var(--font-size-base);
   font-weight: bold;
+  color: #333;
+  text-align: center;
+}
+
+.no-result {
+  padding: 40px 0;
+  text-align: center;
+  color: #999;
+  font-size: var(--font-size-small);
+}
+
+.search-container {
+  padding: 16px;
+  border-bottom: 1px solid #f0f0f0;
+  background-color: #fff;
+}
+
+.search-container .van-field {
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.search-container .van-field__control {
+  font-size: var(--font-size-small);
+}
+
+.picker-content {
+  height: calc(100% - 200px);
+  overflow-y: auto;
+  background-color: #fff;
+}
+
+.picker-item {
+  padding: 16px;
+  border-bottom: 1px solid #f0f0f0;
+  font-size: var(--font-size-small);
+  color: #333;
+  cursor: pointer;
+  position: relative;
+}
+
+.picker-item:active {
+  background-color: #f5f7fa;
+}
+
+.picker-item.active {
+  color: #2b7afb;
+  background-color: #f5f7fa;
+}
+
+.picker-footer {
+  padding: 16px;
+  border-top: 1px solid #f0f0f0;
+  background-color: #fff;
+}
+
+.picker-footer .van-button {
+  height: 44px;
+  font-size: var(--font-size-base);
+  font-weight: bold;
+  background-color: #2b7afb;
+  border: none;
+}
+
+.picker-footer .van-button:hover {
+  background-color: #1a66e5;
+}
+
+.picker-footer .van-button:active {
+  background-color: #0f52c1;
 }
 </style>
