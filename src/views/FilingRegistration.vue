@@ -456,9 +456,9 @@ const handleSubmit = () => {
 .selected-project {
   margin-top: 16px;
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   align-items: center;
-  padding: 12px;
+  padding: 16px;
   background: #f5f7fa;
   border-radius: 8px;
 }
@@ -467,6 +467,12 @@ const handleSubmit = () => {
   font-size: var(--font-size-base);
   color: #333;
   font-weight: 500;
+  margin-bottom: 12px;
+  width: 100%;
+  text-align: center;
+  background: white;
+  border-radius: 8px;
+  padding:10px;
 }
 
 /* National Projects Grid */
