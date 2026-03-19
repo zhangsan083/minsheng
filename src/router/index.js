@@ -220,6 +220,12 @@ const routes = [
         meta: { requiresAuth: true }
       },
       {
+        path: 'filing-submit',
+        name: 'filing-submit',
+        component: () => import('@/views/FilingSubmit.vue'),
+        meta: { requiresAuth: true }
+      },
+      {
         path: 'policy',
         name: 'policy',
         component: () => import('@/views/Policy.vue'),
