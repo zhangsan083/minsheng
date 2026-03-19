@@ -103,7 +103,7 @@ const routes = [
         path: 'news-detail',
         name: 'news-detail',
         component: () => import('@/views/NewsDetail.vue'),
-        meta: { requiresAuth: true, hideTabbar: true }
+        meta: { requiresAuth: true }
       },
       {
         path: 'download',

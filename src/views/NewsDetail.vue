@@ -86,7 +86,7 @@ onMounted(() => {
 
 .content-wrapper {
   flex: 1;
-  padding: 0 16px 0;
+  padding: 0 16px 80px;
   margin-top: -255px;
   display: flex;
   flex-direction: column;
