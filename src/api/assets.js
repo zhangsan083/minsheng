@@ -132,3 +132,8 @@ export function inviteFriends() {
 export function getClaimList() {
   return request.get('/asset/task/claimList')
 }
+
+// 获取项目列表
+export function getProjectPage(params) {
+  return request.get('/asset/filing/project/page', { params })
+}

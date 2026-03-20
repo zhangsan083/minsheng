@@ -180,8 +180,9 @@ const router = useRouter()
 const route = useRoute()
 const userStore = useUserStore()
 
-// 从路由参数获取项目名称
+// 从路由参数获取项目名称和ID
 const projectName = ref(route.query.project || '')
+const projectId = ref(route.query.projectId || 0)
 const date = ref('')
 const asset = ref('')
 const phone = ref('')
@@ -249,10 +250,11 @@ const handleSubmit = async () => {
     const amountScope = selectedItem ? selectedItem.value : ''
     
     const params = {
-      amountScope: amountScope,
+      amountScope: parseInt(amountScope),
       participateDt: date.value,
-      projectName: projectName.value,
-      phone: phone.value
+      phonenumber: phone.value,
+      projectId: parseInt(projectId.value),
+      projectName: projectName.value
     }
     
     const res = await addAssetFiling(params)
