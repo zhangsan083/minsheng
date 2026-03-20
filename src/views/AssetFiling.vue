@@ -74,7 +74,7 @@
               <div class="col">登记项目金额</div>
               <div class="col">审核状态</div>
             </div>
-            <div class="table-body" :class="{ scrolling: projectList.length > 5 }">
+            <div class="table-body">
               <div class="table-row" v-for="(item, index) in projectList" :key="index">
                 <div class="col name">{{ item.name }}</div>
                 <div class="col amount">¥ {{ item.amount }}万</div>
@@ -329,8 +329,6 @@ const getStatusClass = (status) => {
 
 /* Table Styles */
 .project-table-container {
-  height: 200px;
-  overflow: hidden;
   position: relative;
 }
 
@@ -339,7 +337,6 @@ const getStatusClass = (status) => {
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  height: 100%;
   display: flex;
   flex-direction: column;
 }
@@ -355,26 +352,7 @@ const getStatusClass = (status) => {
 }
 
 .table-body {
-  flex: 1;
-  overflow-y: auto;
-  padding: 0 16px;
-}
-
-.table-body.scrolling {
-  animation: scroll-up 15s linear infinite;
-}
-
-.table-body.scrolling:hover {
-  animation-play-state: paused;
-}
-
-@keyframes scroll-up {
-  0% {
-    transform: translateY(0);
-  }
-  100% {
-    transform: translateY(-100%);
-  }
+  padding: 16px 16px;
 }
 
 .table-row {

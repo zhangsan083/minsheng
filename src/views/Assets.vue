@@ -25,7 +25,7 @@
             <span class="center-text">资产登记中心</span>
             <div class="center-arrow"></div>
           </router-link>
-          <router-link class="center-item" to="/asset-query">
+          <!-- <router-link class="center-item" to="/asset-query">
             <div class="center-icon query-icon"></div>
             <span class="center-text">资产查询中心</span>
             <div class="center-arrow"></div>
@@ -44,7 +44,7 @@
             <div class="center-icon data-icon"></div>
             <span class="center-text">资产数据中心</span>
             <div class="center-arrow"></div>
-          </router-link>
+          </router-link> -->
         </div>
       </div>
 
