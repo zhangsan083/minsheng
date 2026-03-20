@@ -22,81 +22,54 @@
       <!-- 头条文章 -->
       <div class="image-card headline-card">
         <div class="headline-layout">
-          <div class="card-image-left"></div>
-            <h3 class="project-name-text">2026年新年贺词摘录</h3>
-            <p class="headline-text">
-              xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-              xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-              xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-              xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-              xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-              xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
-            </p>
+          <div class="card-image-left" v-if="article.coverImg">
+            <img :src="article.coverImg" alt="文章封面" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;" />
+          </div>
+          <div class="card-image-left" v-else></div>
+            <h3 class="project-name-text">{{ article.title }}</h3>
+            <p class="headline-text">{{ article.content }}</p>
         </div>
       </div>
 
       <!-- 投稿列表 -->
       <div class="contribution-list">
-        <!-- 投稿项 1 -->
-        <div class="contribution-item">
+        <div 
+          v-for="(item, index) in contributions" 
+          :key="item.id || index" 
+          class="contribution-item"
+        >
           <div class="contributor-info">
-            <div class="avatar"></div>
+            <div class="avatar">
+              <img :src="item.avatar || '/logo主图形.png'" alt="头像" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;" />
+            </div>
             <div class="contributor-details">
-              <div class="name">姓名</div>
-              <div class="time">0天前</div>
+              <div class="name">{{ item.realName || '匿名' }}</div>
+              <div class="time">{{ item.createDtFormat || '未知时间' }}</div>
             </div>
           </div>
           <div class="contribution-content">
-            <div class="content-text">
-              xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-              xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-              xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-              xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-              xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-              xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-            </div>
-            <div class="image-grid">
-              <div class="grid-image"></div>
-              <div class="grid-image"></div>
-              <div class="grid-image"></div>
-              <div class="grid-image"></div>
+            <div class="content-text">{{ item.content }}</div>
+            <div class="image-grid" v-if="item.wellbeingImg">
+              <div class="grid-image" v-for="(media, index) in getMediaList(item.wellbeingImg)" :key="index">
+                <img :src="media" alt="图片" style="width: 100%; height: 100%; object-fit: cover; border-radius: 4px;" />
+              </div>
             </div>
             <div class="contribution-footer">
-              <div class="publish-time">00天前发布</div>
-              <div class="view-count">浏览总人数: 000000</div>
+              <div class="publish-time">{{ item.createDtFormat || '未知时间' }}发布</div>
+              <div class="view-count">浏览总人数: {{ item.browse || 0 }}</div>
             </div>
           </div>
         </div>
-
-        <!-- 投稿项 2 -->
-        <div class="contribution-item">
-          <div class="contributor-info">
-            <div class="avatar"></div>
-            <div class="contributor-details">
-              <div class="name">姓名</div>
-              <div class="time">0天前</div>
-            </div>
-          </div>
-          <div class="contribution-content">
-            <div class="content-text">
-              xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-              xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-              xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-              xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-              xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-              xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-            </div>
-            <div class="image-grid">
-              <div class="grid-image"></div>
-              <div class="grid-image"></div>
-              <div class="grid-image"></div>
-              <div class="grid-image"></div>
-            </div>
-            <div class="contribution-footer">
-              <div class="publish-time">00天前发布</div>
-              <div class="view-count">浏览总人数: 000000</div>
-            </div>
-          </div>
+        
+        <!-- 加载更多 -->
+        <div v-if="loading" class="loading-more">
+          加载中...
+        </div>
+        <div v-if="!hasMore && contributions.length > 0" class="no-more">
+          没有更多了
+        </div>
+        <div v-if="contributions.length === 0 && !loading" class="no-data">
+          暂无投稿数据
         </div>
       </div>
     </div>
@@ -104,9 +77,25 @@
 </template>
 
 <script setup>
+import { ref, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { getWellbeingArticle, getWellbeingPage } from '@/api/assets'
 
 const router = useRouter()
+
+// 文章数据
+const article = ref({
+  title: '',
+  content: '',
+  coverImg: ''
+})
+
+// 投稿列表数据
+const contributions = ref([])
+const pageNum = ref(1)
+const pageSize = ref(10)
+const hasMore = ref(true)
+const loading = ref(false)
 
 const goBack = () => {
   router.back()
@@ -119,6 +108,96 @@ const goToContribute = () => {
 const goToMyContributions = () => {
   router.push('/my-contributions')
 }
+
+// 获取媒体列表
+const getMediaList = (wellbeingImg) => {
+  if (!wellbeingImg) return []
+  
+  // 分割字符串，获取所有文件
+  const mediaList = wellbeingImg.split(',')
+  
+  // 检查每个文件是否是视频文件
+  const videoExtensions = ['.mp4', '.avi', '.mov', '.wmv', '.flv', '.mkv']
+  
+  return mediaList.map(media => {
+    const isVideo = videoExtensions.some(ext => media.toLowerCase().includes(ext))
+    if (isVideo) {
+      // 如果是视频，返回 logo 图片
+      return '/logo主图形.png'
+    } else {
+      // 如果是图片，返回完整路径
+      return media
+    }
+  })
+}
+
+// 获取文章数据
+onMounted(async () => {
+  try {
+    const res = await getWellbeingArticle()
+    if (res.code === 200 && res.data?.wellbeingArticle) {
+      article.value = {
+        title: res.data.wellbeingArticle.title || article.value.title,
+        content: res.data.wellbeingArticle.content || article.value.content,
+        coverImg: res.data.wellbeingArticle.coverImg || ''
+      }
+    }
+  } catch (error) {
+    console.error('获取文章失败:', error)
+  }
+  
+  // 加载投稿列表
+  await loadContributions()
+})
+
+// 加载投稿列表
+const loadContributions = async () => {
+  if (loading.value || !hasMore.value) return
+  
+  loading.value = true
+  try {
+    const res = await getWellbeingPage({
+      pageNum: pageNum.value,
+      pageSize: pageSize.value
+    })
+    
+    if (res.code === 200) {
+      if (pageNum.value === 1) {
+        contributions.value = res.data.records
+      } else {
+        contributions.value = [...contributions.value, ...res.data.records]
+      }
+      
+      hasMore.value = contributions.value.length < res.data.total
+      pageNum.value++
+    }
+  } catch (error) {
+    console.error('获取投稿列表失败:', error)
+  } finally {
+    loading.value = false
+  }
+}
+
+// 滚动加载更多
+const onScroll = () => {
+  const scrollTop = document.documentElement.scrollTop || document.body.scrollTop
+  const scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight
+  const clientHeight = document.documentElement.clientHeight || window.innerHeight
+  
+  if (scrollTop + clientHeight >= scrollHeight - 100 && hasMore.value && !loading.value) {
+    loadContributions()
+  }
+}
+
+// 添加滚动事件监听器
+onMounted(() => {
+  window.addEventListener('scroll', onScroll)
+})
+
+// 清理滚动事件监听器
+onUnmounted(() => {
+  window.removeEventListener('scroll', onScroll)
+})
 </script>
 
 <style scoped>
@@ -307,5 +386,26 @@ const goToMyContributions = () => {
   align-items: center;
   font-size: 12px;
   color: #999;
+}
+
+.loading-more {
+  padding: 20px 0;
+  text-align: center;
+  color: #2b7afb;
+  font-size: 14px;
+}
+
+.no-more {
+  padding: 20px 0;
+  text-align: center;
+  color: #999;
+  font-size: 14px;
+}
+
+.no-data {
+  padding: 40px 0;
+  text-align: center;
+  color: #999;
+  font-size: 14px;
 }
 </style>

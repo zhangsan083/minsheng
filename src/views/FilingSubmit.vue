@@ -128,42 +128,44 @@
     />
     
     <!-- 资产范围搜索选择器 -->
-    <van-popup v-model:show="showAssetPicker" position="bottom" :style="{ height: '60%' }">
-      <div class="picker-header">
-        <div class="header-title">项目未下发资产选择</div>
-      </div>
-      <div class="search-container">
-        <van-field
-          v-model="assetSearchText"
-          placeholder="搜索选项"
-          @input="filterAssets"
-          clearable
-          @change="filterAssets"
-        />
-      </div>
-      <div class="picker-content">
-        <div
-          v-for="(item, index) in filteredAssets"
-          :key="item.value"
-          class="picker-item"
-          :class="{ active: selectedAsset === item.value }"
-          @click="selectedAsset = item.value"
-        >
-          {{ item.text }}
+    <van-popup v-model:show="showAssetPicker" position="bottom" :style="{ height: '60%' }" class="asset-picker-popup">
+      <div class="picker-wrapper">
+        <div class="picker-header">
+          <div class="header-title">项目未下发资产选择</div>
         </div>
-        <div v-if="filteredAssets.length === 0" class="no-result">
-          无搜索结果
+        <div class="search-container">
+          <van-field
+            v-model="assetSearchText"
+            placeholder="搜索选项"
+            @input="filterAssets"
+            clearable
+            @change="filterAssets"
+          />
         </div>
-      </div>
-      <div class="picker-footer">
-        <van-button 
-          block 
-          type="primary" 
-          round 
-          @click="confirmAssetSelection"
-        >
-          确认选择
-        </van-button>
+        <div class="picker-content">
+          <div
+            v-for="(item, index) in filteredAssets"
+            :key="item.value"
+            class="picker-item"
+            :class="{ active: selectedAsset === item.value }"
+            @click="selectedAsset = item.value"
+          >
+            {{ item.text }}
+          </div>
+          <div v-if="filteredAssets.length === 0" class="no-result">
+            无搜索结果
+          </div>
+        </div>
+        <div class="picker-footer">
+          <van-button 
+            block 
+            type="primary" 
+            round 
+            @click="confirmAssetSelection"
+          >
+            确认选择
+          </van-button>
+        </div>
       </div>
     </van-popup>
   </div>
@@ -597,9 +599,20 @@ onMounted(async () => {
 }
 
 .picker-content {
-  height: calc(100% - 200px);
+  flex: 1;
   overflow-y: auto;
   background-color: #fff;
+}
+
+.asset-picker-popup {
+  display: flex;
+  flex-direction: column;
+}
+
+.picker-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .picker-item {

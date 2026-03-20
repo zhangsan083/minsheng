@@ -137,3 +137,23 @@ export function getClaimList() {
 export function getProjectPage(params) {
   return request.get('/asset/filing/project/page', { params })
 }
+
+// 获取福祉文章
+export function getWellbeingArticle() {
+  return request.get('/asset/wellbeing')
+}
+
+// 获取投稿列表
+export function getWellbeingPage(params) {
+  return request.get('/asset/wellbeing/page', { params })
+}
+
+// 提交投稿
+export function addWellbeingApply(data) {
+  return request.post('/asset/wellbeing/apply/add', data)
+}
+
+// 获取我的投稿列表
+export function getMyWellbeingPage(params) {
+  return request.get('/asset/wellbeing/my/page', { params })
+}

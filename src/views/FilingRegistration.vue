@@ -280,7 +280,7 @@ const loadProjects = async (isHot = false, isSearch = false) => {
   loading.value = true
   try {
     const res = await getProjectPage({
-      page: isSearch ? 1 : projectPage.value,
+      pageNum: isSearch ? 1 : projectPage.value,
       pageSize: projectPageSize.value,
       isHot: isHot ? 1 : 0,
       projectName: projectSearchText.value
