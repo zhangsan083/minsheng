@@ -309,6 +309,23 @@ const routes = [
         component: () => import('@/views/BenefitSubsidy.vue'),
         meta: { requiresAuth: true }
       },
+      {        path: 'national-welfare',
+        name: 'national-welfare',
+        component: () => import('@/views/NationalWelfare.vue'),
+        meta: { requiresAuth: true }
+      },
+      {
+        path: 'contribute',
+        name: 'contribute',
+        component: () => import('@/views/Contribute.vue'),
+        meta: { requiresAuth: true }
+      },
+      {
+        path: 'my-contributions',
+        name: 'my-contributions',
+        component: () => import('@/views/MyContributions.vue'),
+        meta: { requiresAuth: true }
+      },
       {
         path: 'fund-details',
         name: 'fund-details',

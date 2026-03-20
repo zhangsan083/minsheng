@@ -11,7 +11,7 @@
     </div>
 
     <div class="content">
-      <div class="image-card project-name-card">
+      <!-- <div class="image-card project-name-card">
         <h3 class="project-name-text">中国梦项目名称</h3>
         <div class="card-content-wrapper">
           <div class="card-image-left"></div>
@@ -19,9 +19,9 @@
             中国梦项目简介中国梦项目简介中国梦项目简介中国梦项目简介中国梦项目简介中国梦项目简介中国梦项目简介中国梦项目简介中国梦项目简介中国梦项目简介中国梦项目简介中国梦项目简介中国梦项目简介中国梦项目简介中国梦项目简介
           </p>
         </div>
-      </div>
+      </div> -->
       
-      <div class="image-card national-project-card">
+      <!-- <div class="image-card national-project-card">
         <div class="card-header">
           <div class="card-title">国家级项目</div>
         </div>
@@ -51,16 +51,42 @@
             内容明细内容明细内容明细内容明细内容明细内容明细内容明细
           </p>
         </div>
-      </div>
+      </div> -->
       
       <div class="section-title">
-        <van-icon name="orders-o" color="#2b7afb" size="20" />
+        <img src="@/assets/资产/标题前缀.png" alt="标题前缀" style="width: 20px; height: 20px; filter: brightness(0) invert(1);" />
         <span class="text">申请资料</span>
       </div>
       <div class="form-card">
         <div class="form-item">
           <div class="form-label">中国梦项目名称：</div>
           <div class="form-value">{{ projectName }}</div>
+        </div>
+
+        <div class="form-item">
+          <div class="form-label">姓名：</div>
+          <div class="form-value">{{ userStore.userInfo?.realName || '未获取' }}</div>
+        </div>
+
+        <div class="form-item">
+          <div class="form-label">身份证号：</div>
+          <div class="form-value">{{ userStore.userInfo?.idNumber || '未获取' }}</div>
+        </div>
+
+        <div class="form-item">
+          <div class="form-label">手机号：</div>
+          <div class="form-value">
+            <van-field
+              v-model="phone"
+              type="tel"
+              inputmode="numeric"
+              pattern="[0-9]*"
+              placeholder="请输入手机号"
+              :maxlength="11"
+              style="width: 100%;"
+              @input="handlePhoneInput"
+            />
+          </div>
         </div>
 
         <div class="form-item" @click="showCalendar = true">
@@ -83,7 +109,7 @@
           type="primary" 
           class="submit-btn"
           @click="handleSubmit"
-          :disabled="!date || !asset"
+          :disabled="!date || !asset || !phone"
         >
           提交审核
         </van-button>
@@ -158,6 +184,7 @@ const userStore = useUserStore()
 const projectName = ref(route.query.project || '')
 const date = ref('')
 const asset = ref('')
+const phone = ref('')
 
 const showCalendar = ref(false)
 const showAssetPicker = ref(false)
@@ -206,8 +233,13 @@ const confirmAssetSelection = () => {
   showAssetPicker.value = false
 }
 
+const handlePhoneInput = (event) => {
+  // 只保留数字
+  phone.value = event.target.value.replace(/\D/g, '')
+}
+
 const handleSubmit = async () => {
-  if (!date.value || !asset.value) {
+  if (!date.value || !asset.value || !phone.value) {
     showToast('请填写完整信息')
     return
   }
@@ -219,7 +251,8 @@ const handleSubmit = async () => {
     const params = {
       amountScope: amountScope,
       participateDt: date.value,
-      projectName: projectName.value
+      projectName: projectName.value,
+      phone: phone.value
     }
     
     const res = await addAssetFiling(params)
@@ -240,10 +273,10 @@ const handleSubmit = async () => {
   }
 }
 
-onMounted(() => {
+onMounted(async () => {
   // 确保用户信息已加载
   if (!userStore.userInfo) {
-    userStore.refreshUserInfo()
+    await userStore.refreshUserInfo()
   }
 })
 </script>
@@ -290,6 +323,8 @@ onMounted(() => {
   line-height: 1.5;
   text-align: justify;
   margin:18px 18px 0px 18px;
+  word-break: break-all;
+  overflow-wrap: break-word;
 }
 
 .project-name-card {
@@ -318,6 +353,8 @@ onMounted(() => {
   margin: 0;
   padding: 0;
   display: block;
+  word-break: break-all;
+  overflow-wrap: break-word;
 }
 
 
@@ -509,7 +546,8 @@ onMounted(() => {
   margin-bottom: 12px;
   font-weight: bold;
   font-size: var(--font-size-base);
-  color: #333;
+  /* color: #333; */
+  color: white;
 }
 
 .section-title .text {
