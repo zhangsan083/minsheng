@@ -48,7 +48,7 @@ const loadDetail = async id => {
         return match.replace(/width:[^;]*;?/g, '')
       })
       content.value = processedContent
-      time.value = res.data.createDt || ''
+      time.value = res.data.publishDt || ''
     } else {
       showToast(res.msg || '获取资讯详情失败')
     }

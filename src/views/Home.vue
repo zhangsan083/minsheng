@@ -304,8 +304,8 @@ const newsList = computed(() => {
   return homeData.value.newsList.map(item => ({
     id: item.id,
     title: item.title,
-    time: item.createDt || item.time,
-    thumb: item.coverImg || item.thumb,
+    time: item.publishDt || '',
+    thumb: item.coverImg || '',
     content: item.content || ''
   }))
 })

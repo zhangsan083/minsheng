@@ -76,8 +76,8 @@ const onLoad = async () => {
       const mapped = rows.map(item => ({
         id: item.id,
         title: item.title,
-        time: item.createDt || item.time,
-        thumb: normalizeUrl(item.coverImg || item.thumb),
+        time: item.publishDt || '',
+        thumb: normalizeUrl(item.coverImg),
         content: item.content || ''
       }))
       list.value.push(...mapped)
