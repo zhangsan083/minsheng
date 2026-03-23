@@ -327,6 +327,12 @@ const routes = [
         meta: { requiresAuth: true }
       },
       {
+        path: 'team-plan',
+        name: 'team-plan',
+        component: () => import('@/views/TeamPlan.vue'),
+        meta: { requiresAuth: true }
+      },
+      {
         path: 'fund-details',
         name: 'fund-details',
         component: () => import('@/views/FundDetails.vue'),

@@ -121,7 +121,7 @@
 
       <!-- 团队长合作计划 -->
       <section class="team-plan">
-        <div class="team-plan__header">
+        <div class="team-plan__header" @click="goTeamPlan">
           <img src="@/assets/首页/首页-团队长合作计划.png" class="team-plan__header-img" alt="团队长合作计划" />
         </div>
         <div class="team-plan__btns">
@@ -417,6 +417,12 @@ const goTeamRanking = () => {
 const goNationalWelfare = () => {
   if (checkLogin()) {
     router.push({ name: 'national-welfare' })
+  }
+}
+
+const goTeamPlan = () => {
+  if (checkLogin()) {
+    router.push({ name: 'team-plan' })
   }
 }
 

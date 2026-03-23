@@ -44,7 +44,7 @@
             </div>
             <div class="contributor-details">
               <div class="name">{{ item.realName || '匿名' }}</div>
-              <div class="time">{{ item.createDtFormat || '未知时间' }}</div>
+              <div class="time">{{ item.publishDt || '未知时间' }}</div>
             </div>
           </div>
           <div class="contribution-content">
@@ -55,7 +55,7 @@
               </div>
             </div>
             <div class="contribution-footer">
-              <div class="publish-time">{{ item.createDtFormat || '未知时间' }}发布</div>
+              <div class="publish-time">{{ item.publishDt || '未知时间' }}发布</div>
               <div class="view-count">浏览总人数: {{ item.browse || 0 }}</div>
             </div>
           </div>
