@@ -184,7 +184,7 @@ const onScroll = () => {
   const scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight
   const clientHeight = document.documentElement.clientHeight || window.innerHeight
   
-  if (scrollTop + clientHeight >= scrollHeight - 100 && hasMore.value && !loading.value) {
+  if (contributions.value.length > 0 && scrollTop + clientHeight >= scrollHeight - 100 && hasMore.value && !loading.value) {
     loadContributions()
   }
 }
