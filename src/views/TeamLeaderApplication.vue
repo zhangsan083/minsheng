@@ -77,10 +77,16 @@
 
           <!-- 身份证上传 -->
           <div class="id-card-upload">
-            <div class="upload-box">
-              <div class="upload-icon">+</div>
-              <div class="upload-text">点击上传身份证</div>
-            </div>
+            <van-uploader
+              v-model="idCardFileList"
+              multiple
+              :after-read="afterReadIdCard"
+            >
+              <div class="upload-box">
+                <div class="upload-icon">+</div>
+                <div class="upload-text">点击上传身份证</div>
+              </div>
+            </van-uploader>
           </div>
 
           <!-- 个人签名和公章 -->
@@ -88,7 +94,10 @@
             <!-- 个人签名 -->
             <div class="signature-box" @click="openSignaturePopup">
               <div class="signature-label">(个人签名)</div>
-              <div class="signature-area">点击签名</div>
+              <div class="signature-display">
+                <img v-if="signatureImageUrl" :src="signatureImageUrl" class="signature-img" alt="签名" />
+                <span v-else class="signature-placeholder">点击签名</span>
+              </div>
             </div>
 
             <!-- 公章 -->
@@ -109,10 +118,24 @@
       <van-popup v-model:show="signaturePopup" position="bottom" round style="height: 65%;">
         <div class="signature-popup-content">
           <div class="signature-popup-title">我的签名</div>
-          <div class="signature-area1">
-            <div class="signature-hint">手写签名</div>
+          <div class="signature-canvas-container">
+            <canvas
+              ref="canvasRef"
+              class="signature-canvas"
+              @mousedown="startDrawing"
+              @mousemove="draw"
+              @mouseup="stopDrawing"
+              @mouseleave="stopDrawing"
+              @touchstart="startDrawing"
+              @touchmove="draw"
+              @touchend="stopDrawing"
+            ></canvas>
+            <div v-if="!hasSignature" class="signature-hint">手写签名</div>
           </div>
-          <button class="complete-btn" @click="completeSignature">完成签署</button>
+          <div class="signature-actions">
+            <button class="clear-btn" @click="clearSignature">清除</button>
+            <button class="complete-btn" @click="completeSignature">完成签署</button>
+          </div>
         </div>
       </van-popup>
     </div>
@@ -120,9 +143,10 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
-import { NavBar, Popup } from 'vant'
+import { NavBar, Popup, showToast } from 'vant'
+import { uploadFile } from '@/api/assets'
 
 const router = useRouter()
 
@@ -136,17 +160,161 @@ const form = ref({
 
 // 签名弹窗
 const signaturePopup = ref(false)
+const canvasRef = ref(null)
+const isDrawing = ref(false)
+const hasSignature = ref(false)
 
 // 打开签名弹窗
 const openSignaturePopup = () => {
   signaturePopup.value = true
 }
 
-// 完成签名
-const completeSignature = () => {
-  signaturePopup.value = false
-  // 这里可以添加签名保存逻辑
+// 初始化Canvas
+const initCanvas = () => {
+  if (!canvasRef.value) return
+  
+  const canvas = canvasRef.value
+  const ctx = canvas.getContext('2d')
+  
+  // 设置画布大小
+  const rect = canvas.parentElement.getBoundingClientRect()
+  canvas.width = rect.width
+  canvas.height = rect.height
+  
+  // 设置画笔样式
+  ctx.strokeStyle = '#000'
+  ctx.lineWidth = 2
+  ctx.lineCap = 'round'
+  ctx.lineJoin = 'round'
 }
+
+// 开始签名
+const startDrawing = (e) => {
+  isDrawing.value = true
+  const canvas = canvasRef.value
+  const ctx = canvas.getContext('2d')
+  const rect = canvas.getBoundingClientRect()
+  
+  const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left
+  const y = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top
+  
+  ctx.beginPath()
+  ctx.moveTo(x, y)
+}
+
+// 签名中
+const draw = (e) => {
+  if (!isDrawing.value) return
+  e.preventDefault()
+  
+  const canvas = canvasRef.value
+  const ctx = canvas.getContext('2d')
+  const rect = canvas.getBoundingClientRect()
+  
+  const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left
+  const y = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top
+  
+  ctx.lineTo(x, y)
+  ctx.stroke()
+  hasSignature.value = true
+}
+
+// 结束签名
+const stopDrawing = () => {
+  isDrawing.value = false
+  const canvas = canvasRef.value
+  const ctx = canvas.getContext('2d')
+  ctx.closePath()
+}
+
+// 清除签名
+const clearSignature = () => {
+  if (!canvasRef.value) return
+  const canvas = canvasRef.value
+  const ctx = canvas.getContext('2d')
+  ctx.clearRect(0, 0, canvas.width, canvas.height)
+  hasSignature.value = false
+}
+
+// 签名图片URL
+const signatureImageUrl = ref('')
+
+// 身份证文件列表
+const idCardFileList = ref([])
+
+// 身份证上传后的URL
+const idCardImageUrl = ref('')
+
+// 身份证上传处理
+const afterReadIdCard = async (file) => {
+  file.status = 'uploading'
+  file.message = '上传中...'
+
+  try {
+    const res = await uploadFile(file.file)
+    if (res && res.code === 200) {
+      file.status = 'done'
+      file.message = '上传成功'
+      idCardImageUrl.value = res.url
+      showToast('身份证上传成功')
+    } else {
+      file.status = 'failed'
+      file.message = '上传失败'
+      showToast(res?.msg || '上传失败')
+    }
+  } catch (error) {
+    console.error(error)
+    file.status = 'failed'
+    file.message = '上传失败'
+    showToast('上传出错')
+  }
+}
+
+// 完成签名
+const completeSignature = async () => {
+  if (!hasSignature.value) {
+    showToast('请先进行签名')
+    return
+  }
+  
+  // 获取签名图片数据
+  const canvas = canvasRef.value
+  
+  // 将Canvas转换为Blob
+  canvas.toBlob(async (blob) => {
+    if (!blob) {
+      showToast('签名转换失败')
+      return
+    }
+    
+    // 创建File对象
+    const file = new File([blob], 'signature.png', { type: 'image/png' })
+    
+    try {
+      showToast('上传中...')
+      const res = await uploadFile(file)
+      if (res && res.code === 200) {
+        signatureImageUrl.value = res.url
+        showToast('签名上传成功')
+        signaturePopup.value = false
+      } else {
+        showToast(res?.msg || '上传失败')
+      }
+    } catch (error) {
+      console.error('上传失败:', error)
+      showToast('上传失败')
+    }
+  }, 'image/png')
+}
+
+// 监听弹窗打开，初始化Canvas
+watch(signaturePopup, (newVal) => {
+  if (newVal) {
+    setTimeout(() => {
+      initCanvas()
+    }, 100)
+  }
+})
 
 // 返回上一页
 const goBack = () => {
@@ -275,8 +443,8 @@ const goBack = () => {
 }
 
 .upload-box {
-  width: 100%;
-  height: 150px;
+  width: 283px;
+  height: 200px;
   border: 2px dashed #0066ff;
   border-radius: 8px;
   display: flex;
@@ -284,6 +452,31 @@ const goBack = () => {
   align-items: center;
   justify-content: center;
   cursor: pointer;
+}
+
+/* Vant Uploader 样式调整 */
+.id-card-upload :deep(.van-uploader) {
+  width: 100%;
+}
+
+.id-card-upload :deep(.van-uploader__preview) {
+  width: 100%;
+  height: 200px;
+  margin: 0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.id-card-upload :deep(.van-uploader__preview-image) {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.id-card-upload :deep(.van-uploader__upload) {
+  width: 100%;
+  height: 200px;
+  margin: 0;
 }
 
 .upload-icon {
@@ -320,11 +513,31 @@ const goBack = () => {
 .signature-label {
   font-size: 14px;
   color: #666;
-  margin-top: 25px;
+  margin-top: 10px;
   font-weight: bold;
 }
 
 .signature-area {
+  font-size: 14px;
+  color: #999;
+}
+
+.signature-display {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.signature-img {
+  max-width: 90%;
+  max-height: 60px;
+  object-fit: contain;
+}
+
+.signature-placeholder {
   font-size: 14px;
   color: #999;
 }
@@ -405,18 +618,48 @@ const goBack = () => {
   justify-content: center;
   margin-bottom: 20px;
 }
-.signature-area1 {
+.signature-canvas-container {
   flex: 1;
   width: 100%;
   background: #f9f9f9;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  border-radius: 8px;
+  position: relative;
   margin-bottom: 20px;
+  overflow: hidden;
 }
+
+.signature-canvas {
+  width: 100%;
+  height: 100%;
+  cursor: crosshair;
+}
+
 .signature-hint {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   font-size: 16px;
   color: #999;
+  pointer-events: none;
+}
+
+.signature-actions {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.clear-btn {
+  width: 120px;
+  height: 44px;
+  background: #fff;
+  color: #666;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
 }
 
 .complete-btn {
@@ -429,6 +672,5 @@ const goBack = () => {
   font-size: 16px;
   font-weight: bold;
   cursor: pointer;
-  margin-bottom: 20px;
 }
 </style>
