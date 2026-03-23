@@ -103,11 +103,11 @@
 
 
       <!-- 幸运大抽奖 -->
-      <section class="lucky-draw">
+      <!-- <section class="lucky-draw">
         <div class="lucky-draw__container" @click="goLuckyDraw">
           <img src="@/assets/首页/首页-幸运大抽奖.png" class="lucky-draw__img" alt="幸运大抽奖" />
         </div>
-      </section>
+      </section> -->
       <section class="quick-actions">
         <div class="quick-actions__btn quick-actions__btn--subsidy" @click="goSubsidy">
           <img src="@\assets\首页\惠民补贴金.png" class="quick-actions__icon" alt="惠民补贴金" />
