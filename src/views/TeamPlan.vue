@@ -55,21 +55,37 @@
       <!-- 收益统计 -->
       <div class="earnings-section">
         <div class="earnings-header">
-          <div class="earnings-title">我的推荐总收益</div>
-          <div class="earnings-amount">000000</div>
+          <span class="earnings-title">我的推荐总收益：</span>
+          <div class="earnings-amount">
+            <span class="digit">0</span>
+            <span class="digit">0</span>
+            <span class="digit">0</span>
+            <span class="digit">0</span>
+            <span class="digit">0</span>
+            <span class="digit">0</span>
+          </div>
         </div>
         <div class="team-stats">
           <div class="stat-item">
             <div class="stat-title">我的团队等级</div>
-            <div class="stat-value">00</div>
+            <div class="stat-value">
+              <span class="digit">0</span>
+              <span class="digit">0</span>
+            </div>
           </div>
           <div class="stat-item">
             <div class="stat-title">当前直属激活成员</div>
-            <div class="stat-value">00</div>
+            <div class="stat-value">
+              <span class="digit">0</span>
+              <span class="digit">0</span>
+            </div>
           </div>
           <div class="stat-item">
             <div class="stat-title">本月新增团队激活</div>
-            <div class="stat-value">00</div>
+            <div class="stat-value">
+              <span class="digit">0</span>
+              <span class="digit">0</span>
+            </div>
           </div>
         </div>
         <div class="salary-btn">领取团队长工资</div>
@@ -444,53 +460,72 @@ onMounted(() => {
 /* 收益统计 */
 .earnings-section {
   background: white;
-  border-radius: 12px;
-  padding: 20px;
+  border: 1px solid #0066ff;
+  border-radius: 8px;
+  padding: 16px;
   margin-bottom: 16px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .earnings-header {
-  text-align: center;
-  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  padding: 8px 8px;
+  background: #e6f0ff;
+  border-radius: 6px;
 }
 
 .earnings-title {
-  font-size: var(--font-size-base);
-  color: #666;
-  margin-bottom: 8px;
+  font-size: var(--font-size-small);
+  color: #0066ff;
+  font-weight: 500;
 }
 
 .earnings-amount {
-  font-size: 24px;
+  display: flex;
+  gap: 4px;
+}
+
+.digit {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  background: #0066ff;
+  color: white;
+  text-align: center;
+  line-height: 24px;
+  border-radius: 4px;
+  font-size: var(--font-size-base);
   font-weight: bold;
-  color: var(--blue-gradient);
 }
 
 .team-stats {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-  margin-bottom: 20px;
+  gap: 12px;
+  margin-bottom: 16px;
 }
 
 .stat-item {
   text-align: center;
   padding: 12px;
-  background: #f5f7fa;
-  border-radius: 8px;
+  background: #e6f0ff;
+  border-radius: 6px;
 }
 
 .stat-title {
-  font-size: var(--font-size-xs);
-  color: #666;
-  margin-bottom: 4px;
+  font-size: var(--font-size-small);
+  color: #0066ff;
+  margin-bottom: 8px;
+  font-weight: 500;
 }
 
 .stat-value {
-  font-size: 18px;
-  font-weight: bold;
-  color: #333;
+  display: flex;
+  justify-content: center;
+  gap: 4px;
 }
 
 .salary-btn {
@@ -498,10 +533,12 @@ onMounted(() => {
   padding: 12px;
   background: #666;
   color: white;
-  border-radius: 24px;
+  border-radius: 6px;
   text-align: center;
   font-size: var(--font-size-base);
   font-weight: 500;
+  cursor: pointer;
+  margin-top: 8px;
 }
 
 /* 团队工具 */
