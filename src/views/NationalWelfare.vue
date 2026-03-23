@@ -50,8 +50,8 @@
           <div class="contribution-content">
             <div class="content-text">{{ item.content }}</div>
             <div class="image-grid" v-if="item.wellbeingImg">
-              <div class="grid-image" v-for="(media, index) in getMediaList(item.wellbeingImg)" :key="index">
-                <img :src="media" alt="图片" style="width: 100%; height: 100%; object-fit: cover; border-radius: 4px;" />
+              <div class="grid-image" v-for="(media, index) in getMediaList(item.wellbeingImg)" :key="index" @click="openImageViewer(item, index)">
+                <img :src="media" alt="图片" style="width: 100%; height: 100%; object-fit: cover; border-radius: 4px; cursor: pointer;" />
               </div>
             </div>
             <div class="contribution-footer">
@@ -73,6 +73,34 @@
         </div>
       </div>
     </div>
+
+    <!-- 图片查看器弹框 -->
+    <van-popup v-model:show="imageViewer.show" position="center" :round="true" class="image-viewer-popup" overlay-class="image-viewer-overlay">
+      <div class="image-viewer-container">
+        <div class="image-viewer-header">
+          <span class="image-counter">{{ imageViewer.currentIndex + 1 }} / {{ imageViewer.images.length }}</span>
+          <div class="close-icon" @click="imageViewer.show = false">×</div>
+        </div>
+        <div class="image-viewer-content">
+          <img :src="imageViewer.images[imageViewer.currentIndex]" alt="查看图片" />
+          <div class="image-viewer-controls" v-if="imageViewer.images.length > 1">
+            <div class="control-icon left" @click="prevImage">‹</div>
+            <div class="control-icon right" @click="nextImage">›</div>
+          </div>
+        </div>
+        <div class="image-viewer-footer">
+          <div class="contributor-info">
+            <div class="avatar">
+              <img :src="imageViewer.currentContribution?.avatar || '/logo主图形.png'" alt="头像" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;" />
+            </div>
+            <div class="contributor-details">
+              <div class="popname">{{ imageViewer.currentContribution?.realName || '匿名' }}</div>
+              <div class="content-preview">{{ imageViewer.currentContribution?.content || '' }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </van-popup>
   </div>
 </template>
 
@@ -80,6 +108,7 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { getWellbeingArticle, getWellbeingPage } from '@/api/assets'
+import { Icon } from 'vant'
 
 const router = useRouter()
 
@@ -97,6 +126,14 @@ const pageSize = ref(10)
 const hasMore = ref(true)
 const loading = ref(false)
 
+// 图片查看器状态
+const imageViewer = ref({
+  show: false,
+  images: [],
+  currentIndex: 0,
+  currentContribution: null
+})
+
 const goBack = () => {
   router.back()
 }
@@ -107,6 +144,30 @@ const goToContribute = () => {
 
 const goToMyContributions = () => {
   router.push('/my-contributions')
+}
+
+// 打开图片查看器
+const openImageViewer = (contribution, index) => {
+  imageViewer.value = {
+    show: true,
+    images: getMediaList(contribution.wellbeingImg),
+    currentIndex: index,
+    currentContribution: contribution
+  }
+}
+
+// 切换到上一张图片
+const prevImage = () => {
+  if (imageViewer.value.currentIndex > 0) {
+    imageViewer.value.currentIndex--
+  }
+}
+
+// 切换到下一张图片
+const nextImage = () => {
+  if (imageViewer.value.currentIndex < imageViewer.value.images.length - 1) {
+    imageViewer.value.currentIndex++
+  }
 }
 
 // 获取媒体列表
@@ -347,6 +408,12 @@ onUnmounted(() => {
   color: #333;
   margin-bottom: 4px;
 }
+.popname {
+  font-size: 16px;
+  font-weight: 500;
+  color: white;
+  margin-bottom: 4px;
+}
 
 .time {
   font-size: 12px;
@@ -407,5 +474,130 @@ onUnmounted(() => {
   text-align: center;
   color: #999;
   font-size: 14px;
+}
+
+/* 图片查看器样式 */
+.image-viewer-overlay {
+  background: rgba(0, 0, 0, 0.5) !important;
+}
+
+.image-viewer-popup {
+  width: 95%;
+  max-width: 95vw;
+  max-height: 90vh;
+  background: rgba(0, 0, 0, 0.5) !important;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.image-viewer-container {
+  position: relative;
+  padding: 12px;
+  border-radius: 12px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.image-viewer-content {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 12px;
+  min-height: 400px;
+  max-height: none;
+  position: relative;
+  width: 100%;
+}
+
+.image-viewer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.image-counter {
+  font-size: 14px;
+  color: white;
+}
+
+.close-icon {
+  font-size: 28px;
+  color: white;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.image-viewer-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 16px;
+  min-height: 400px;
+  max-height: 70vh;
+  position: relative;
+  width: 100%;
+}
+
+.image-viewer-content img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  max-width: none !important;
+  max-height: none !important;
+}
+
+.image-viewer-footer {
+  border-top: 1px solid #f0f0f0;
+  padding-top: 12px;
+  min-height: 80px;
+}
+
+.content-preview {
+  font-size: 14px;
+  color: white;
+  margin-top: 4px;
+  line-height: 1.4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.image-viewer-controls {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  transform: translateY(-50%);
+  display: flex;
+  justify-content: space-between;
+  padding: 0 10px;
+  z-index: 10;
+}
+
+.control-icon {
+  font-size: 32px;
+  color: rgba(255, 255, 255, 0.8);
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.control-icon.left {
+  margin-left: -5px;
+}
+
+.control-icon.right {
+  margin-right: -5px;
 }
 </style>

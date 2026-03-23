@@ -1,0 +1,1 @@
+System.register(["./index-legacy-DL3g1xrK.js"],function(e,t){"use strict";var n;return{setters:[function(e){n=e.i}],execute:function(){e({a:function(e){return n.get("/consumer/team/data",{params:e})},b:function(e){return n.get("/consumer/team/memberPage",{params:e})},g:function(){return n.get("/consumer/team")}})}}});
