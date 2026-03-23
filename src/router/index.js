@@ -333,6 +333,12 @@ const routes = [
         meta: { requiresAuth: true }
       },
       {
+        path: 'team-leader-application',
+        name: 'team-leader-application',
+        component: () => import('@/views/TeamLeaderApplication.vue'),
+        meta: { requiresAuth: true }
+      },
+      {
         path: 'fund-details',
         name: 'fund-details',
         component: () => import('@/views/FundDetails.vue'),

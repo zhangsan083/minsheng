@@ -48,7 +48,7 @@
             </div>
             <div class="btn-text">成为团队长，获得更多专属权益</div>
           </div>
-          <div class="apply-btn">立即申请</div>
+          <div class="apply-btn" @click="goToApplication">立即申请</div>
         </div>
       </div>
 
@@ -254,13 +254,21 @@ const copyInviteCode = () => {
   })
 }
 
+const goToApplication = () => {
+  try {
+    router.push({ name: 'team-leader-application' })
+  } catch (error) {
+    console.error('Navigation error:', error)
+  }
+}
+
 onMounted(() => {
   // 从用户存储中获取用户信息
   if (userStore.userInfo) {
     userInfo.value = {
       avatar: userStore.userInfo.avatar,
       realName: userStore.userInfo.realName,
-      inviteCode: userStore.userInfo.inviteCode || '000000'
+      inviteCode: userStore.userInfo.invitationCode || '000000'
     }
   }
 })
@@ -366,7 +374,7 @@ onMounted(() => {
 .invite-code .label {
   font-size: var(--font-size-xs);
   color: #666;
-  width:57px;
+  width:60px;
 }
 
 .invite-code .value {
@@ -455,6 +463,7 @@ onMounted(() => {
   font-size: var(--font-size-xs);
   font-weight: 500;
   margin-left: 10px;
+  z-index: 1;
 }
 
 /* 收益统计 */

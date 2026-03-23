@@ -10,6 +10,7 @@ import { copyFileSync, existsSync, mkdirSync } from 'fs'
 
 export default defineConfig({
   base: './',
+  assetsInclude: ['**/*.PNG'],
   plugins: [
     vue(),
     legacy({
