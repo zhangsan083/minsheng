@@ -1,1 +1,0 @@
-import{i as t}from"./index-DAYdJbRN.js";function n(){return t.get("/solution/index")}function o(n){return t.post("/solution/rescueApply/add",n)}function e(n){const o=new FormData;return o.append("file",n),t.post("/common/upload",o,{headers:{"Content-Type":"multipart/form-data"}})}export{n as g,o as r,e as u};

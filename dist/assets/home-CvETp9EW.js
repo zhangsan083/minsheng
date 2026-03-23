@@ -1,1 +1,0 @@
-import{i as e}from"./index-DAYdJbRN.js";function t(){return e.get("/asset/index")}function s(t){return e.get("/asset/news/page",{params:t})}function a(t){return e.get("/asset/news/detail",{params:{id:t}})}function n(){return e.get("/asset/download")}export{s as a,a as b,n as c,t as g};

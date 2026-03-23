@@ -1,1 +1,0 @@
-System.register(["./index-legacy-DL3g1xrK.js"],function(t,e){"use strict";var n;return{setters:[function(t){n=t.i}],execute:function(){t({a:function(){return n.post("/asset/checkin/add")},b:function(t){return n.get("/asset/fundDetails/page",{params:t})},c:function(t){return n.get("/asset/fundDetails",{params:t})},g:function(){return n.get("/asset/checkin")}})}}});
