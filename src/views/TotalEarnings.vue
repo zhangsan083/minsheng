@@ -188,7 +188,7 @@ onMounted(() => {
   left: 0;
   width: 100%;
   height: 100%;
-  background: url('@/assets/团队长合作计划/用户卡片背景.png') no-repeat top center;
+  /* background: url('@/assets/团队长合作计划/用户卡片背景.png') no-repeat top center; */
   background-size: 100% auto;
   opacity: 0.1;
   z-index: 0;
