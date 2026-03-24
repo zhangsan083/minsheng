@@ -93,7 +93,7 @@
 
       <!-- 团队工具 -->
       <div class="team-tools">
-        <div class="tool-item">
+        <div class="tool-item" @click="goToTeamSalary">
           <div class="tool-icon">
             <img src="@/assets/团队长合作计划/团队长合作计划-工资.png" alt="团队工资" />
           </div>
@@ -257,6 +257,14 @@ const copyInviteCode = () => {
 const goToApplication = () => {
   try {
     router.push({ name: 'team-leader-application' })
+  } catch (error) {
+    console.error('Navigation error:', error)
+  }
+}
+
+const goToTeamSalary = () => {
+  try {
+    router.push({ name: 'team-salary' })
   } catch (error) {
     console.error('Navigation error:', error)
   }
