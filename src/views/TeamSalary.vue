@@ -63,64 +63,25 @@
           <span class="header-title">团队工资</span>
         </div>
 
-        <div class="salary-cards">
-          <!-- 一级全民行动大使 -->
-          <div class="salary-card level-1">
-            <div class="card-content">
-              <div class="level-name">一级全民行动大使</div>
-              <div class="salary-info">
-                <div class="info-row">
-                  <span class="info-label">一级团队激活</span>
-                  <span class="info-value">000</span>
-                </div>
-                <div class="info-row">
-                  <span class="info-label">团队每月保底激活</span>
-                  <span class="info-value">000</span>
-                </div>
-                <div class="info-row">
-                  <span class="info-label">每月保底工资</span>
-                  <span class="info-value">000</span>
-                </div>
-              </div>
+        <div class="salary-level-image">
+          <div class="image-container">
+            <img src="@/assets/团队长合作计划/团队工资等级.png" alt="团队工资等级" class="salary-image" />
+            <div class="level-badge">
+              <span class="level-number">1</span>
             </div>
-          </div>
-
-          <!-- 二级全民行动大使 -->
-          <div class="salary-card level-2">
-            <div class="card-content">
-              <div class="level-name">二级全民行动大使</div>
-              <div class="salary-info">
+            <div class="text-overlay">
+              <div class="overlay-title">一级全民行动大使</div>
+              <div class="overlay-content">
                 <div class="info-row">
-                  <span class="info-label">二级团队激活</span>
+                  <span class="info-label">直推人数要求</span>
                   <span class="info-value">000</span>
                 </div>
                 <div class="info-row">
-                  <span class="info-label">团队每月保底激活</span>
+                  <span class="info-label">总实名人数要求</span>
                   <span class="info-value">000</span>
                 </div>
                 <div class="info-row">
-                  <span class="info-label">每月保底工资</span>
-                  <span class="info-value">000</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- 三级全民行动大使 -->
-          <div class="salary-card level-3">
-            <div class="card-content">
-              <div class="level-name">三级全民行动大使</div>
-              <div class="salary-info">
-                <div class="info-row">
-                  <span class="info-label">三级团队激活</span>
-                  <span class="info-value">000</span>
-                </div>
-                <div class="info-row">
-                  <span class="info-label">团队每月保底激活</span>
-                  <span class="info-value">000</span>
-                </div>
-                <div class="info-row">
-                  <span class="info-label">每月保底工资</span>
+                  <span class="info-label">活跃度要求</span>
                   <span class="info-value">000</span>
                 </div>
               </div>
@@ -394,72 +355,86 @@ onMounted(() => {
   color: #333;
 }
 
-.salary-cards {
+.salary-level-image {
+  width: 100%;
   display: flex;
-  gap: 12px;
-  overflow-x: auto;
-  padding-bottom: 8px;
+  justify-content: center;
+  margin: 16px 0;
 }
 
-.salary-card {
-  flex-shrink: 0;
-  width: 320px;
-  height: 200px;
-  border-radius: 12px;
+.image-container {
   position: relative;
-  overflow: hidden;
+  width: 100%;
+  max-width: 400px;
+}
+
+.salary-image {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  display: block;
+}
+
+.level-badge {
+  position: absolute;
+  top: 6px;
+  right: 25px;
+  width: 80px;
+  height: 80px;
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  align-items: center;
+  justify-content: center;
 }
 
-.salary-card.level-1 {
-  background: url('@/assets/团队长合作计划/团队工资-1级.png') no-repeat center;
-  background-size: cover;
-}
-
-.salary-card.level-2 {
-  background: url('@/assets/团队长合作计划/团队工资-2级.png') no-repeat center;
-  background-size: cover;
-}
-
-.salary-card.level-3 {
-  background: url('@/assets/团队长合作计划/团队工资-3级.png') no-repeat center;
-  background-size: cover;
-}
-
-.card-content {
-  padding: 16px;
-  color: white;
-  width:200px;
-}
-
-.level-name {
-  font-size: var(--font-size-small);
+.level-number {
+  font-size: 35px;
   font-weight: bold;
-  margin-bottom: 12px;
-  color: rgb(233, 192, 12);
+  color: #3986f8;
+  text-shadow: 0 2px 4px rgba(255, 255, 255, 0.5);
+  font-family: fantasy;
 }
 
-.salary-info {
+.text-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  justify-content: flex-start;
+}
+
+.overlay-title {
+  font-size: var(--font-size-base);
+  font-weight: bold;
+  color: #ffeb99;
+  margin-bottom: 10px;
+}
+
+.overlay-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
 }
 
 .info-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width:160px;
 }
 
 .info-label {
   font-size: var(--font-size-xs);
-  opacity: 0.9;
+  color: white;
 }
 
 .info-value {
   font-size: var(--font-size-xs);
+  color: white;
   font-weight: bold;
 }
 

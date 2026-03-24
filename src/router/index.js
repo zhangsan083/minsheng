@@ -181,31 +181,31 @@ const routes = [
         path: 'real-name-auth',
         name: 'real-name-auth',
         component: () => import('@/views/RealNameAuth.vue'),
-        meta: { requiresAuth: true, hideTabbar: true }
+        meta: { requiresAuth: true}
       },
       {
         path: 'payment-account',
         name: 'payment-account',
         component: () => import('@/views/PaymentAccount.vue'),
-        meta: { requiresAuth: true, hideTabbar: true }
+        meta: { requiresAuth: true}
       },
       {
         path: 'bind-alipay',
         name: 'bind-alipay',
         component: () => import('@/views/BindAlipay.vue'),
-        meta: { requiresAuth: true, hideTabbar: true }
+        meta: { requiresAuth: true}
       },
       {
         path: 'bind-bank-card',
         name: 'bind-bank-card',
         component: () => import('@/views/BindBankCard.vue'),
-        meta: { requiresAuth: true, hideTabbar: true }
+        meta: { requiresAuth: true}
       },
       {
         path: 'change-password',
         name: 'change-password',
         component: () => import('@/views/ChangePassword.vue'),
-        meta: { requiresAuth: true, hideTabbar: true }
+        meta: { requiresAuth: true}
       },
       {
         path: 'asset-filing',
@@ -235,7 +235,7 @@ const routes = [
         path: 'policy-detail',
         name: 'policy-detail',
         component: () => import('@/views/PolicyDetail.vue'),
-        meta: { requiresAuth: true, hideTabbar: true }
+        meta: { requiresAuth: true}
       },
       {
         path: 'recharge',

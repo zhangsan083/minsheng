@@ -70,7 +70,7 @@
               <span class="value">00</span>
             </div>
             <div class="stat-item">
-              <span class="label">总激活</span>
+              <span class="label">总实名</span>
               <span class="value">00</span>
             </div>
           </div>
@@ -82,7 +82,7 @@
                 <span class="value">00</span>
               </div>
               <div class="today-item">
-                <span class="label">激活</span>
+                <span class="label">实名</span>
                 <span class="value">00</span>
               </div>
             </div>
@@ -104,7 +104,7 @@
               <span class="value">00</span>
             </div>
             <div class="stat-item">
-              <span class="label">总激活</span>
+              <span class="label">总实名</span>
               <span class="value">00</span>
             </div>
           </div>
@@ -116,7 +116,7 @@
                 <span class="value">00</span>
               </div>
               <div class="today-item">
-                <span class="label">激活</span>
+                <span class="label">实名</span>
                 <span class="value">00</span>
               </div>
             </div>
@@ -138,7 +138,7 @@
               <span class="value">00</span>
             </div>
             <div class="stat-item">
-              <span class="label">总激活</span>
+              <span class="label">总实名</span>
               <span class="value">00</span>
             </div>
           </div>
@@ -150,7 +150,7 @@
                 <span class="value">00</span>
               </div>
               <div class="today-item">
-                <span class="label">激活</span>
+                <span class="label">实名</span>
                 <span class="value">00</span>
               </div>
             </div>
@@ -159,7 +159,7 @@
       </div>
 
       <!-- 奖励规则 -->
-      <div class="reward-rules">
+      <!-- <div class="reward-rules">
         <div class="rules-header">
           <span class="header-text">奖励规则</span>
         </div>
@@ -190,7 +190,7 @@
           </div>
         </div>
         <img src="@/assets/我的团队/我的团队$.png" alt="奖金图标" class="money-icon" />
-      </div>
+      </div> -->
     </div>
   </div>
 </template>

@@ -159,7 +159,7 @@ const onClickLeft = () => {
 }
 
 const goService = () => {
-  showToast('联系客服 功能开发中')
+  window.location.href = '/chatlink.html'
 }
 
 const handleSubmit = async () => {
@@ -328,5 +328,8 @@ const handleSubmit = async () => {
   font-weight: bold;
   height: 48px;
   box-shadow: 0 4px 10px rgba(43, 122, 251, 0.3);
+  background:var(--blue-gradient);
+  color:white;
+  
 }
 </style>

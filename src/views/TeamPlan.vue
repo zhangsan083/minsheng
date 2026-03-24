@@ -74,14 +74,14 @@
             </div>
           </div>
           <div class="stat-item">
-            <div class="stat-title">当前直属激活成员</div>
+            <div class="stat-title">当前直属注册数</div>
             <div class="stat-value">
               <span class="digit">0</span>
               <span class="digit">0</span>
             </div>
           </div>
           <div class="stat-item">
-            <div class="stat-title">本月新增团队激活</div>
+            <div class="stat-title">当前直属实名数</div>
             <div class="stat-value">
               <span class="digit">0</span>
               <span class="digit">0</span>
@@ -175,7 +175,7 @@
           </div>
         </div>
 
-        <!-- 当日直属邀请激活奖励 -->
+        <!-- 当日直属邀请激活奖励
           <div class="reward-title">
             <span class="dot"></span>
             当日直属邀请激活奖励
@@ -212,7 +212,7 @@
               <div class="reward-btn disabled">领取</div>
             </div>
           </div>
-        </div>
+        </div> -->
       </div>
 
       <!-- 规则说明 -->

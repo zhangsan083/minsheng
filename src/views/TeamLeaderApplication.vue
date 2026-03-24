@@ -367,7 +367,6 @@ const goBack = () => {
 
 .document-number {
   font-size: 14px;
-  color: #0066ff;
   text-align: right;
   margin-bottom: 15px;
 }
