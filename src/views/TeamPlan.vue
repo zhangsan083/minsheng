@@ -111,9 +111,9 @@
             <div class="tool-name">团队详情</div>
             <div class="tool-desc">查看您的团队成员</div>
           </div>
-          <div class="tool-action">详情</div>
+          <div class="tool-action" @click.stop="goToTeamDetails">详情</div>
         </div>
-        <div class="tool-item">
+        <div class="tool-item" @click="goToTotalEarnings">
           <div class="tool-icon">
             <img src="@/assets/团队长合作计划/团队长合作计划-总收益 .png" alt="推荐总收益" />
           </div>
@@ -121,7 +121,7 @@
             <div class="tool-name">推荐总收益</div>
             <div class="tool-desc">您的全民收益明细</div>
           </div>
-          <div class="tool-action">详情</div>
+          <div class="tool-action" @click.stop="goToTotalEarnings">详情</div>
         </div>
       </div>
 
@@ -265,6 +265,22 @@ const goToApplication = () => {
 const goToTeamSalary = () => {
   try {
     router.push({ name: 'team-salary' })
+  } catch (error) {
+    console.error('Navigation error:', error)
+  }
+}
+
+const goToTeamDetails = () => {
+  try {
+    router.push({ name: 'team-details' })
+  } catch (error) {
+    console.error('Navigation error:', error)
+  }
+}
+
+const goToTotalEarnings = () => {
+  try {
+    router.push({ name: 'total-earnings' })
   } catch (error) {
     console.error('Navigation error:', error)
   }

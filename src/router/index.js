@@ -345,6 +345,24 @@ const routes = [
         meta: { requiresAuth: true }
       },
       {
+        path: 'team-details',
+        name: 'team-details',
+        component: () => import('@/views/TeamDetails.vue'),
+        meta: { requiresAuth: true }
+      },
+      {
+        path: 'total-earnings',
+        name: 'total-earnings',
+        component: () => import('@/views/TotalEarnings.vue'),
+        meta: { requiresAuth: true }
+      },
+      {
+        path: 'team-ranking',
+        name: 'team-ranking',
+        component: () => import('@/views/TeamRanking.vue'),
+        meta: { requiresAuth: true }
+      },
+      {
         path: 'fund-details',
         name: 'fund-details',
         component: () => import('@/views/FundDetails.vue'),
