@@ -121,9 +121,9 @@
 
       <!-- 团队长合作计划 -->
       <section class="team-plan">
-        <div class="team-plan__header" @click="goTeamPlan">
+        <!-- <div class="team-plan__header" @click="goTeamPlan">
           <img src="@/assets/首页/首页-团队长合作计划.png" class="team-plan__header-img" alt="团队长合作计划" />
-        </div>
+        </div> -->
         <div class="team-plan__btns">
           <div class="team-plan__btn" @click="goTeamRanking">
             <div class="team-btn__content">
