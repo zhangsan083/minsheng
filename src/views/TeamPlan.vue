@@ -103,8 +103,8 @@
             </div>
           </div>
         </div>
-        <div class="salary-btn" :class="{ disabled: !isLeader || teamLeaderInfo.teamSalary.receiveStatus === '1' }">
-          {{ teamLeaderInfo.teamSalary.receiveStatus === '1' ? '已领取' : '领取团队长工资' }}
+        <div class="salary-btn" :class="{ disabled: !isLeader || teamLeaderInfo.teamSalary.receiveStatus === '1' || teamLeaderInfo.teamSalary.receiveStatus === '' }" @click="claimSalary">
+          {{ !teamLeaderInfo.teamSalary ? '领取团队长工资' : teamLeaderInfo.teamSalary.receiveStatus === '1' ? '已领取' : '领取团队长工资' }}
         </div>
       </div>
 
@@ -220,7 +220,7 @@ import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import { showToast } from 'vant'
-import { getTeamLeader } from '@/api/teamLeader'
+import { getTeamLeader, claimTeamLeaderSalary } from '@/api/teamLeader'
 
 const router = useRouter()
 const userStore = useUserStore()
@@ -242,7 +242,7 @@ const teamLeaderInfo = ref({
   teamSalary: {
     activeCount: 0,
     level: 0,
-    receiveStatus: '0',
+    receiveStatus: '',
     regCount: 0,
     salary: 0,
     verifiedCount: 0
@@ -352,6 +352,32 @@ const goToTeamSalary = () => {
   }
 }
 
+const claimSalary = async () => {
+  if (!isLeader.value) {
+    return
+  }
+  if (teamLeaderInfo.value.teamSalary.receiveStatus === '1' || teamLeaderInfo.value.teamSalary.receiveStatus === '') {
+    return
+  }
+
+  const payload = {
+    id: teamLeaderInfo.value.teamSalary.id
+  }
+
+  try {
+    const res = await claimTeamLeaderSalary(payload)
+    if (res && (res.code === 0 || res.code === 200)) {
+      showToast('领取成功')
+      await fetchTeamLeaderInfo()
+    } else {
+      showToast(res?.msg || '领取失败')
+    }
+  } catch (error) {
+    console.error('领取团队长工资失败:', error)
+    showToast('领取失败，请稍后重试')
+  }
+}
+
 const goToTeamDetails = () => {
   if (!isLeader.value) {
     showToast('只有成为团队长后才能查看')
@@ -395,7 +421,7 @@ const fetchTeamLeaderInfo = async () => {
       userInfo.value = {
         avatar: res.data.avatar || userInfo.value.avatar,
         realName: res.data.realName || userInfo.value.realName,
-        inviteCode: res.data.invitationCode || userInfo.value.inviteCode || '000000'
+        inviteCode: res.data.invitationCode || userInfo.value.inviteCode || ''
       }
     }
   } catch (error) {
@@ -409,7 +435,7 @@ onMounted(async () => {
     userInfo.value = {
       avatar: userStore.userInfo.avatar,
       realName: userStore.userInfo.realName,
-      inviteCode: userStore.userInfo.invitationCode || '000000'
+      inviteCode: userStore.userInfo.invitationCode || ''
     }
   }
 

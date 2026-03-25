@@ -14,3 +14,8 @@ export function getTeamLeaderApply() {
 export function applyTeamLeader(data) {
   return request.post('/teamLeader/apply/add', data)
 }
+
+// 领取团队长工资
+export function claimTeamLeaderSalary(data) {
+  return request.post('/teamLeader/salary/claim', data)
+}
