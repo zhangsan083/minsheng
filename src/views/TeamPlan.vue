@@ -15,26 +15,29 @@
       <div class="user-card">
         <div class="user-info">
           <div class="avatar">
-            <img :src="userInfo.avatar || '/logo主图形.png'" alt="头像" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;" />
+            <img :src="teamLeaderInfo.avatar || userInfo.avatar || '/logo主图形.png'" alt="头像" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;" />
           </div>
           <div class="info-container">
             <div class="top-row">
               <div class="name">
-                {{ userInfo.realName || '未设置' }}
+                {{ teamLeaderInfo.realName || userInfo.realName || '未设置' }}
               </div>
               <div class="invite-code">
                 <span class="label">邀请码：</span>
-                <span class="value">{{ userInfo.inviteCode || '000000' }}</span>
+                <span class="value">{{ teamLeaderInfo.invitationCode || userInfo.inviteCode || '' }}</span>
                 <img src="@/assets/团队长合作计划/复制.png" alt="复制" class="copy-icon" @click="copyInviteCode" />
               </div>
             </div>
             <div class="bottom-row">
-              <div class="team-level">
-                未获得团队长资格
+              <div>
+                <div class="team-level">
+                  {{ teamLevelLabel }}
+                </div>
+                <div class="team-status" v-if="reviewStatusText">审核状态：{{ reviewStatusText }}</div>
               </div>
               <div class="recommender-row">
                 <span class="label">推荐人：</span>
-                <span class="value">姓名</span>
+                <span class="value">{{ displayInviteName }}</span>
               </div>
             </div>
           </div>
@@ -48,7 +51,7 @@
             </div>
             <div class="btn-text">成为团队长，获得更多专属权益</div>
           </div>
-          <div class="apply-btn" @click="goToApplication">立即申请</div>
+          <div class="apply-btn" :class="{ disabled: applicationButtonDisabled }" @click="handleApplicationClick">{{ applicationButtonText }}</div>
         </div>
       </div>
 
@@ -57,43 +60,37 @@
         <div class="earnings-header">
           <span class="earnings-title">我的推荐总收益：</span>
           <div class="earnings-amount">
-            <span class="digit">0</span>
-            <span class="digit">0</span>
-            <span class="digit">0</span>
-            <span class="digit">0</span>
-            <span class="digit">0</span>
-            <span class="digit">0</span>
+            <span class="digit">{{ Number(teamLeaderInfo.teamSalary.salary || 0).toFixed(2) }}</span>
           </div>
         </div>
         <div class="team-stats">
           <div class="stat-item">
             <div class="stat-title">我的团队等级</div>
             <div class="stat-value">
-              <span class="digit">0</span>
-              <span class="digit">0</span>
+              {{ teamLeaderInfo.teamLeaderLevelName || '无' }}
             </div>
           </div>
           <div class="stat-item">
             <div class="stat-title">当前直属注册数</div>
             <div class="stat-value">
-              <span class="digit">0</span>
-              <span class="digit">0</span>
+              {{ teamLeaderInfo.teamSalary.regCount || 0 }}
             </div>
           </div>
           <div class="stat-item">
             <div class="stat-title">当前直属实名数</div>
             <div class="stat-value">
-              <span class="digit">0</span>
-              <span class="digit">0</span>
+              {{ teamLeaderInfo.teamSalary.verifiedCount || 0 }}
             </div>
           </div>
         </div>
-        <div class="salary-btn">领取团队长工资</div>
+        <div class="salary-btn" :class="{ disabled: !isLeader || teamLeaderInfo.teamSalary.receiveStatus === '1' }">
+          {{ teamLeaderInfo.teamSalary.receiveStatus === '1' ? '已领取' : '领取团队长工资' }}
+        </div>
       </div>
 
       <!-- 团队工具 -->
       <div class="team-tools">
-        <div class="tool-item" @click="goToTeamSalary">
+        <div class="tool-item" :class="{ disabled: !isLeader }" @click="goToTeamSalary">
           <div class="tool-icon">
             <img src="@/assets/团队长合作计划/团队长合作计划-工资.png" alt="团队工资" />
           </div>
@@ -101,9 +98,9 @@
             <div class="tool-name">团队工资</div>
             <div class="tool-desc">每月可免费领取</div>
           </div>
-          <div class="tool-action">详情</div>
+          <div class="tool-action" :class="{ disabled: !isLeader }">详情</div>
         </div>
-        <div class="tool-item">
+        <div class="tool-item" :class="{ disabled: !isLeader }">
           <div class="tool-icon">
             <img src="@/assets/团队长合作计划/团队长合作计划-团队详情.png" alt="团队详情" />
           </div>
@@ -111,9 +108,9 @@
             <div class="tool-name">团队详情</div>
             <div class="tool-desc">查看您的团队成员</div>
           </div>
-          <div class="tool-action" @click.stop="goToTeamDetails">详情</div>
+          <div class="tool-action" :class="{ disabled: !isLeader }" @click.stop="goToTeamDetails">详情</div>
         </div>
-        <div class="tool-item" @click="goToTotalEarnings">
+        <div class="tool-item" :class="{ disabled: !isLeader }" @click="goToTotalEarnings">
           <div class="tool-icon">
             <img src="@/assets/团队长合作计划/团队长合作计划-总收益 .png" alt="推荐总收益" />
           </div>
@@ -121,7 +118,7 @@
             <div class="tool-name">推荐总收益</div>
             <div class="tool-desc">您的全民收益明细</div>
           </div>
-          <div class="tool-action" @click.stop="goToTotalEarnings">详情</div>
+          <div class="tool-action" :class="{ disabled: !isLeader }" @click.stop="goToTotalEarnings">详情</div>
         </div>
       </div>
 
@@ -144,75 +141,47 @@
         <!-- 当日直属邀请注册实名奖励 -->
         <div class="reward-section">
           <div class="reward-content">
-            <div class="reward-item">
-              <div class="reward-info">
-                <div class="reward-name">当日邀请人数0人</div>
-                <div class="reward-amount">现金红包奖励: 00元</div>
+            <template v-if="teamLeaderInfo.teamTaskVerifiedList.length > 0">
+              <div class="reward-item" v-for="task in teamLeaderInfo.teamTaskVerifiedList" :key="`verified-${task.id}`">
+                <div class="reward-info">
+                  <div class="reward-name">邀请人数 {{ task.inviteCount || 0 }} 人</div>
+                  <div class="reward-amount">奖励金额：{{ task.rewardAmount || 0 }} 元</div>
+                </div>
+                <div class="reward-btn" :class="{ disabled: !isLeader || task.status !== 1 }">
+                  {{task.status === 0 ? '待完成' : task.status === 1 ? '待领取' : '已领取' }}
+                </div>
               </div>
-              <div class="reward-status claimed">已领取</div>
-            </div>
-            <div class="reward-item">
-              <div class="reward-info">
-                <div class="reward-name">当日邀请人数0人</div>
-                <div class="reward-amount">现金红包奖励: 00元</div>
-              </div>
-              <div class="reward-btn">领取</div>
-            </div>
-            <div class="reward-item">
-              <div class="reward-info">
-                <div class="reward-name">当日邀请人数0人</div>
-                <div class="reward-amount">现金红包奖励: 00元</div>
-              </div>
-              <div class="reward-btn disabled">领取</div>
-            </div>
-            <div class="reward-item">
-              <div class="reward-info">
-                <div class="reward-name">当日邀请人数0人</div>
-                <div class="reward-amount">现金红包奖励: 00元</div>
-              </div>
-              <div class="reward-btn disabled">领取</div>
+            </template>
+            <div class="reward-item" v-else>
+              <div class="reward-info">暂无实名任务</div>
             </div>
           </div>
         </div>
 
-        <!-- 当日直属邀请激活奖励
-          <div class="reward-title">
-            <span class="dot"></span>
-            当日直属邀请激活奖励
-            <span class="dot"></span>
-          </div>
+        <div class="reward-title">
+          <span class="dot"></span>
+          当日直属邀请激活奖励
+          <span class="dot"></span>
+        </div>
+        <!-- 当日直属邀请激活奖励 -->
         <div class="reward-section">
           <div class="reward-content">
-            <div class="reward-item">
-              <div class="reward-info">
-                <div class="reward-name">当日激活人数0人</div>
-                <div class="reward-amount">奖励规则奖励规则奖励规则</div>
+            <template v-if="teamLeaderInfo.teamTaskActivateList.length > 0">
+              <div class="reward-item" v-for="task in teamLeaderInfo.teamTaskActivateList" :key="`activate-${task.id}`">
+                <div class="reward-info">
+                  <div class="reward-name">激活人数 {{ task.inviteCount || 0 }} 人</div>
+                  <div class="reward-amount">奖励金额：{{ task.rewardAmount || 0 }} 元</div>
+                </div>
+                <div class="reward-btn" :class="{ disabled: !isLeader || task.status !== 1 }">
+                  {{ task.status === 0 ? '待完成' : task.status === 1 ? '待领取' : '已领取' }}
+                </div>
               </div>
-              <div class="reward-btn">领取</div>
-            </div>
-            <div class="reward-item">
-              <div class="reward-info">
-                <div class="reward-name">当日激活人数0人</div>
-                <div class="reward-amount">奖励规则奖励规则奖励规则</div>
-              </div>
-              <div class="reward-btn">领取</div>
-            </div>
-            <div class="reward-item">
-              <div class="reward-info">
-                <div class="reward-name">当日激活人数0人</div>
-                <div class="reward-amount">奖励规则奖励规则奖励规则</div>
-              </div>
-              <div class="reward-btn disabled">领取</div>
-            </div>
-            <div class="reward-item">
-              <div class="reward-info">
-                <div class="reward-name">当日激活人数0人</div>
-                <div class="reward-amount">获得初级团队长专属权益</div>
-              </div>
-              <div class="reward-btn disabled">领取</div>
+            </template>
+            <div class="reward-item" v-else>
+              <div class="reward-info">暂无激活任务</div>
             </div>
           </div>
-        </div> -->
+        </div>
       </div>
 
       <!-- 规则说明 -->
@@ -227,10 +196,11 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import { showToast } from 'vant'
+import { getTeamLeader } from '@/api/teamLeader'
 
 const router = useRouter()
 const userStore = useUserStore()
@@ -241,12 +211,87 @@ const userInfo = ref({
   inviteCode: ''
 })
 
+const teamLeaderInfo = ref({
+  avatar: '',
+  invitationCode: '',
+  invitationName: '',
+  isTeamLeader: 0,
+  realName: '',
+  teamLeaderLevelName: '',
+  teamLeaderReviewStatus: '',
+  teamSalary: {
+    activeCount: 0,
+    level: 0,
+    receiveStatus: '0',
+    regCount: 0,
+    salary: 0,
+    verifiedCount: 0
+  },
+  teamTaskActivateList: [],
+  teamTaskVerifiedList: []
+})
+
+const reviewStatusText = computed(() => {
+  const status = teamLeaderInfo.value.teamLeaderReviewStatus
+  if (status === '0' || status === 0) return '待审核'
+  if (status === '1' || status === 1) return '审核通过'
+  if (status === '2' || status === 2) return '审核驳回'
+  return ''
+})
+
+const applicationButtonText = computed(() => {
+  const status = teamLeaderInfo.value.teamLeaderReviewStatus
+  // 如果没有审核状态（为空或未定义），显示"立即申请"
+  if (!status && status !== 0 && status !== '0') {
+    return '立即申请'
+  }
+  if (status === '0' || status === 0) return '审核中'
+  if (status === '2' || status === 2) return '重新申请'
+  return '立即申请'
+})
+
+const applicationButtonDisabled = computed(() => {
+  const status = teamLeaderInfo.value.teamLeaderReviewStatus
+  // 如果没有审核状态（为空或未定义），不禁用按钮
+  if (!status && status !== 0 && status !== '0') {
+    return false
+  }
+  // 审核通过和待审核时禁用
+  return status === '1' || status === 1 || status === '0' || status === 0
+})
+
+const handleApplicationClick = () => {
+  const status = teamLeaderInfo.value.teamLeaderReviewStatus
+  // 如果没有审核状态（为空或未定义），可以申请
+  if (!status && status !== 0 && status !== '0') {
+    goToApplication()
+    return
+  }
+  // 只有审核驳回时才能点击
+  if (status === '2' || status === 2) {
+    goToApplication()
+  }
+}
+
+const displayInviteName = computed(() => {
+  return teamLeaderInfo.value.invitationName || '暂无'
+})
+
+const teamLevelLabel = computed(() => {
+  if (teamLeaderInfo.value.isTeamLeader === 1) {
+    return teamLeaderInfo.value.teamLeaderLevelName || '团队长'
+  }
+  return '未获得团队长资格'
+})
+
+const isLeader = computed(() => teamLeaderInfo.value.isTeamLeader === 1)
+
 const goBack = () => {
   router.back()
 }
 
 const copyInviteCode = () => {
-  const inviteCode = userInfo.value.inviteCode || '000000'
+  const inviteCode = teamLeaderInfo.value.invitationCode || userInfo.value.inviteCode || '000000'
   navigator.clipboard.writeText(inviteCode).then(() => {
     showToast('邀请码已复制')
   }).catch(err => {
@@ -263,6 +308,10 @@ const goToApplication = () => {
 }
 
 const goToTeamSalary = () => {
+  if (!isLeader.value) {
+    showToast('只有成为团队长后才能查看')
+    return
+  }
   try {
     router.push({ name: 'team-salary' })
   } catch (error) {
@@ -271,6 +320,10 @@ const goToTeamSalary = () => {
 }
 
 const goToTeamDetails = () => {
+  if (!isLeader.value) {
+    showToast('只有成为团队长后才能查看')
+    return
+  }
   try {
     router.push({ name: 'team-details' })
   } catch (error) {
@@ -279,6 +332,10 @@ const goToTeamDetails = () => {
 }
 
 const goToTotalEarnings = () => {
+  if (!isLeader.value) {
+    showToast('只有成为团队长后才能查看')
+    return
+  }
   try {
     router.push({ name: 'total-earnings' })
   } catch (error) {
@@ -286,8 +343,35 @@ const goToTotalEarnings = () => {
   }
 }
 
-onMounted(() => {
-  // 从用户存储中获取用户信息
+const fetchTeamLeaderInfo = async () => {
+  try {
+    const res = await getTeamLeader()
+    if (res && res.code === 200 && res.data) {
+      teamLeaderInfo.value = {
+        ...teamLeaderInfo.value,
+        ...res.data,
+        teamSalary: {
+          ...teamLeaderInfo.value.teamSalary,
+          ...res.data.teamSalary
+        },
+        teamTaskActivateList: Array.isArray(res.data.teamTaskActivateList) ? res.data.teamTaskActivateList : [],
+        teamTaskVerifiedList: Array.isArray(res.data.teamTaskVerifiedList) ? res.data.teamTaskVerifiedList : []
+      }
+
+      // 如果用户存储没有最新头像/邀请码等，先同步展示
+      userInfo.value = {
+        avatar: res.data.avatar || userInfo.value.avatar,
+        realName: res.data.realName || userInfo.value.realName,
+        inviteCode: res.data.invitationCode || userInfo.value.inviteCode || '000000'
+      }
+    }
+  } catch (error) {
+    console.error('获取团队长信息失败:', error)
+    showToast('团队长信息加载失败，请稍后重试')
+  }
+}
+
+onMounted(async () => {
   if (userStore.userInfo) {
     userInfo.value = {
       avatar: userStore.userInfo.avatar,
@@ -295,6 +379,8 @@ onMounted(() => {
       inviteCode: userStore.userInfo.invitationCode || '000000'
     }
   }
+
+  await fetchTeamLeaderInfo()
 })
 </script>
 
@@ -425,6 +511,11 @@ onMounted(() => {
   width: 135px;
   align-self: end;
 }
+.team-status {
+  margin-top: 4px;
+  font-size: 12px;
+  color: #666;
+}
 
 .recommender-row {
   display: flex;
@@ -488,6 +579,13 @@ onMounted(() => {
   font-weight: 500;
   margin-left: 10px;
   z-index: 1;
+  cursor: pointer;
+}
+
+.apply-btn.disabled {
+  background: #999;
+  color: #ccc;
+  cursor: not-allowed;
 }
 
 /* 收益统计 */
@@ -523,7 +621,6 @@ onMounted(() => {
 
 .digit {
   display: inline-block;
-  width: 24px;
   height: 24px;
   background: #0066ff;
   color: white;
@@ -564,7 +661,7 @@ onMounted(() => {
 .salary-btn {
   width: 100%;
   padding: 12px;
-  background: #666;
+  background: var(--blue-gradient);
   color: white;
   border-radius: 6px;
   text-align: center;
@@ -572,6 +669,12 @@ onMounted(() => {
   font-weight: 500;
   cursor: pointer;
   margin-top: 8px;
+}
+
+.salary-btn.disabled {
+  background: #ddd;
+  color: #999;
+  cursor: not-allowed;
 }
 
 /* 团队工具 */
@@ -589,6 +692,12 @@ onMounted(() => {
   align-items: center;
   padding: 16px 0;
   border-bottom: 1px solid #f0f0f0;
+  cursor: pointer;
+}
+
+.tool-item.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .tool-item:last-child {
@@ -631,11 +740,18 @@ onMounted(() => {
 
 .tool-action {
   padding: 6px 16px;
-  background: #f5f7fa;
-  color: #666;
+  background: var(--blue-gradient);
+  color: white;
   border-radius: 12px;
   font-size: var(--font-size-xs);
   width: 70px;
+  cursor: pointer;
+}
+
+.tool-action.disabled {
+  background: #ddd;
+  color: #999;
+  cursor: not-allowed;
 }
 
 /* 活动目标 */
@@ -704,18 +820,15 @@ onMounted(() => {
   font-size: var(--font-size-base);
   font-weight: bold;
   color: var(--blue-gradient);
-  text-align: center;
   background: white;
   padding: 4px 20px;
   border-radius: 20px;
-  display: inline-block;
-  position: relative;
-  left: 50%;
-  transform: translateX(-50%);
-  margin-bottom: 20px;
   display: flex;
   align-items: center;
-  gap: 8px;
+  justify-content: center;
+  gap: 12px;
+  margin: 0 auto 20px;
+  width: fit-content;
 }
 
 .dot {
