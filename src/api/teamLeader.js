@@ -24,3 +24,13 @@ export function claimTeamLeaderSalary(data) {
 export function getTeamLeaderWelfare() {
   return request.get('/teamLeader/welfare')
 }
+
+// 获取团队长详情信息
+export function getTeamLeaderDetail() {
+  return request.get('/teamLeader/detail')
+}
+
+// 获取团队长收益数据
+export function getTeamLeaderRevenue(params) {
+  return request.get('/teamLeader/revenue/page', { params })
+}

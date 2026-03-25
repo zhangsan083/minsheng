@@ -34,11 +34,11 @@
                 <div class="level-icon">
                   <img src="@/assets/团队长合作计划/团队长合作计划-V.png" alt="图标" style="width: 30px; height: 30px;" />
                 </div>
-                <span>初级团队长</span>
+                <span>{{ teamLeaderInfo.teamLeaderLevelName || '初级团队长' }}</span>
               </div>
               <div class="recommender-row">
                 <span class="label">推荐人：</span>
-                <span class="value">姓名</span>
+                <span class="value">{{ teamLeaderInfo.invitationName || '姓名' }}</span>
               </div>
             </div>
           </div>
@@ -58,32 +58,52 @@
 
       <!-- 收益项目标签 -->
       <div class="earnings-tags">
-        <div class="tag-item">收益项目</div>
-        <div class="tag-item">收益项目</div>
-        <div class="tag-item">收益项目</div>
-        <div class="tag-item">收益项目</div>
-        <div class="tag-item">收益项目</div>
-        <div class="tag-item">收益项目</div>
-        <div class="tag-item">收益项目</div>
-        <div class="tag-item">收益项目</div>
+        <div 
+          v-for="tag in earningsTags" 
+          :key="tag.id" 
+          class="tag-item"
+          :class="{ 'active': currentType === tag.id }"
+          @click="handleTagClick(tag.id)"
+        >
+          {{ tag.name }}
+        </div>
       </div>
 
       <!-- 总计金额 -->
       <div class="total-amount-section">
         <div class="total-label">总计金额</div>
-        <div class="total-value">0000</div>
+        <div class="total-value">{{ totalAmount.toFixed(2) }}</div>
       </div>
 
       <!-- 收益明细列表 -->
       <div class="earnings-list">
-        <div class="list-item" v-for="(item, index) in earningsList" :key="index" :class="{ 'item-highlight': index % 2 === 1 }">
+        <div 
+          v-if="loading" 
+          class="loading-container"
+        >
+          <van-loading type="spinner" size="24px" />
+          <span class="loading-text">加载中...</span>
+        </div>
+        <div 
+          v-else-if="earningsList.length === 0" 
+          class="empty-container"
+        >
+          <span>暂无收益记录</span>
+        </div>
+        <div 
+          v-else
+          class="list-item" 
+          v-for="(item, index) in earningsList" 
+          :key="index" 
+          :class="{ 'item-highlight': index % 2 === 1 }"
+        >
           <div class="item-header">
-            <div class="item-title">收益项目</div>
-            <div class="item-amount">+00000</div>
+            <div class="item-title">{{ item.walletLogFromTypeLabel || '收益项目' }}</div>
+            <div class="item-amount">+{{ (item.amount || 0).toFixed(2) }}</div>
           </div>
           <div class="item-footer">
-            <div class="item-desc">收益项目及明细信息</div>
-            <div class="item-date">2026-01-01 00:00:00</div>
+            <div class="item-desc">{{ item.remark || '收益项目及明细信息' }}</div>
+            <div class="item-date">{{ item.createDt || '2026-01-01 00:00:00' }}</div>
           </div>
         </div>
       </div>
@@ -92,12 +112,14 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, onMounted, computed } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 import { useUserStore } from '@/stores/user'
-import { showToast } from 'vant'
+import { showToast, Loading, Tabbar, TabbarItem } from 'vant'
+import { getTeamLeaderRevenue } from '@/api/teamLeader'
 
 const router = useRouter()
+const route = useRoute()
 const userStore = useUserStore()
 
 const userInfo = ref({
@@ -106,18 +128,26 @@ const userInfo = ref({
   inviteCode: ''
 })
 
+const teamLeaderInfo = ref({
+  teamLeaderLevelName: '',
+  invitationName: ''
+})
+
 // 收益列表数据
-const earningsList = ref([
-  { id: 1 },
-  { id: 2 },
-  { id: 3 },
-  { id: 4 },
-  { id: 5 },
-  { id: 6 },
-  { id: 7 },
-  { id: 8 },
-  { id: 9 }
-])
+const earningsList = ref([])
+const totalAmount = ref(0)
+const loading = ref(false)
+const currentPage = ref(1)
+const pageSize = ref(10)
+const currentType = ref(0) // 0所有收益，1推荐奖励，2每月薪资，3政策补贴
+
+// 收益类型标签
+const earningsTags = [
+  { id: 0, name: '所有收益' },
+  { id: 1, name: '推荐奖励' },
+  { id: 2, name: '每月薪资' },
+  { id: 3, name: '政策补贴' },
+]
 
 const goBack = () => {
   router.back()
@@ -132,15 +162,68 @@ const copyInviteCode = () => {
   })
 }
 
+const fetchEarningsData = async () => {
+  loading.value = true
+  try {
+    const response = await getTeamLeaderRevenue({
+      pageNum: currentPage.value,
+      pageSize: pageSize.value,
+      type: currentType.value
+    })
+    if (response.code === 200) {
+      earningsList.value = response.data.records || []
+      // 计算总计金额
+      totalAmount.value = earningsList.value.reduce((sum, item) => sum + (item.amount || 0), 0)
+    } else {
+      showToast('获取数据失败')
+    }
+  } catch (error) {
+    console.error('获取收益数据失败:', error)
+    showToast('网络错误')
+  } finally {
+    loading.value = false
+  }
+}
+
+const handleTagClick = (tagId) => {
+  currentType.value = tagId
+  currentPage.value = 1
+  fetchEarningsData()
+}
+
 onMounted(() => {
-  // 从用户存储中获取用户信息
-  if (userStore.userInfo) {
-    userInfo.value = {
-      avatar: userStore.userInfo.avatar,
-      realName: userStore.userInfo.realName,
-      inviteCode: userStore.userInfo.invitationCode || '000000'
+  // 从路由参数中获取团队长信息
+  const routeTeamLeaderInfo = route.query.teamLeaderInfo
+  if (routeTeamLeaderInfo) {
+    try {
+      const parsedInfo = JSON.parse(routeTeamLeaderInfo)
+      teamLeaderInfo.value = {
+        teamLeaderLevelName: parsedInfo.teamLeaderLevelName || '',
+        invitationName: parsedInfo.invitationName || ''
+      }
+      
+      // 更新用户信息
+      userInfo.value = {
+        avatar: parsedInfo.avatar || userInfo.value.avatar,
+        realName: parsedInfo.realName || userInfo.value.realName,
+        inviteCode: parsedInfo.invitationCode || userInfo.value.inviteCode || ''
+      }
+    } catch (error) {
+      console.error('解析团队长信息失败:', error)
     }
   }
+  
+  // 从用户存储中获取用户信息（作为备用）
+  if (userStore.userInfo) {
+    userInfo.value = {
+      avatar: userInfo.value.avatar || userStore.userInfo.avatar,
+      realName: userInfo.value.realName || userStore.userInfo.realName,
+      inviteCode: userInfo.value.inviteCode || userStore.userInfo.invitationCode || '000000'
+    }
+  }
+  
+  // 获取收益数据
+  fetchEarningsData()
 })
 </script>
 
@@ -337,6 +420,13 @@ onMounted(() => {
   border-radius: 12px;
   font-size: var(--font-size-xs);
   font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.tag-item.active {
+  background: linear-gradient(90deg, #00c2ff 0%, #0944fc 100%);
+  transform: scale(1.05);
 }
 
 /* 总计金额 */
@@ -367,8 +457,32 @@ onMounted(() => {
   background: white;
   border-radius: 12px;
   padding: 16px;
-  margin-bottom: 70px;
+  margin-bottom: 80px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  min-height: 300px;
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 0;
+  gap: 12px;
+}
+
+.loading-text {
+  font-size: var(--font-size-small);
+  color: #666;
+}
+
+.empty-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 0;
+  font-size: var(--font-size-small);
+  color: #999;
 }
 
 .list-item {

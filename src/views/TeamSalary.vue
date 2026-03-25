@@ -34,11 +34,11 @@
                 <div class="level-icon">
                   <img src="@/assets/团队长合作计划/团队长合作计划-V.png" alt="图标" style="width:30px;height:30px;" />
                 </div>
-                <span>初级团队长</span>
+                <span>{{ teamLeaderInfo.teamLeaderLevelName || '初级团队长' }}</span>
               </div>
               <div class="recommender-row">
                 <span class="label">推荐人：</span>
-                <span class="value">姓名</span>
+                <span class="value">{{ teamLeaderInfo.invitationName || '姓名' }}</span>
               </div>
             </div>
           </div>
@@ -127,18 +127,24 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import { showToast, Loading } from 'vant'
 import { getTeamLeaderWelfare } from '@/api/teamLeader'
 
 const router = useRouter()
+const route = useRoute()
 const userStore = useUserStore()
 
 const userInfo = ref({
   avatar: '',
   realName: '',
   inviteCode: ''
+})
+
+const teamLeaderInfo = ref({
+  teamLeaderLevelName: '',
+  invitationName: ''
 })
 
 const teamLeaderLevelList = ref([])
@@ -175,14 +181,36 @@ const getWelfareData = async () => {
 }
 
 onMounted(() => {
-  // 从用户存储中获取用户信息
-  if (userStore.userInfo) {
-    userInfo.value = {
-      avatar: userStore.userInfo.avatar,
-      realName: userStore.userInfo.realName,
-      inviteCode: userStore.userInfo.invitationCode || '000000'
+  // 从路由参数中获取团队长信息
+  const routeTeamLeaderInfo = route.query.teamLeaderInfo
+  if (routeTeamLeaderInfo) {
+    try {
+      const parsedInfo = JSON.parse(routeTeamLeaderInfo)
+      teamLeaderInfo.value = {
+        teamLeaderLevelName: parsedInfo.teamLeaderLevelName || '',
+        invitationName: parsedInfo.invitationName || ''
+      }
+      
+      // 更新用户信息
+      userInfo.value = {
+        avatar: parsedInfo.avatar || userInfo.value.avatar,
+        realName: parsedInfo.realName || userInfo.value.realName,
+        inviteCode: parsedInfo.invitationCode || userInfo.value.inviteCode || ''
+      }
+    } catch (error) {
+      console.error('解析团队长信息失败:', error)
     }
   }
+  
+  // 从用户存储中获取用户信息（作为备用）
+  if (userStore.userInfo) {
+    userInfo.value = {
+      avatar: userInfo.value.avatar || userStore.userInfo.avatar,
+      realName: userInfo.value.realName || userStore.userInfo.realName,
+      inviteCode: userInfo.value.inviteCode || userStore.userInfo.invitationCode || ''
+    }
+  }
+  
   // 获取团队长福利等级信息
   getWelfareData()
 })

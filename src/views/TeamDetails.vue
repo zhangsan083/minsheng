@@ -34,11 +34,11 @@
                 <div class="level-icon">
                   <img src="@/assets/团队长合作计划/团队长合作计划-V.png" alt="图标" style="width: 30px; height: 30px;" />
                 </div>
-                <span>初级团队长</span>
+                <span>{{ teamLeaderInfo.teamLeaderLevelName || '初级团队长' }}</span>
               </div>
               <div class="recommender-row">
                 <span class="label">推荐人：</span>
-                <span class="value">姓名</span>
+                <span class="value">{{ teamLeaderInfo.invitationName || '姓名' }}</span>
               </div>
             </div>
           </div>
@@ -67,11 +67,11 @@
           <div class="stats-row">
             <div class="stat-item">
               <span class="label">总人数</span>
-              <span class="value">00</span>
+              <span class="value">{{ teamDetail.level1Total || 0 }}</span>
             </div>
             <div class="stat-item">
               <span class="label">总实名</span>
-              <span class="value">00</span>
+              <span class="value">{{ teamDetail.level1VerifiedTotal || 0 }}</span>
             </div>
           </div>
           <div class="today-new">
@@ -79,11 +79,11 @@
             <div class="today-stats">
               <div class="today-item">
                 <span class="label">注册</span>
-                <span class="value">00</span>
+                <span class="value">{{ teamDetail.level1RegToday || 0 }}</span>
               </div>
               <div class="today-item">
                 <span class="label">实名</span>
-                <span class="value">00</span>
+                <span class="value">{{ teamDetail.level1VerifiedToday || 0 }}</span>
               </div>
             </div>
           </div>
@@ -101,11 +101,11 @@
           <div class="stats-row">
             <div class="stat-item">
               <span class="label">总人数</span>
-              <span class="value">00</span>
+              <span class="value">{{ teamDetail.level2Total || 0 }}</span>
             </div>
             <div class="stat-item">
               <span class="label">总实名</span>
-              <span class="value">00</span>
+              <span class="value">{{ teamDetail.level2VerifiedTotal || 0 }}</span>
             </div>
           </div>
           <div class="today-new">
@@ -113,11 +113,11 @@
             <div class="today-stats">
               <div class="today-item">
                 <span class="label">注册</span>
-                <span class="value">00</span>
+                <span class="value">{{ teamDetail.level2RegToday || 0 }}</span>
               </div>
               <div class="today-item">
                 <span class="label">实名</span>
-                <span class="value">00</span>
+                <span class="value">{{ teamDetail.level2VerifiedToday || 0 }}</span>
               </div>
             </div>
           </div>
@@ -125,7 +125,7 @@
       </div>
 
       <!-- 三级团队 -->
-      <div class="team-section">
+      <div class="team-section last-team-section">
         <div class="section-header">三级团队</div>
         <div class="section-content">
           <div class="total-amount">
@@ -135,11 +135,11 @@
           <div class="stats-row">
             <div class="stat-item">
               <span class="label">总人数</span>
-              <span class="value">00</span>
+              <span class="value">{{ teamDetail.level3Total || 0 }}</span>
             </div>
             <div class="stat-item">
               <span class="label">总实名</span>
-              <span class="value">00</span>
+              <span class="value">{{ teamDetail.level3VerifiedTotal || 0 }}</span>
             </div>
           </div>
           <div class="today-new">
@@ -147,11 +147,11 @@
             <div class="today-stats">
               <div class="today-item">
                 <span class="label">注册</span>
-                <span class="value">00</span>
+                <span class="value">{{ teamDetail.level3RegToday || 0 }}</span>
               </div>
               <div class="today-item">
                 <span class="label">实名</span>
-                <span class="value">00</span>
+                <span class="value">{{ teamDetail.level3VerifiedToday || 0 }}</span>
               </div>
             </div>
           </div>
@@ -197,11 +197,13 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { useUserStore } from '@/stores/user'
-import { showToast } from 'vant'
+import { showToast, Loading } from 'vant'
+import { getTeamLeaderDetail } from '@/api/teamLeader'
 
 const router = useRouter()
+const route = useRoute()
 const userStore = useUserStore()
 
 const userInfo = ref({
@@ -209,6 +211,28 @@ const userInfo = ref({
   realName: '',
   inviteCode: ''
 })
+
+const teamLeaderInfo = ref({
+  teamLeaderLevelName: '',
+  invitationName: ''
+})
+
+const teamDetail = ref({
+  level1RegToday: 0,
+  level1Total: 0,
+  level1VerifiedToday: 0,
+  level1VerifiedTotal: 0,
+  level2RegToday: 0,
+  level2Total: 0,
+  level2VerifiedToday: 0,
+  level2VerifiedTotal: 0,
+  level3RegToday: 0,
+  level3Total: 0,
+  level3VerifiedToday: 0,
+  level3VerifiedTotal: 0
+})
+
+const loading = ref(false)
 
 const goBack = () => {
   router.back()
@@ -223,15 +247,56 @@ const copyInviteCode = () => {
   })
 }
 
+const fetchTeamDetail = async () => {
+  loading.value = true
+  try {
+    const response = await getTeamLeaderDetail()
+    if (response.code === 200) {
+      teamDetail.value = response.data
+    } else {
+      showToast('获取数据失败')
+    }
+  } catch (error) {
+    console.error('获取团队详情失败:', error)
+    showToast('网络错误')
+  } finally {
+    loading.value = false
+  }
+}
+
 onMounted(() => {
-  // 从用户存储中获取用户信息
-  if (userStore.userInfo) {
-    userInfo.value = {
-      avatar: userStore.userInfo.avatar,
-      realName: userStore.userInfo.realName,
-      inviteCode: userStore.userInfo.invitationCode || '000000'
+  // 从路由参数中获取团队长信息
+  const routeTeamLeaderInfo = route.query.teamLeaderInfo
+  if (routeTeamLeaderInfo) {
+    try {
+      const parsedInfo = JSON.parse(routeTeamLeaderInfo)
+      teamLeaderInfo.value = {
+        teamLeaderLevelName: parsedInfo.teamLeaderLevelName || '',
+        invitationName: parsedInfo.invitationName || ''
+      }
+      
+      // 更新用户信息
+      userInfo.value = {
+        avatar: parsedInfo.avatar || userInfo.value.avatar,
+        realName: parsedInfo.realName || userInfo.value.realName,
+        inviteCode: parsedInfo.invitationCode || userInfo.value.inviteCode || ''
+      }
+    } catch (error) {
+      console.error('解析团队长信息失败:', error)
     }
   }
+  
+  // 从用户存储中获取用户信息（作为备用）
+  if (userStore.userInfo) {
+    userInfo.value = {
+      avatar: userInfo.value.avatar || userStore.userInfo.avatar,
+      realName: userInfo.value.realName || userStore.userInfo.realName,
+      inviteCode: userInfo.value.inviteCode || userStore.userInfo.invitationCode || '000000'
+    }
+  }
+  
+  // 获取团队详情数据
+  fetchTeamDetail()
 })
 </script>
 
@@ -419,6 +484,10 @@ onMounted(() => {
   overflow: hidden;
   margin-bottom: 16px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.last-team-section {
+  margin-bottom: 80px;
 }
 
 .section-header {

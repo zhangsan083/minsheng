@@ -178,12 +178,12 @@
           </div>
         </div>
 
-        <div class="reward-title">
+        <!-- 当日直属邀请激活奖励 -->
+        <!-- <div class="reward-title">
           <span class="dot"></span>
           当日直属邀请激活奖励
           <span class="dot"></span>
         </div>
-        <!-- 当日直属邀请激活奖励 -->
         <div class="reward-section">
           <div class="reward-content">
             <template v-if="teamLeaderInfo.teamTaskActivateList.length > 0">
@@ -201,7 +201,7 @@
               <div class="reward-info">暂无激活任务</div>
             </div>
           </div>
-        </div>
+        </div> -->
       </div>
 
       <!-- 规则说明 -->
@@ -346,7 +346,21 @@ const goToTeamSalary = () => {
     return
   }
   try {
-    router.push({ name: 'team-salary' })
+    // 传递团队长信息作为路由参数
+    const teamLeaderInfoToPass = {
+      teamLeaderLevelName: teamLeaderInfo.value.teamLeaderLevelName,
+      invitationName: teamLeaderInfo.value.invitationName,
+      avatar: teamLeaderInfo.value.avatar,
+      realName: teamLeaderInfo.value.realName,
+      invitationCode: teamLeaderInfo.value.invitationCode
+    }
+    
+    router.push({
+      name: 'team-salary',
+      query: {
+        teamLeaderInfo: JSON.stringify(teamLeaderInfoToPass)
+      }
+    })
   } catch (error) {
     console.error('Navigation error:', error)
   }
@@ -384,7 +398,21 @@ const goToTeamDetails = () => {
     return
   }
   try {
-    router.push({ name: 'team-details' })
+    // 传递团队长信息作为路由参数
+    const teamLeaderInfoToPass = {
+      teamLeaderLevelName: teamLeaderInfo.value.teamLeaderLevelName,
+      invitationName: teamLeaderInfo.value.invitationName,
+      avatar: teamLeaderInfo.value.avatar,
+      realName: teamLeaderInfo.value.realName,
+      invitationCode: teamLeaderInfo.value.invitationCode
+    }
+    
+    router.push({
+      name: 'team-details',
+      query: {
+        teamLeaderInfo: JSON.stringify(teamLeaderInfoToPass)
+      }
+    })
   } catch (error) {
     console.error('Navigation error:', error)
   }
@@ -396,7 +424,21 @@ const goToTotalEarnings = () => {
     return
   }
   try {
-    router.push({ name: 'total-earnings' })
+    // 传递团队长信息作为路由参数
+    const teamLeaderInfoToPass = {
+      teamLeaderLevelName: teamLeaderInfo.value.teamLeaderLevelName,
+      invitationName: teamLeaderInfo.value.invitationName,
+      avatar: teamLeaderInfo.value.avatar,
+      realName: teamLeaderInfo.value.realName,
+      invitationCode: teamLeaderInfo.value.invitationCode
+    }
+    
+    router.push({
+      name: 'total-earnings',
+      query: {
+        teamLeaderInfo: JSON.stringify(teamLeaderInfoToPass)
+      }
+    })
   } catch (error) {
     console.error('Navigation error:', error)
   }
