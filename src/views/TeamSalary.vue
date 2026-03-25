@@ -63,30 +63,46 @@
           <span class="header-title">团队工资</span>
         </div>
 
-        <div class="salary-level-image">
-          <div class="image-container">
-            <img src="@/assets/团队长合作计划/团队工资等级.png" alt="团队工资等级" class="salary-image" />
-            <div class="level-badge">
-              <span class="level-number">1</span>
-            </div>
-            <div class="text-overlay">
-              <div class="overlay-title">一级全民行动大使</div>
-              <div class="overlay-content">
-                <div class="info-row">
-                  <span class="info-label">直推人数要求</span>
-                  <span class="info-value">000</span>
+        <div v-if="loading" class="loading">
+          <van-loading type="spinner" color="#0944fc" />
+        </div>
+        
+        <div v-else-if="teamLeaderLevelList.length > 0" class="salary-levels">
+          <div class="salary-levels-container">
+            <div v-for="level in teamLeaderLevelList" :key="level.id" class="salary-level-image">
+              <div class="image-container">
+                <img src="@/assets/团队长合作计划/团队工资等级.png" alt="团队工资等级" class="salary-image" />
+                <div class="level-badge">
+                  <span class="level-number">{{ level.level }}</span>
                 </div>
-                <div class="info-row">
-                  <span class="info-label">总实名人数要求</span>
-                  <span class="info-value">000</span>
-                </div>
-                <div class="info-row">
-                  <span class="info-label">活跃度要求</span>
-                  <span class="info-value">000</span>
+                <div class="text-overlay">
+                  <div class="overlay-title">{{ level.levelName }}</div>
+                  <div class="overlay-content">
+                    <div class="info-row">
+                      <span class="info-label">直推人数要求</span>
+                      <span class="info-value">{{ level.inviteReg || 0 }}</span>
+                    </div>
+                    <div class="info-row">
+                      <span class="info-label">总实名人数要求</span>
+                      <span class="info-value">{{ level.inviteVerified || 0 }}</span>
+                    </div>
+                    <div class="info-row">
+                      <span class="info-label">活跃度要求</span>
+                      <span class="info-value">{{ level.inviteActive || 0 }}</span>
+                    </div>
+                    <div class="info-row">
+                      <span class="info-label">月工资</span>
+                      <span class="info-value">{{ level.salary || 0 }}元</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
+        </div>
+        
+        <div v-else class="empty">
+          <div class="empty-text">暂无团队长等级数据</div>
         </div>
       </div>
 
@@ -113,7 +129,8 @@
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user'
-import { showToast } from 'vant'
+import { showToast, Loading } from 'vant'
+import { getTeamLeaderWelfare } from '@/api/teamLeader'
 
 const router = useRouter()
 const userStore = useUserStore()
@@ -123,6 +140,9 @@ const userInfo = ref({
   realName: '',
   inviteCode: ''
 })
+
+const teamLeaderLevelList = ref([])
+const loading = ref(false)
 
 const goBack = () => {
   router.back()
@@ -137,6 +157,23 @@ const copyInviteCode = () => {
   })
 }
 
+const getWelfareData = async () => {
+  loading.value = true
+  try {
+    const response = await getTeamLeaderWelfare()
+    if (response.code === 200) {
+      teamLeaderLevelList.value = response.data.teamLeaderLevelList || []
+    } else {
+      showToast('获取数据失败')
+    }
+  } catch (error) {
+    console.error('获取团队长福利信息失败:', error)
+    showToast('网络错误')
+  } finally {
+    loading.value = false
+  }
+}
+
 onMounted(() => {
   // 从用户存储中获取用户信息
   if (userStore.userInfo) {
@@ -146,6 +183,8 @@ onMounted(() => {
       inviteCode: userStore.userInfo.invitationCode || '000000'
     }
   }
+  // 获取团队长福利等级信息
+  getWelfareData()
 })
 </script>
 
@@ -335,6 +374,42 @@ onMounted(() => {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 0;
+}
+
+.empty {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 0;
+}
+
+.empty-text {
+  font-size: var(--font-size-base);
+  color: #999;
+}
+
+.salary-levels {
+  margin: 8px 0;
+}
+
+.salary-levels-container {
+  display: flex;
+  overflow-x: auto;
+  gap: 16px;
+  padding: 8px 0;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.salary-levels-container::-webkit-scrollbar {
+  display: none;
+}
+
 .section-header {
   display: flex;
   align-items: center;
@@ -356,10 +431,11 @@ onMounted(() => {
 }
 
 .salary-level-image {
+  flex: 0 0 auto;
   width: 100%;
+  max-width: 400px;
   display: flex;
   justify-content: center;
-  margin: 16px 0;
 }
 
 .image-container {
@@ -396,7 +472,7 @@ onMounted(() => {
 
 .text-overlay {
   position: absolute;
-  top: 0;
+  top: -15;
   left: 0;
   width: 100%;
   height: 100%;
