@@ -20,7 +20,7 @@
           <div class="info-container">
             <div class="top-row">
               <div class="name">
-                {{ teamLeaderInfo.realName || userInfo.realName || '未设置' }}
+                {{ teamLeaderInfo.realName || userInfo.realName || '' }}
               </div>
               <div class="invite-code">
                 <span class="label">邀请码：</span>
@@ -31,9 +31,11 @@
             <div class="bottom-row">
               <div>
                 <div class="team-level">
-                  {{ teamLevelLabel }}
+                <div class="level-icon">
+                  <img src="@/assets/团队长合作计划/团队长合作计划-V.png" alt="图标" style="width: 30px; height: 30px;" />
                 </div>
-                <div class="team-status" v-if="reviewStatusText">审核状态：{{ reviewStatusText }}</div>
+                <span>{{ teamLevelLabel }}</span>
+              </div>
               </div>
               <div class="recommender-row">
                 <span class="label">推荐人：</span>
@@ -44,7 +46,7 @@
         </div>
 
         <!-- 成为团队长按钮 -->
-        <div class="become-team-leader">
+        <div class="become-team-leader" v-if="!isLeader">
           <div class="btn-content">
             <div class="btn-icon">
               <img src="@/assets/团队长合作计划/团队长合作计划-V.png" alt="图标" style="width: 100%; height: 100%; filter: brightness(0) saturate(100%) invert(31%) sepia(98%) saturate(3000%) hue-rotate(214deg) brightness(98%) contrast(119%);" />
@@ -53,6 +55,24 @@
           </div>
           <div class="apply-btn" :class="{ disabled: applicationButtonDisabled }" @click="handleApplicationClick">{{ applicationButtonText }}</div>
         </div>
+        <div class="become-team-leader success" v-else>
+          <div class="function-buttons">
+            <div class="btn-item">基础工资体系</div>
+            <div class="btn-item">团队拉新奖励</div>
+            <div class="btn-item">团队业绩提成</div>
+            <div class="btn-item">办公场地支持</div>
+            <div class="btn-item">工作室运营扶持</div>
+            <div class="btn-item">试用合作协议</div>
+            <div class="btn-item">系统培训运营指导</div>
+          </div>
+        </div>
+
+        <div v-if="showApplicationResult" class="application-result-card">
+          <div class="result-title">申请状态：{{ applicationStatusLabel }}</div>
+          <div class="result-body" v-if="applicationStatusLabel === '审核中'">已提交审核，请耐心等待~</div>
+          <div class="result-body" v-else-if="applicationStatusLabel === '审核通过'">恭喜您已成为团队长，立即体验专属权益！</div>
+          <div class="result-body" v-else-if="applicationStatusLabel === '审核驳回'">审核驳回，请重新提交申请或联系客服。</div>
+        </div>
       </div>
 
       <!-- 收益统计 -->
@@ -60,14 +80,14 @@
         <div class="earnings-header">
           <span class="earnings-title">我的推荐总收益：</span>
           <div class="earnings-amount">
-            <span class="digit">{{ Number(teamLeaderInfo.teamSalary.salary || 0).toFixed(2) }}</span>
+            <span class="digit">{{ teamLeaderInfo.teamSalary.salary || 0 }}</span>
           </div>
         </div>
         <div class="team-stats">
           <div class="stat-item">
             <div class="stat-title">我的团队等级</div>
             <div class="stat-value">
-              {{ teamLeaderInfo.teamLeaderLevelName || '无' }}
+              {{ teamLeaderInfo.teamSalary.level || 0 }}
             </div>
           </div>
           <div class="stat-item">
@@ -258,6 +278,19 @@ const applicationButtonDisabled = computed(() => {
   }
   // 审核通过和待审核时禁用
   return status === '1' || status === 1 || status === '0' || status === 0
+})
+
+const applicationStatusLabel = computed(() => {
+  const status = teamLeaderInfo.value.teamLeaderReviewStatus
+  if (status === '0' || status === 0) return '审核中'
+  if (status === '1' || status === 1) return '审核通过'
+  if (status === '2' || status === 2) return '审核驳回'
+  return '未申请'
+})
+
+const showApplicationResult = computed(() => {
+  const status = teamLeaderInfo.value.teamLeaderReviewStatus
+  return status === '0' || status === '1' || status === '2'
 })
 
 const handleApplicationClick = () => {
@@ -501,15 +534,23 @@ onMounted(async () => {
 }
 
 .team-level {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
   padding: 4px 12px;
-  background: #666;
+  background: #0944fc;
   border-radius: 12px;
   font-size: 12px;
   color: white;
   font-weight: 500;
-  width: 135px;
   align-self: end;
+}
+.level-icon {
+  width: 16px;
+  height: 16px;
+  margin-right: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .team-status {
   margin-top: 4px;
@@ -582,12 +623,50 @@ onMounted(async () => {
   cursor: pointer;
 }
 
+.application-result-card {
+  margin-top: 12px;
+  border: 1px solid #0066ff;
+  background: #f0f6ff;
+  border-radius: 10px;
+  padding: 10px 12px;
+  color: #0047c1;
+}
+
+.result-title {
+  font-size: 13px;
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+.result-body {
+  font-size: 12px;
+  color: #333;
+}
 .apply-btn.disabled {
   background: #999;
-  color: #ccc;
+  color: white;
   cursor: not-allowed;
 }
 
+/* 功能按钮 */
+.function-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  position: relative;
+  z-index: 1;
+}
+
+.btn-item {
+  padding: 6px 6px;
+  background: white;
+  border: 1px solid #0944fc;
+  border-radius: 12px;
+  font-size: 12px;
+  color: #0944fc;
+  font-weight: 500;
+  cursor: pointer;
+}
 /* 收益统计 */
 .earnings-section {
   background: white;
@@ -622,8 +701,7 @@ onMounted(async () => {
 .digit {
   display: inline-block;
   height: 24px;
-  background: #0066ff;
-  color: white;
+  color: #0066ff;
   text-align: center;
   line-height: 24px;
   border-radius: 4px;
@@ -739,7 +817,7 @@ onMounted(async () => {
 }
 
 .tool-action {
-  padding: 6px 16px;
+  padding: 6px 21px;
   background: var(--blue-gradient);
   color: white;
   border-radius: 12px;

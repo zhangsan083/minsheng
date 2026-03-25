@@ -77,16 +77,32 @@
 
           <!-- 身份证上传 -->
           <div class="id-card-upload">
-            <van-uploader
-              v-model="idCardFileList"
-              multiple
-              :after-read="afterReadIdCard"
-            >
-              <div class="upload-box">
-                <div class="upload-icon">+</div>
-                <div class="upload-text">点击上传身份证</div>
-              </div>
-            </van-uploader>
+            <div class="id-card-item">
+              <div class="upload-label">身份证正面</div>
+              <van-uploader
+                v-model="idCardFrontFileList"
+                :max-count="1"
+                :after-read="afterReadIdCardFront"
+              >
+                <div class="upload-box">
+                  <div class="upload-icon">+</div>
+                  <div class="upload-text">点击上传正面</div>
+                </div>
+              </van-uploader>
+            </div>
+            <div class="id-card-item">
+              <div class="upload-label">身份证反面</div>
+              <van-uploader
+                v-model="idCardBackFileList"
+                :max-count="1"
+                :after-read="afterReadIdCardBack"
+              >
+                <div class="upload-box">
+                  <div class="upload-icon">+</div>
+                  <div class="upload-text">点击上传反面</div>
+                </div>
+              </van-uploader>
+            </div>
           </div>
 
           <!-- 个人签名和公章 -->
@@ -111,7 +127,7 @@
         </div>
 
         <!-- 提交按钮 -->
-        <button class="submit-btn">提交申请</button>
+        <button class="submit-btn" @click="handleSubmit">提交申请</button>
       </div>
 
       <!-- 签名弹窗 -->
@@ -147,6 +163,7 @@ import { ref, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { NavBar, Popup, showToast } from 'vant'
 import { uploadFile } from '@/api/assets'
+import { applyTeamLeader, getTeamLeaderApply } from '@/api/teamLeader'
 
 const router = useRouter()
 
@@ -236,27 +253,71 @@ const clearSignature = () => {
   hasSignature.value = false
 }
 
-// 签名图片URL
+// 签名图片URL（用于显示）
 const signatureImageUrl = ref('')
 
+// 签名文件名（用于提交）
+const signatureFilename = ref('')
+
 // 身份证文件列表
-const idCardFileList = ref([])
+const idCardFrontFileList = ref([])
+const idCardBackFileList = ref([])
 
-// 身份证上传后的URL
-const idCardImageUrl = ref('')
+// 身份证正面图片URL（用于显示）
+const idCardFrontUrl = ref('')
 
-// 身份证上传处理
-const afterReadIdCard = async (file) => {
+// 身份证正面文件名（用于提交）
+const idCardFrontFilename = ref('')
+
+// 身份证反面图片URL（用于显示）
+const idCardBackUrl = ref('')
+
+// 身份证反面文件名（用于提交）
+const idCardBackFilename = ref('')
+
+// 身份证正面上传处理
+const afterReadIdCardFront = async (file) => {
+  if (!file || !file.file) return
+
   file.status = 'uploading'
   file.message = '上传中...'
 
   try {
-    const res = await uploadFile(file.file)
+    const res = await uploadFile(file.file, 'front')
     if (res && res.code === 200) {
       file.status = 'done'
       file.message = '上传成功'
-      idCardImageUrl.value = res.url
-      showToast('身份证上传成功')
+      idCardFrontUrl.value = res.url
+      idCardFrontFilename.value = res.fileName
+      showToast('身份证正面上传成功')
+    } else {
+      file.status = 'failed'
+      file.message = '上传失败'
+      showToast(res?.msg || '上传失败')
+    }
+  } catch (error) {
+    console.error(error)
+    file.status = 'failed'
+    file.message = '上传失败'
+    showToast('上传出错')
+  }
+}
+
+// 身份证反面上传处理
+const afterReadIdCardBack = async (file) => {
+  if (!file || !file.file) return
+
+  file.status = 'uploading'
+  file.message = '上传中...'
+
+  try {
+    const res = await uploadFile(file.file, 'back')
+    if (res && res.code === 200) {
+      file.status = 'done'
+      file.message = '上传成功'
+      idCardBackUrl.value = res.url
+      idCardBackFilename.value = res.fileName
+      showToast('身份证反面上传成功')
     } else {
       file.status = 'failed'
       file.message = '上传失败'
@@ -295,6 +356,7 @@ const completeSignature = async () => {
       const res = await uploadFile(file)
       if (res && res.code === 200) {
         signatureImageUrl.value = res.url
+        signatureFilename.value = res.fileName
         showToast('签名上传成功')
         signaturePopup.value = false
       } else {
@@ -320,6 +382,94 @@ watch(signaturePopup, (newVal) => {
 const goBack = () => {
   router.back()
 }
+
+// 提交申请
+const handleSubmit = async () => {
+  // 表单验证
+  if (!form.value.name.trim()) {
+    showToast('请输入真实姓名')
+    return
+  }
+  if (!form.value.phone.trim()) {
+    showToast('请输入联系电话')
+    return
+  }
+  if (!form.value.idCard.trim()) {
+    showToast('请输入身份证号码')
+    return
+  }
+  if (!form.value.address.trim()) {
+    showToast('请输入地址')
+    return
+  }
+  if (!signatureImageUrl.value) {
+    showToast('请先进行签名')
+    return
+  }
+  if (!idCardFrontFilename.value || !idCardBackFilename.value) {
+    showToast('请上传身份证正面和反面照片')
+    return
+  }
+
+  try {
+    showToast('提交中...')
+    
+    const submitData = {
+      realName: form.value.name,
+      phonenumber: form.value.phone,
+      idNumber: form.value.idCard,
+      address: form.value.address,
+      signature: signatureFilename.value,
+      idCardFront: idCardFrontFilename.value,
+      idCardBack: idCardBackFilename.value
+    }
+    
+    const res = await applyTeamLeader(submitData)
+    
+    if (res && res.code === 200) {
+      showToast('申请提交成功')
+      // 提交成功后返回上一页
+      setTimeout(() => {
+        router.back()
+      }, 1500)
+    } else {
+      showToast(res?.msg || '申请提交失败')
+    }
+  } catch (error) {
+    console.error('提交申请失败:', error)
+    showToast('申请提交失败，请稍后重试')
+  }
+}
+
+// 查询是否存在已提交申请（重新编辑）
+const loadTeamLeaderApply = async () => {
+  try {
+    const res = await getTeamLeaderApply()
+    if (res && res.code === 200 && res.data) {
+      const data = res.data
+      form.value.name = data.realName || ''
+      form.value.phone = data.phonenumber || ''
+      form.value.idCard = data.idNumber || ''
+      form.value.address = data.address || ''
+
+      // 需要重新上传身份证正反面与签名，清空已有图片状态
+      signatureImageUrl.value = ''
+      signatureFilename.value = ''
+      idCardFrontUrl.value = ''
+      idCardFrontFilename.value = ''
+      idCardBackUrl.value = ''
+      idCardBackFilename.value = ''
+      idCardFrontFileList.value = []
+      idCardBackFileList.value = []
+    }
+  } catch (error) {
+    console.error('获取团队长申请数据失败:', error)
+  }
+}
+
+onMounted(() => {
+  loadTeamLeaderApply()
+})
 </script>
 
 <style scoped>
@@ -436,46 +586,63 @@ const goBack = () => {
 /* 身份证上传 */
 .id-card-upload {
   display: flex;
-  justify-content: center;
-  margin: 30px 0;
-  padding: 0 10px;
-}
-
-.upload-box {
-  width: 283px;
-  height: 200px;
-  border: 2px dashed #0066ff;
-  border-radius: 8px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-}
-
-/* Vant Uploader 样式调整 */
-.id-card-upload :deep(.van-uploader) {
+  justify-content: space-between;
+  gap: 12px;
+  margin: 30px auto;
   width: 100%;
+  max-width: 480px;
+  flex-wrap: wrap;
+  box-sizing: border-box;
 }
 
-.id-card-upload :deep(.van-uploader__preview) {
-  width: 100%;
-  height: 200px;
-  margin: 0;
-  border-radius: 8px;
+.id-card-item {
+  flex: 0 0 calc(50% - 6px);
+  width: calc(50% - 6px);
+  box-sizing: border-box;
   overflow: hidden;
 }
 
-.id-card-upload :deep(.van-uploader__preview-image) {
+.upload-box {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  height: 100px;
+  border: 2px dashed #0066ff;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.upload-label {
+  width: 100%;
+  text-align: center;
+}
+
+/* 强制覆盖 van-uploader 内部宽高 */
+.id-card-upload :deep(.van-uploader),
+.id-card-upload :deep(.van-uploader__wrapper),
+.id-card-upload :deep(.van-uploader__preview),
+.id-card-upload :deep(.van-uploader__input-wrapper),
+.id-card-upload :deep(.van-uploader__upload),
+.id-card-upload :deep(.van-uploader__preview-item) {
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  height: 100px !important;
+  box-sizing: border-box !important;
+}
+
+.id-card-upload :deep(.van-uploader__preview-image) {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  box-sizing: border-box !important;
 }
 
 .id-card-upload :deep(.van-uploader__upload) {
-  width: 100%;
-  height: 200px;
-  margin: 0;
+  margin: 0 !important;
 }
 
 .upload-icon {

@@ -92,10 +92,13 @@ export function getHmSubsidy() {
   return request.get('/asset/hmSubsidy')
 }
 
-// 上传文件
-export function uploadFile(file) {
+// 上传文件（可选传 side: front/back）
+export function uploadFile(file, side) {
   const formData = new FormData()
   formData.append('file', file)
+  if (side) {
+    formData.append('side', side)
+  }
   return request.post('/common/upload', formData, {
     headers: {
       'Content-Type': 'multipart/form-data'

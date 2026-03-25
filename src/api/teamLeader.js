@@ -4,3 +4,13 @@ import request from '@/utils/http'
 export function getTeamLeader() {
   return request.get('/teamLeader/index')
 }
+
+// 获取团队长申请记录（可修改重投）
+export function getTeamLeaderApply() {
+  return request.get('/teamLeader/apply')
+}
+
+// 申请成为团队长
+export function applyTeamLeader(data) {
+  return request.post('/teamLeader/apply/add', data)
+}
