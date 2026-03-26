@@ -25,7 +25,7 @@
               </div>
               <div class="invite-code">
                 <span class="label">邀请码：</span>
-                <span class="value">{{ userInfo.inviteCode || '000000' }}</span>
+                <span class="value">{{ userInfo.inviteCode || '' }}</span>
                 <img src="@/assets/团队长合作计划/复制.png" alt="复制" class="copy-icon" @click="copyInviteCode" />
               </div>
             </div>
@@ -34,11 +34,11 @@
                 <div class="level-icon">
                   <img src="@/assets/团队长合作计划/团队长合作计划-V.png" alt="图标" style="width: 30px; height: 30px;" />
                 </div>
-                <span>{{ teamLeaderInfo.teamLeaderLevelName || '初级团队长' }}</span>
+                <span>{{ teamLeaderInfo.teamLeaderLevelName || '' }}</span>
               </div>
               <div class="recommender-row">
                 <span class="label">推荐人：</span>
-                <span class="value">{{ teamLeaderInfo.invitationName || '姓名' }}</span>
+                <span class="value">{{ teamLeaderInfo.invitationName || '' }}</span>
               </div>
             </div>
           </div>
@@ -72,7 +72,7 @@
       <!-- 总计金额 -->
       <div class="total-amount-section">
         <div class="total-label">总计金额</div>
-        <div class="total-value">{{ totalAmount.toFixed(2) }}</div>
+        <div class="total-value">{{ totalAmount || 0 }}</div>
       </div>
 
       <!-- 收益明细列表 -->
@@ -90,20 +90,28 @@
         >
           <span>暂无收益记录</span>
         </div>
-        <div 
-          v-else
-          class="list-item" 
-          v-for="(item, index) in earningsList" 
-          :key="index" 
-          :class="{ 'item-highlight': index % 2 === 1 }"
-        >
-          <div class="item-header">
-            <div class="item-title">{{ item.walletLogFromTypeLabel || '收益项目' }}</div>
-            <div class="item-amount">+{{ (item.amount || 0).toFixed(2) }}</div>
+        <div v-else>
+          <div 
+            class="list-item" 
+            v-for="(item, index) in earningsList" 
+            :key="index" 
+            :class="{ 'item-highlight': index % 2 === 1 }"
+          >
+            <div class="item-header">
+              <div class="item-title">{{ item.walletLogFromTypeLabel || '' }}</div>
+              <div class="item-amount">+{{ item.amount || 0 }}</div>
+            </div>
+            <div class="item-footer">
+              <div class="item-desc">{{ item.remark || '' }}</div>
+              <div class="item-date">{{ item.createDt || '' }}</div>
+            </div>
           </div>
-          <div class="item-footer">
-            <div class="item-desc">{{ item.remark || '收益项目及明细信息' }}</div>
-            <div class="item-date">{{ item.createDt || '2026-01-01 00:00:00' }}</div>
+          <div v-if="loadingMore" class="loading-more">
+            <van-loading type="spinner" size="20px" />
+            <span class="loading-more-text">加载更多...</span>
+          </div>
+          <div v-else-if="earningsList.length >= total" class="no-more">
+            <span>没有更多数据了</span>
           </div>
         </div>
       </div>
@@ -112,7 +120,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, onMounted as onMounted2 } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import { showToast, Loading, Tabbar, TabbarItem } from 'vant'
@@ -137,8 +145,10 @@ const teamLeaderInfo = ref({
 const earningsList = ref([])
 const totalAmount = ref(0)
 const loading = ref(false)
+const loadingMore = ref(false)
 const currentPage = ref(1)
 const pageSize = ref(10)
+const total = ref(0)
 const currentType = ref(0) // 0所有收益，1推荐奖励，2每月薪资，3政策补贴
 
 // 收益类型标签
@@ -154,7 +164,7 @@ const goBack = () => {
 }
 
 const copyInviteCode = () => {
-  const inviteCode = userInfo.value.inviteCode || '000000'
+  const inviteCode = userInfo.value.inviteCode || ''
   navigator.clipboard.writeText(inviteCode).then(() => {
     showToast('邀请码已复制')
   }).catch(err => {
@@ -162,8 +172,12 @@ const copyInviteCode = () => {
   })
 }
 
-const fetchEarningsData = async () => {
-  loading.value = true
+const fetchEarningsData = async (isLoadMore = false) => {
+  if (isLoadMore) {
+    loadingMore.value = true
+  } else {
+    loading.value = true
+  }
   try {
     const response = await getTeamLeaderRevenue({
       pageNum: currentPage.value,
@@ -171,9 +185,15 @@ const fetchEarningsData = async () => {
       type: currentType.value
     })
     if (response.code === 200) {
-      earningsList.value = response.data.records || []
+      const newRecords = response.data.records || []
+      if (isLoadMore) {
+        earningsList.value = [...earningsList.value, ...newRecords]
+      } else {
+        earningsList.value = newRecords
+      }
+      total.value = response.data.total || 0
       // 计算总计金额
-      totalAmount.value = earningsList.value.reduce((sum, item) => sum + (item.amount || 0), 0)
+      totalAmount.value = earningsList.value.reduce((sum, item) => sum + (Number(item.amount) || 0), 0)
     } else {
       showToast('获取数据失败')
     }
@@ -182,6 +202,7 @@ const fetchEarningsData = async () => {
     showToast('网络错误')
   } finally {
     loading.value = false
+    loadingMore.value = false
   }
 }
 
@@ -189,6 +210,13 @@ const handleTagClick = (tagId) => {
   currentType.value = tagId
   currentPage.value = 1
   fetchEarningsData()
+}
+
+const loadMore = () => {
+  if (loadingMore.value || loading.value) return
+  if (earningsList.value.length >= total.value) return
+  currentPage.value++
+  fetchEarningsData(true)
 }
 
 onMounted(() => {
@@ -224,6 +252,17 @@ onMounted(() => {
   
   // 获取收益数据
   fetchEarningsData()
+  
+  // 添加滚动事件监听
+  const scrollContainer = document.querySelector('.earnings-list')
+  if (scrollContainer) {
+    scrollContainer.addEventListener('scroll', () => {
+      const { scrollTop, scrollHeight, clientHeight } = scrollContainer
+      if (scrollTop + clientHeight >= scrollHeight - 50) {
+        loadMore()
+      }
+    })
+  }
 })
 </script>
 
@@ -527,10 +566,33 @@ onMounted(() => {
 .item-desc {
   font-size: var(--font-size-xs);
   color: #999;
+  width:120px;
 }
 
 .item-date {
   font-size: var(--font-size-xs);
+  color: #999;
+}
+
+.loading-more {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 0;
+  gap: 8px;
+}
+
+.loading-more-text {
+  font-size: var(--font-size-small);
+  color: #666;
+}
+
+.no-more {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 0;
+  font-size: var(--font-size-small);
   color: #999;
 }
 </style>
