@@ -31,11 +31,11 @@
             <div class="bottom-row">
               <div>
                 <div class="team-level">
-                <div class="level-icon">
-                  <img src="@/assets/团队长合作计划/团队长合作计划-V.png" alt="图标" style="width: 30px; height: 30px;" />
+                  <div class="level-icon" v-if="isLeader">
+                    <img src="@/assets/团队长合作计划/团队长合作计划-V.png" alt="图标" style="width: 30px; height: 30px;" />
+                  </div>
+                  <span>{{ teamLevelLabel }}</span>
                 </div>
-                <span>{{ teamLevelLabel }}</span>
-              </div>
               </div>
               <div class="recommender-row">
                 <span class="label">推荐人：</span>
@@ -604,13 +604,14 @@ onMounted(async () => {
 .team-level {
   display: inline-flex;
   align-items: center;
-  padding: 4px 12px;
+  padding: 4px 6px;
   background: #0944fc;
   border-radius: 12px;
   font-size: 12px;
   color: white;
   font-weight: 500;
   align-self: end;
+  white-space: nowrap;
 }
 .level-icon {
   width: 16px;
