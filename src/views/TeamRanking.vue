@@ -108,9 +108,9 @@
                 <div class="user-avatar" style="display: inline-block; width: 24px; height: 24px; border-radius: 50%; overflow: hidden; vertical-align: middle; margin-right: 8px;">
                   <img :src="item.avatar && item.avatar !== '' ? item.avatar : '/logo主图形.png'" alt="头像" style="width: 100%; height: 100%; object-fit: cover;" />
                 </div>
-                {{ item.realName || '姓*' }}
+                {{ item.realName || '' }}
               </div>
-              <div class="item-region region-col">{{ item.province || '区域名称' }}</div>
+              <div class="item-region region-col">{{ item.province || '' }}</div>
               <div class="item-team team-col">{{ item.memberCount || 0 }}</div>
             </div>
           </div>
