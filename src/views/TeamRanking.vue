@@ -20,62 +20,62 @@
       <!-- 前三名展示区 -->
       <div class="top-three">
         <!-- 第二名 -->
-        <div v-if="topThree.length >= 2" class="top-item top-2">
+        <div class="top-item top-2">
           <div class="avatar-container">
             <div class="avatar">
-              <img :src="topThree[1].avatar && topThree[1].avatar !== '' ? topThree[1].avatar : '/logo主图形.png'" alt="头像" />
+              <img v-if="topThree.length >= 2" :src="topThree[1].avatar && topThree[1].avatar !== '' ? topThree[1].avatar : '/logo主图形.png'" alt="头像" />
             </div>
             <div class="top-badge">
               <img src="@/assets/团队长排行榜/团队长排行榜-top2.png" alt="TOP 2" />
             </div>
           </div>
           <div class="user-info">
-            <div class="name">{{ topThree[1].realName || '姓*名' }}</div>
-            <div class="region">{{ topThree[1].province || '区域名称' }}</div>
+            <div class="name">{{ (topThree.length >= 2 && topThree[1].realName) || '' }}</div>
+            <div class="region">{{ (topThree.length >= 2 && topThree[1].province) || '' }}</div>
             <div class="light-effect-wrapper">
               <img src="@/assets/团队长排行榜/团队长排行榜-光效线条.png" alt="光效" class="light-effect" />
             </div>
-            <div class="score">{{ topThree[1].memberCount || 0 }}</div>
+            <div class="score">{{  (topThree.length >= 2 && topThree[1].memberCount) || '' }}</div>
           </div>
         </div>
 
         <!-- 第一名 -->
-        <div v-if="topThree.length >= 1" class="top-item top-1">
+        <div class="top-item top-1">
           <div class="avatar-container">
             <div class="avatar">
-              <img :src="topThree[0].avatar && topThree[0].avatar !== '' ? topThree[0].avatar : '/logo主图形.png'" alt="头像" />
+              <img  v-if="topThree.length >= 1" :src="topThree[0].avatar && topThree[0].avatar !== '' ? topThree[0].avatar : '/logo主图形.png'" alt="头像" />
             </div>
             <div class="top-badge">
               <img src="@/assets/团队长排行榜/团队长排行榜-top1.png" alt="TOP 1" />
             </div>
           </div>
           <div class="user-info">
-            <div class="name">{{ topThree[0].realName || '姓*名' }}</div>
-            <div class="region">{{ topThree[0].province || '区域名称' }}</div>
+            <div class="name">{{ (topThree.length >= 1 && topThree[0].realName) || '' }}</div>
+            <div class="region">{{ (topThree.length >= 1 && topThree[0].province) || '' }}</div>
             <div class="light-effect-wrapper">
               <img src="@/assets/团队长排行榜/团队长排行榜-光效线条.png" alt="光效" class="light-effect" />
             </div>
-            <div class="score">{{ topThree[0].memberCount || 0 }}</div>
+            <div class="score">{{  (topThree.length >= 1 && topThree[0].memberCount) || '' }}</div>
           </div>
         </div>
 
         <!-- 第三名 -->
-        <div v-if="topThree.length >= 3" class="top-item top-3">
+        <div class="top-item top-3">
           <div class="avatar-container">
             <div class="avatar">
-              <img :src="topThree[2].avatar && topThree[2].avatar !== '' ? topThree[2].avatar : '/logo主图形.png'" alt="头像" />
+              <img v-if="topThree.length >= 3" :src="topThree[2].avatar && topThree[2].avatar !== '' ? topThree[2].avatar : '/logo主图形.png'" alt="头像" />
             </div>
             <div class="top-badge">
               <img src="@/assets/团队长排行榜/团队长排行榜-top3.png" alt="TOP 3" />
             </div>
           </div>
           <div class="user-info">
-            <div class="name">{{ topThree[2].realName || '姓*名' }}</div>
-            <div class="region">{{ topThree[2].province || '区域名称' }}</div>
+            <div class="name">{{ (topThree.length >= 3 && topThree[2].realName) ||  ''}}</div>
+            <div class="region">{{ (topThree.length >= 3 && topThree[2].province) || '' }}</div>
             <div class="light-effect-wrapper">
               <img src="@/assets/团队长排行榜/团队长排行榜-光效线条.png" alt="光效" class="light-effect" />
             </div>
-            <div class="score">{{ topThree[2].memberCount || 0 }}</div>
+            <div class="score">{{  (topThree.length >= 3 && topThree[2].memberCount) || '' }}</div>
           </div>
         </div>
       </div>
@@ -118,13 +118,13 @@
       </div>
 
       <!-- 当前排名 -->
-      <div class="current-rank">
+      <div class="current-rank" v-if="myRank">
         <div class="rank-info">
-          <span class="rank-label">{{ myRank && myRank.rank ? (myRank.rank > 100 ? '100+' : myRank.rank) : '未上榜' }}</span>
-          <span class="rank-desc">{{ myRank && myRank.rank ? '（我当前的排名）' : '' }}</span>
+          <span class="rank-label">{{ myRank.rank > 100 ? '100+' : myRank.rank }}</span>
+          <span class="rank-desc">{{ '（我当前的排名）'}}</span>
         </div>
-        <div class="region-name">{{ myRank ? (myRank.province || '区域名称') : '区域名称' }}</div>
-        <div class="team-count">{{ myRank ? (myRank.memberCount || 0) : 0 }}</div>
+        <div class="region-name">{{ myRank.province || '区域名称'}}</div>
+        <div class="team-count">{{ myRank.memberCount || 0}}</div>
       </div>
     </div>
   </div>
@@ -296,12 +296,14 @@ onMounted(() => {
   font-size: var(--font-size-base);
   font-weight: bold;
   margin-bottom: 4px;
+  height: 24px;
 }
 
 .region {
   font-size: var(--font-size-small);
   opacity: 0.9;
   margin-bottom: 4px;
+  height: 24px;
 }
 
 .light-effect-wrapper {
@@ -323,6 +325,7 @@ onMounted(() => {
 .score {
   font-size: var(--font-size-base);
   font-weight: bold;
+  height: 24px;
 }
 
 /* 颁奖台 */
