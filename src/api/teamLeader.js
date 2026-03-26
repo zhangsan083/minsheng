@@ -37,7 +37,9 @@ export function getTeamLeaderRevenue(params) {
 
 // 领取团队长任务奖励
 export function claimTeamLeaderTask(id) {
-  return request.post('/teamLeader/task/claim', { id })
+  return request.post('/teamLeader/task/claim', {}, {
+    params: { id }
+  })
 }
 
 // 获取团队长排行榜数据

@@ -259,14 +259,6 @@ const teamLeaderInfo = ref({
   teamTaskVerifiedList: []
 })
 
-const reviewStatusText = computed(() => {
-  const status = teamLeaderInfo.value.teamLeaderReviewStatus
-  if (status === '0' || status === 0) return '待审核'
-  if (status === '1' || status === 1) return '审核通过'
-  if (status === '2' || status === 2) return '审核驳回'
-  return ''
-})
-
 const applicationButtonText = computed(() => {
   const status = teamLeaderInfo.value.teamLeaderReviewStatus
   // 如果没有审核状态（为空或未定义），显示"立即申请"
