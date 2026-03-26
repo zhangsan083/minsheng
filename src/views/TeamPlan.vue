@@ -167,7 +167,11 @@
                   <div class="reward-name">邀请人数 {{ task.inviteCount || 0 }} 人</div>
                   <div class="reward-amount">奖励金额：{{ task.rewardAmount || 0 }} 元</div>
                 </div>
-                <div class="reward-btn" :class="{ disabled: !isLeader || task.status !== 1 }">
+                <div 
+                  class="reward-btn" 
+                  :class="{ disabled: !isLeader || task.status !== 1 }"
+                  @click="task.status === 1 && claimReward(task.id)"
+                >
                   {{task.status === 0 ? '待完成' : task.status === 1 ? '待领取' : '已领取' }}
                 </div>
               </div>
@@ -192,7 +196,11 @@
                   <div class="reward-name">激活人数 {{ task.inviteCount || 0 }} 人</div>
                   <div class="reward-amount">奖励金额：{{ task.rewardAmount || 0 }} 元</div>
                 </div>
-                <div class="reward-btn" :class="{ disabled: !isLeader || task.status !== 1 }">
+                <div 
+                  class="reward-btn" 
+                  :class="{ disabled: !isLeader || task.status !== 1 }"
+                  @click="task.status === 1 && claimReward(task.id)"
+                >
                   {{ task.status === 0 ? '待完成' : task.status === 1 ? '待领取' : '已领取' }}
                 </div>
               </div>
@@ -220,7 +228,7 @@ import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import { showToast } from 'vant'
-import { getTeamLeader, claimTeamLeaderSalary } from '@/api/teamLeader'
+import { getTeamLeader, claimTeamLeaderSalary, claimTeamLeaderTask } from '@/api/teamLeader'
 
 const router = useRouter()
 const userStore = useUserStore()
@@ -469,6 +477,22 @@ const fetchTeamLeaderInfo = async () => {
   } catch (error) {
     console.error('获取团队长信息失败:', error)
     showToast('团队长信息加载失败，请稍后重试')
+  }
+}
+
+const claimReward = async (taskId) => {
+  try {
+    const response = await claimTeamLeaderTask(taskId)
+    if (response.code === 200) {
+      showToast('领取成功')
+      // 重新获取团队长信息，更新任务状态
+      await fetchTeamLeaderInfo()
+    } else {
+      showToast(response.msg || '领取失败')
+    }
+  } catch (error) {
+    console.error('领取奖励失败:', error)
+    showToast('网络错误')
   }
 }
 

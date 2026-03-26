@@ -20,62 +20,62 @@
       <!-- 前三名展示区 -->
       <div class="top-three">
         <!-- 第二名 -->
-        <div class="top-item top-2">
+        <div v-if="topThree.length >= 2" class="top-item top-2">
           <div class="avatar-container">
             <div class="avatar">
-              <img src="@/assets/团队长合作计划/团队长合作计划-V.png" alt="头像" />
+              <img :src="topThree[1].avatar && topThree[1].avatar !== '' ? topThree[1].avatar : '/logo主图形.png'" alt="头像" />
             </div>
             <div class="top-badge">
               <img src="@/assets/团队长排行榜/团队长排行榜-top2.png" alt="TOP 2" />
             </div>
           </div>
           <div class="user-info">
-            <div class="name">姓*名</div>
-            <div class="region">区域名称</div>
+            <div class="name">{{ topThree[1].realName || '姓*名' }}</div>
+            <div class="region">{{ topThree[1].province || '区域名称' }}</div>
             <div class="light-effect-wrapper">
               <img src="@/assets/团队长排行榜/团队长排行榜-光效线条.png" alt="光效" class="light-effect" />
             </div>
-            <div class="score">0000</div>
+            <div class="score">{{ topThree[1].memberCount || 0 }}</div>
           </div>
         </div>
 
         <!-- 第一名 -->
-        <div class="top-item top-1">
+        <div v-if="topThree.length >= 1" class="top-item top-1">
           <div class="avatar-container">
             <div class="avatar">
-              <img src="@/assets/团队长合作计划/团队长合作计划-V.png" alt="头像" />
+              <img :src="topThree[0].avatar && topThree[0].avatar !== '' ? topThree[0].avatar : '/logo主图形.png'" alt="头像" />
             </div>
             <div class="top-badge">
               <img src="@/assets/团队长排行榜/团队长排行榜-top1.png" alt="TOP 1" />
             </div>
           </div>
           <div class="user-info">
-            <div class="name">姓*名</div>
-            <div class="region">区域名称</div>
+            <div class="name">{{ topThree[0].realName || '姓*名' }}</div>
+            <div class="region">{{ topThree[0].province || '区域名称' }}</div>
             <div class="light-effect-wrapper">
               <img src="@/assets/团队长排行榜/团队长排行榜-光效线条.png" alt="光效" class="light-effect" />
             </div>
-            <div class="score">0000</div>
+            <div class="score">{{ topThree[0].memberCount || 0 }}</div>
           </div>
         </div>
 
         <!-- 第三名 -->
-        <div class="top-item top-3">
+        <div v-if="topThree.length >= 3" class="top-item top-3">
           <div class="avatar-container">
             <div class="avatar">
-              <img src="@/assets/团队长合作计划/团队长合作计划-V.png" alt="头像" />
+              <img :src="topThree[2].avatar && topThree[2].avatar !== '' ? topThree[2].avatar : '/logo主图形.png'" alt="头像" />
             </div>
             <div class="top-badge">
               <img src="@/assets/团队长排行榜/团队长排行榜-top3.png" alt="TOP 3" />
             </div>
           </div>
           <div class="user-info">
-            <div class="name">姓*名</div>
-            <div class="region">区域名称</div>
+            <div class="name">{{ topThree[2].realName || '姓*名' }}</div>
+            <div class="region">{{ topThree[2].province || '区域名称' }}</div>
             <div class="light-effect-wrapper">
               <img src="@/assets/团队长排行榜/团队长排行榜-光效线条.png" alt="光效" class="light-effect" />
             </div>
-            <div class="score">0000</div>
+            <div class="score">{{ topThree[2].memberCount || 0 }}</div>
           </div>
         </div>
       </div>
@@ -94,12 +94,24 @@
           <div class="header-item team-col">团队人数</div>
         </div>
         <div class="list-body">
-          <div class="list-item" v-for="(item, index) in rankingList" :key="index" :class="{ 'item-highlight': (index + 1) % 2 === 0 }">
+          <div v-if="loading" class="loading-container">
+            <van-loading type="spinner" size="24px" />
+            <span class="loading-text">加载中...</span>
+          </div>
+          <div v-else-if="otherRanks.length === 0" class="empty-container">
+            <span>暂无更多排名数据</span>
+          </div>
+          <div v-else class="list-item" v-for="(item, index) in otherRanks" :key="item.leaderId" :class="{ 'item-highlight': (index + 1) % 2 === 0 }">
             <div class="item-content">
               <div class="item-rank rank-col">{{ item.rank }}</div>
-              <div class="item-user user-col">{{ item.userName }}</div>
-              <div class="item-region region-col">{{ item.region }}</div>
-              <div class="item-team team-col">{{ item.teamCount }}</div>
+              <div class="item-user user-col">
+                <div class="user-avatar" style="display: inline-block; width: 24px; height: 24px; border-radius: 50%; overflow: hidden; vertical-align: middle; margin-right: 8px;">
+                  <img :src="item.avatar && item.avatar !== '' ? item.avatar : '/logo主图形.png'" alt="头像" style="width: 100%; height: 100%; object-fit: cover;" />
+                </div>
+                {{ item.realName || '姓*' }}
+              </div>
+              <div class="item-region region-col">{{ item.province || '区域名称' }}</div>
+              <div class="item-team team-col">{{ item.memberCount || 0 }}</div>
             </div>
           </div>
         </div>
@@ -108,36 +120,63 @@
       <!-- 当前排名 -->
       <div class="current-rank">
         <div class="rank-info">
-          <span class="rank-label">100+</span>
-          <span class="rank-desc">（我当前的排名）</span>
+          <span class="rank-label">{{ myRank && myRank.rank ? (myRank.rank > 100 ? '100+' : myRank.rank) : '未上榜' }}</span>
+          <span class="rank-desc">{{ myRank && myRank.rank ? '（我当前的排名）' : '' }}</span>
         </div>
-        <div class="region-name">区域名称</div>
-        <div class="team-count">00</div>
+        <div class="region-name">{{ myRank ? (myRank.province || '区域名称') : '区域名称' }}</div>
+        <div class="team-count">{{ myRank ? (myRank.memberCount || 0) : 0 }}</div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { showToast, Loading } from 'vant'
+import { getTeamLeaderRank } from '@/api/teamLeader'
 
 const router = useRouter()
 
 // 排行榜数据
-const rankingList = ref([
-  { rank: 1, userName: '姓*', region: '区域名称', teamCount: '0000' },
-  { rank: 2, userName: '姓*', region: '区域名称', teamCount: '0000' },
-  { rank: 3, userName: '姓*', region: '区域名称', teamCount: '0000' },
-  { rank: 4, userName: '姓*', region: '区域名称', teamCount: '0000' },
-  { rank: 5, userName: '姓*', region: '区域名称', teamCount: '0000' },
-  { rank: 6, userName: '姓*', region: '区域名称', teamCount: '0000' },
-  { rank: 7, userName: '姓*', region: '区域名称', teamCount: '0000' }
-])
+const rankList = ref([])
+const myRank = ref(null)
+const loading = ref(false)
+
+// 前三名数据
+const topThree = ref([])
+// 第四名及以后数据
+const otherRanks = ref([])
 
 const goBack = () => {
   router.back()
 }
+
+const fetchRankData = async () => {
+  loading.value = true
+  try {
+    const response = await getTeamLeaderRank()
+    if (response.code === 200) {
+      rankList.value = response.data.rankList || []
+      myRank.value = response.data.myRank || null
+      
+      // 分离前三名和其他排名
+      topThree.value = rankList.value.slice(0, 3)
+      otherRanks.value = rankList.value.slice(3)
+    } else {
+      showToast('获取排行榜数据失败')
+    }
+  } catch (error) {
+    console.error('获取排行榜数据失败:', error)
+    showToast('网络错误')
+  } finally {
+    loading.value = false
+  }
+}
+
+onMounted(() => {
+  fetchRankData()
+})
 </script>
 
 <style scoped>
@@ -361,6 +400,27 @@ const goBack = () => {
 
 .list-body {
   margin-top: 8px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+/* 滚动条样式 */
+.list-body::-webkit-scrollbar {
+  width: 4px;
+}
+
+.list-body::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 2px;
+}
+
+.list-body::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 2px;
+}
+
+.list-body::-webkit-scrollbar-thumb:hover {
+  background: #a1a1a1;
 }
 
 .list-item {
@@ -401,6 +461,29 @@ const goBack = () => {
   text-align: center;
   color: #0944fc;
   font-weight: 500;
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 0;
+  gap: 12px;
+}
+
+.loading-text {
+  font-size: var(--font-size-small);
+  color: #666;
+}
+
+.empty-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 0;
+  font-size: var(--font-size-small);
+  color: #999;
 }
 
 /* 当前排名 */
