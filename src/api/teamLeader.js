@@ -20,6 +20,11 @@ export function claimTeamLeaderSalary(data) {
   return request.post('/teamLeader/salary/claim', data)
 }
 
+// 获取团队长信息
+export function getTeamLeaderInfo() {
+  return request.get('/teamLeader/info')
+}
+
 // 获取团队长福利等级信息
 export function getTeamLeaderWelfare() {
   return request.get('/teamLeader/welfare')

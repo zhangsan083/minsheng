@@ -120,11 +120,11 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed, onMounted as onMounted2 } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import { showToast, Loading, Tabbar, TabbarItem } from 'vant'
-import { getTeamLeaderRevenue } from '@/api/teamLeader'
+import { getTeamLeaderRevenue, getTeamLeaderInfo } from '@/api/teamLeader'
 
 const router = useRouter()
 const route = useRoute()
@@ -164,7 +164,7 @@ const goBack = () => {
 }
 
 const copyInviteCode = () => {
-  const inviteCode = userInfo.value.inviteCode || ''
+  const inviteCode = userInfo.value.inviteCode || '000000'
   navigator.clipboard.writeText(inviteCode).then(() => {
     showToast('邀请码已复制')
   }).catch(err => {
@@ -219,39 +219,36 @@ const loadMore = () => {
   fetchEarningsData(true)
 }
 
-onMounted(() => {
-  // 从路由参数中获取团队长信息
-  const routeTeamLeaderInfo = route.query.teamLeaderInfo
-  if (routeTeamLeaderInfo) {
-    try {
-      const parsedInfo = JSON.parse(routeTeamLeaderInfo)
-      teamLeaderInfo.value = {
-        teamLeaderLevelName: parsedInfo.teamLeaderLevelName || '',
-        invitationName: parsedInfo.invitationName || ''
-      }
-      
+const getTeamLeaderData = async () => {
+  try {
+    const response = await getTeamLeaderInfo()
+    if (response.code === 200) {
+      const data = response.data
       // 更新用户信息
       userInfo.value = {
-        avatar: parsedInfo.avatar || userInfo.value.avatar,
-        realName: parsedInfo.realName || userInfo.value.realName,
-        inviteCode: parsedInfo.invitationCode || userInfo.value.inviteCode || ''
+        avatar: data.avatar || '',
+        realName: data.realName || '未设置',
+        inviteCode: data.invitationCode || '000000'
       }
-    } catch (error) {
-      console.error('解析团队长信息失败:', error)
+      // 更新团队长信息
+      teamLeaderInfo.value = {
+        teamLeaderLevelName: data.teamLeaderLevelName || '',
+        invitationName: data.invitationName || '无'
+      }
+    } else {
+      showToast('获取团队长信息失败')
     }
+  } catch (error) {
+    console.error('获取团队长信息失败:', error)
+    showToast('网络错误')
   }
-  
-  // 从用户存储中获取用户信息（作为备用）
-  if (userStore.userInfo) {
-    userInfo.value = {
-      avatar: userInfo.value.avatar || userStore.userInfo.avatar,
-      realName: userInfo.value.realName || userStore.userInfo.realName,
-      inviteCode: userInfo.value.inviteCode || userStore.userInfo.invitationCode || '000000'
-    }
-  }
-  
+}
+
+onMounted(async () => {
+  // 获取团队长信息
+  await getTeamLeaderData()
   // 获取收益数据
-  fetchEarningsData()
+  await fetchEarningsData()
   
   // 添加滚动事件监听
   const scrollContainer = document.querySelector('.earnings-list')
@@ -392,7 +389,6 @@ onMounted(() => {
   font-size: 12px;
   color: white;
   font-weight: 500;
-  width: 135px;
   align-self: end;
 }
 

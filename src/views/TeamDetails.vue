@@ -200,7 +200,7 @@ import { ref, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import { showToast, Loading } from 'vant'
-import { getTeamLeaderDetail } from '@/api/teamLeader'
+import { getTeamLeaderDetail, getTeamLeaderInfo } from '@/api/teamLeader'
 
 const router = useRouter()
 const route = useRoute()
@@ -264,39 +264,36 @@ const fetchTeamDetail = async () => {
   }
 }
 
-onMounted(() => {
-  // 从路由参数中获取团队长信息
-  const routeTeamLeaderInfo = route.query.teamLeaderInfo
-  if (routeTeamLeaderInfo) {
-    try {
-      const parsedInfo = JSON.parse(routeTeamLeaderInfo)
-      teamLeaderInfo.value = {
-        teamLeaderLevelName: parsedInfo.teamLeaderLevelName || '',
-        invitationName: parsedInfo.invitationName || ''
-      }
-      
+const getTeamLeaderData = async () => {
+  try {
+    const response = await getTeamLeaderInfo()
+    if (response.code === 200) {
+      const data = response.data
       // 更新用户信息
       userInfo.value = {
-        avatar: parsedInfo.avatar || userInfo.value.avatar,
-        realName: parsedInfo.realName || userInfo.value.realName,
-        inviteCode: parsedInfo.invitationCode || userInfo.value.inviteCode || ''
+        avatar: data.avatar || '',
+        realName: data.realName || '未设置',
+        inviteCode: data.invitationCode || '000000'
       }
-    } catch (error) {
-      console.error('解析团队长信息失败:', error)
+      // 更新团队长信息
+      teamLeaderInfo.value = {
+        teamLeaderLevelName: data.teamLeaderLevelName || '',
+        invitationName: data.invitationName || '无'
+      }
+    } else {
+      showToast('获取团队长信息失败')
     }
+  } catch (error) {
+    console.error('获取团队长信息失败:', error)
+    showToast('网络错误')
   }
-  
-  // 从用户存储中获取用户信息（作为备用）
-  if (userStore.userInfo) {
-    userInfo.value = {
-      avatar: userInfo.value.avatar || userStore.userInfo.avatar,
-      realName: userInfo.value.realName || userStore.userInfo.realName,
-      inviteCode: userInfo.value.inviteCode || userStore.userInfo.invitationCode || '000000'
-    }
-  }
-  
+}
+
+onMounted(async () => {
+  // 获取团队长信息
+  await getTeamLeaderData()
   // 获取团队详情数据
-  fetchTeamDetail()
+  await fetchTeamDetail()
 })
 </script>
 
@@ -426,7 +423,6 @@ onMounted(() => {
   font-size: 12px;
   color: white;
   font-weight: 500;
-  width: 135px;
   align-self: end;
 }
 

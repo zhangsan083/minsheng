@@ -324,7 +324,7 @@ const goBack = () => {
 }
 
 const copyInviteCode = () => {
-  const inviteCode = teamLeaderInfo.value.invitationCode || userInfo.value.inviteCode || '000000'
+  const inviteCode = teamLeaderInfo.value.invitationCode || userInfo.value.inviteCode || ''
   navigator.clipboard.writeText(inviteCode).then(() => {
     showToast('邀请码已复制')
   }).catch(err => {
@@ -346,20 +346,8 @@ const goToTeamSalary = () => {
     return
   }
   try {
-    // 传递团队长信息作为路由参数
-    const teamLeaderInfoToPass = {
-      teamLeaderLevelName: teamLeaderInfo.value.teamLeaderLevelName,
-      invitationName: teamLeaderInfo.value.invitationName,
-      avatar: teamLeaderInfo.value.avatar,
-      realName: teamLeaderInfo.value.realName,
-      invitationCode: teamLeaderInfo.value.invitationCode
-    }
-    
     router.push({
-      name: 'team-salary',
-      query: {
-        teamLeaderInfo: JSON.stringify(teamLeaderInfoToPass)
-      }
+      name: 'team-salary'
     })
   } catch (error) {
     console.error('Navigation error:', error)
@@ -398,20 +386,8 @@ const goToTeamDetails = () => {
     return
   }
   try {
-    // 传递团队长信息作为路由参数
-    const teamLeaderInfoToPass = {
-      teamLeaderLevelName: teamLeaderInfo.value.teamLeaderLevelName,
-      invitationName: teamLeaderInfo.value.invitationName,
-      avatar: teamLeaderInfo.value.avatar,
-      realName: teamLeaderInfo.value.realName,
-      invitationCode: teamLeaderInfo.value.invitationCode
-    }
-    
     router.push({
-      name: 'team-details',
-      query: {
-        teamLeaderInfo: JSON.stringify(teamLeaderInfoToPass)
-      }
+      name: 'team-details'
     })
   } catch (error) {
     console.error('Navigation error:', error)
@@ -424,20 +400,8 @@ const goToTotalEarnings = () => {
     return
   }
   try {
-    // 传递团队长信息作为路由参数
-    const teamLeaderInfoToPass = {
-      teamLeaderLevelName: teamLeaderInfo.value.teamLeaderLevelName,
-      invitationName: teamLeaderInfo.value.invitationName,
-      avatar: teamLeaderInfo.value.avatar,
-      realName: teamLeaderInfo.value.realName,
-      invitationCode: teamLeaderInfo.value.invitationCode
-    }
-    
     router.push({
-      name: 'total-earnings',
-      query: {
-        teamLeaderInfo: JSON.stringify(teamLeaderInfoToPass)
-      }
+      name: 'total-earnings'
     })
   } catch (error) {
     console.error('Navigation error:', error)
