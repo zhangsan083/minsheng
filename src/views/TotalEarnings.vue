@@ -38,7 +38,7 @@
               </div>
               <div class="recommender-row">
                 <span class="label">推荐人：</span>
-                <span class="value">{{ teamLeaderInfo.invitationName || '' }}</span>
+                <span class="value">{{ teamLeaderInfo.invitationName || '无' }}</span>
               </div>
             </div>
           </div>

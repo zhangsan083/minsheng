@@ -307,12 +307,12 @@ const handleApplicationClick = () => {
 }
 
 const displayInviteName = computed(() => {
-  return teamLeaderInfo.value.invitationName || '暂无'
+  return teamLeaderInfo.value.invitationName || '无'
 })
 
 const teamLevelLabel = computed(() => {
   if (teamLeaderInfo.value.isTeamLeader === 1) {
-    return teamLeaderInfo.value.teamLeaderLevelName || '团队长'
+    return teamLeaderInfo.value.teamLeaderLevelName || ''
   }
   return '未获得团队长资格'
 })

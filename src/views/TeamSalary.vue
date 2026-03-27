@@ -34,11 +34,11 @@
                 <div class="level-icon">
                   <img src="@/assets/团队长合作计划/团队长合作计划-V.png" alt="图标" style="width:30px;height:30px;" />
                 </div>
-                <span>{{ teamLeaderInfo.teamLeaderLevelName || '初级团队长' }}</span>
+                <span>{{ teamLeaderInfo.teamLeaderLevelName || '' }}</span>
               </div>
               <div class="recommender-row">
                 <span class="label">推荐人：</span>
-                <span class="value">{{ teamLeaderInfo.invitationName || '姓名' }}</span>
+                <span class="value">{{ teamLeaderInfo.invitationName || '无' }}</span>
               </div>
             </div>
           </div>
