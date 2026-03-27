@@ -125,6 +125,7 @@
       v-model:show="showCalendar"
       @confirm="onDateConfirm"
       color="#2b7afb"
+      :min-date="new Date('1900-01-01')"
     />
     
     <!-- 资产范围搜索选择器 -->

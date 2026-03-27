@@ -266,16 +266,15 @@ onMounted(() => {
 }
 
 .badge {
-  background: var(--blue-gradient);
+  background: url('@/assets/资产/section-title.png') no-repeat center;
+  background-size: 100% auto;
   color: #fff;
   padding: 6px 32px;
   border-radius: 20px 20px 0 0;
-  clip-path: polygon(10% 0, 90% 0, 100% 100%, 0% 100%);
-  width: 120px;
+  width: 140px;
   text-align: center;
   font-weight: bold;
   font-size: var(--font-size-base);
-  box-shadow: 0 -2px 4px rgba(0,0,0,0.1);
 }
 
 /* Inner layout for the top card */
