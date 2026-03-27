@@ -40,10 +40,10 @@
             <strong>基础认证：</strong>姓名、手机号、身份证号（加密存储，仅用于风控审核）
           </p>
           <p class="text-indent">
-            <strong>社群共建：</strong>需加入数字钱包闪会官方群，并积极参与每次会议学习（直播/回放均可）以及进行资产备案登记。
+            <strong>社群共建：</strong>需加入数字钱包会聊官方群，并积极参与每次会议学习（直播/回放均可）以及进行资产备案登记。
           </p>
           <p class="text-indent">
-            想优先获得帮扶资金的用户需加入数字钱包【闪会官方群】，并积极参与官方会议和回放，依据参与程度和平台活跃度分配帮扶名额。此外，用户还需要进行资产备案登记，以确保符合帮扶要求。数字钱包的意义远不止于技术—它是无数追梦人携手共建的信任桥梁。
+            想优先获得帮扶资金的用户需加入数字钱包【会聊官方群】，并积极参与官方会议和回放，依据参与程度和平台活跃度分配帮扶名额。此外，用户还需要进行资产备案登记，以确保符合帮扶要求。数字钱包的意义远不止于技术—它是无数追梦人携手共建的信任桥梁。
           </p>
           <p class="text-indent">
             每一份微小善意的叠加，都能让财富流动成为照亮他人的光。您的每一分助力，都可能点燃一个尚未获得资产者的希望，我们的每一次共享，都在为“共同富裕”铺就一块基石。财富因流动而增值，善意因传递而永恒。
@@ -156,7 +156,7 @@
               >
                 <div class="upload-box">
                   <van-icon name="plus" class="upload-icon" />
-                  <div class="upload-text">上传加入闪会官方群截图</div>
+                  <div class="upload-text">上传加入会聊官方群截图</div>
                 </div>
               </van-uploader>
             </div>
@@ -195,7 +195,7 @@ const fileList1 = ref([]) // 身份证正面
 const fileList2 = ref([]) // 身份证背面
 const fileList3 = ref([]) // 参加官方会议截图
 const fileList4 = ref([]) // 资产备案登记截图
-const fileList5 = ref([]) // 加入闪会官方群截图
+const fileList5 = ref([]) // 加入会聊官方群截图
 
 const hasApplied = ref(false)
 const reviewStatus = ref('')
@@ -307,7 +307,7 @@ const onSubmit = async () => {
   if (!checkFiles(fileList2.value, '身份证背面照')) return
   if (!checkFiles(fileList3.value, '参加官方会议截图')) return
   if (!checkFiles(fileList4.value, '资产备案登记截图')) return
-  if (!checkFiles(fileList5.value, '加入闪会官方群截图')) return
+  if (!checkFiles(fileList5.value, '加入会聊官方群截图')) return
   
   // 构建请求参数
   const params = {
