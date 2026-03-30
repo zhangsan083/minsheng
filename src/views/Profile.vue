@@ -68,10 +68,10 @@
 
       <!-- Quick Actions -->
       <div class="action-grid">
-        <div class="action-btn-item" @click="goRecharge">
+        <!-- <div class="action-btn-item" @click="goRecharge">
           <div class="action-icon blue-light-bg"><img :src="iconAction1" class="action-img" /></div>
           <div class="action-text">立即充值</div>
-        </div>
+        </div> -->
         <div class="action-btn-item" @click="goWithdraw">
           <div class="action-icon blue-light-bg"><img :src="iconAction2" class="action-img" /></div>
           <div class="action-text">立即提现</div>
