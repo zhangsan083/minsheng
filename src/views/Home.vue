@@ -204,6 +204,7 @@
         close-on-click-overlay
         teleport="body"
         :lock-scroll="false"
+        @close="handleNoticeClose"
       >
         <div class="notice-dialog-content">
           <div class="notice-dialog-header">
@@ -211,7 +212,7 @@
           </div>
           <div class="notice-dialog-body">
             <div class="notice-content-container">
-              <div class="notice-content" v-if="homeData.bulletinPopup && homeData.bulletinPopup.content" v-html="homeData.bulletinPopup.content"></div>
+              <div class="notice-content" v-if="currentBulletin && currentBulletin.content" v-html="currentBulletin.content"></div>
             </div>
           </div>
           <div class="notice-dialog-footer">
@@ -220,7 +221,7 @@
               round 
               block 
               class="notice-btn"
-              @click="showNoticeDialog = false"
+              @click="handleNoticeClose"
             >
               知道了
             </van-button>
@@ -245,9 +246,10 @@ const route = useRoute()
 const userStore = useUserStore()
 
 const showNoticeDialog = ref(false)
+const currentBulletinIndex = ref(0)
 const homeData = ref({
   publicizeVod: '',
-  bulletinPopup: null,
+  bulletinPopupList: [],
   bulletin: null,
   newsList: []
 })
@@ -259,25 +261,35 @@ const loadHomeData = async () => {
     const res = await getHomeIndex()
     if (res.code === 200 && res.data) {
       // 处理公告内容，移除图片的内联 width 属性
-      let processedBulletin = res.data.bulletinPopup
-      if (processedBulletin && processedBulletin.content) {
-        let processedContent = processedBulletin.content
-        // 移除图片的内联 width 属性
-        processedContent = processedContent.replace(/<img[^>]*width="[^"]*"[^>]*>/g, (match) => {
-          return match.replace(/width="[^"]*"/g, '')
-        })
-        // 移除图片的内联 style 属性中的 width
-        processedContent = processedContent.replace(/<img[^>]*style="[^"]*width:[^;]*;?[^"]*"[^>]*>/g, (match) => {
-          return match.replace(/width:[^;]*;?/g, '')
-        })
-        processedBulletin.content = processedContent
-      }
+      let processedBulletins = res.data.bulletinPopupList || []
+      processedBulletins = processedBulletins.map(bulletin => {
+        if (bulletin.content) {
+          let processedContent = bulletin.content
+          // 移除图片的内联 width 属性
+          processedContent = processedContent.replace(/<img[^>]*width="[^"]*"[^>]*>/g, (match) => {
+            return match.replace(/width="[^"]*"/g, '')
+          })
+          // 移除图片的内联 style 属性中的 width
+          processedContent = processedContent.replace(/<img[^>]*style="[^"]*width:[^;]*;?[^"]*"[^>]*>/g, (match) => {
+            return match.replace(/width:[^;]*;?/g, '')
+          })
+          bulletin.content = processedContent
+        }
+        return bulletin
+      })
       
       homeData.value = {
         publicizeVod: res.data.publicizeVod,
-        bulletinPopup: processedBulletin,
+        bulletinPopupList: processedBulletins,
         bulletin: res.data.bulletin,
         newsList: res.data.newsList || []
+      }
+      
+      // 重置当前公告索引
+      currentBulletinIndex.value = 0
+      // 如果有公告，显示第一个
+      if (processedBulletins.length > 0) {
+        showNoticeDialog.value = true
       }
     }
   } catch (error) {
@@ -287,14 +299,18 @@ const loadHomeData = async () => {
 
 onMounted(() => {
   loadHomeData()
-  showNoticeDialog.value = true
 })
 
 watch(
   () => route.path,
   (newPath) => {
     if (newPath === '/home') {
-      showNoticeDialog.value = true
+      // 重置当前公告索引
+      currentBulletinIndex.value = 0
+      // 如果有公告，显示第一个
+      if (homeData.value.bulletinPopupList.length > 0) {
+        showNoticeDialog.value = true
+      }
     }
   }
 )
@@ -427,6 +443,24 @@ const goTeamPlan = () => {
 }
 
 const recordCode = ref('')
+
+const currentBulletin = computed(() => {
+  return homeData.value.bulletinPopupList[currentBulletinIndex.value] || null
+})
+
+const handleNoticeClose = () => {
+  // 增加索引，准备显示下一个公告
+  currentBulletinIndex.value++
+  // 如果还有公告，显示下一个
+  if (currentBulletinIndex.value < homeData.value.bulletinPopupList.length) {
+    // 保持对话框显示，会自动显示下一个公告
+  } else {
+    // 所有公告都已显示，关闭对话框
+    showNoticeDialog.value = false
+    // 重置索引，以便下次进入首页时重新显示所有公告
+    currentBulletinIndex.value = 0
+  }
+}
 </script>
 
 <style scoped>
