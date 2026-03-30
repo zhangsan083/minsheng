@@ -40,7 +40,7 @@
       <!-- Description Text -->
       <div class="desc-card">
         <div class="desc-text">
-          因需在央行存档报备原因，数字钱包在新年来临之际推出专项支付服务，可通过民生计划将确认额度，转换为可临时改善生活的民生消费金。
+          因需在央行存档报备原因，民生资产在新年来临之际推出专项支付服务，可通过民生计划将确认额度，转换为可临时改善生活的民生消费金。
         </div>
         
         <div class="desc-item">
@@ -53,7 +53,7 @@
         </div>
         <div class="desc-item">
           <div class="desc-title text-blue">说明三：资金划转</div>
-          <div class="desc-content">认购成功后，民生消费额度可等额、安全地划转成通用的"民生消费金"，并进入数字钱包专属账户</div>
+          <div class="desc-content">认购成功后，民生消费额度可等额、安全地划转成通用的"民生消费金"，并进入民生资产专属账户</div>
         </div>
         <div class="desc-item">
           <div class="desc-title text-blue">说明四：民生消费</div>
@@ -62,7 +62,7 @@
       </div>
 
       <div class="section-intro">
-        为切实保障民生，数字钱包将提供“转换无忧”服务。在民生消费额度支付开启等待空窗期，系统将根据民生计划不同的关怀产品，提供相对应的不等收益，保障用户应急需求。
+        为切实保障民生，民生资产将提供“转换无忧”服务。在民生消费额度支付开启等待空窗期，系统将根据民生计划不同的关怀产品，提供相对应的不等收益，保障用户应急需求。
       </div>
 
       <!-- Mechanism Section -->

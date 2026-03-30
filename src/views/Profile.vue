@@ -51,7 +51,7 @@
         </div>
         <!-- <div class="divider"></div>
         <div class="verify-gold-row">
-          <div class="verify-label">数字钱包账户验证金：</div>
+          <div class="verify-label">民生资产账户验证金：</div>
           <div class="verify-value">¥ 000000</div>
           <div class="verify-link" @click="showToast('查看验证金')">去查看 <img :src="iconMore" class="more-icon" /></div>
         </div> -->
