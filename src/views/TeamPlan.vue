@@ -211,12 +211,12 @@
       </div> -->
 
       <!-- 规则说明 -->
-      <div class="rule-section">
+      <!-- <div class="rule-section">
         <div class="target-title">规则说明</div>
         <div class="rule-content">
           <p>规则内容规则内容规则内容规则内容规则内容规则内容规则内容规则内容规则内容规则内容规则内容规则内容规则内容规则内容规则内容规则内容规则内容规则内容规则内容规则内容规则内容规则内容规则内容规则内容规则内容规则内容规则内容规则内容规则内容</p>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -880,7 +880,7 @@ onMounted(async () => {
   background: white;
   border-radius: 12px;
   padding: 30px 20px 20px;
-  margin-bottom: 24px;
+  margin-bottom: 80px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   position: relative;
 }
