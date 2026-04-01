@@ -103,8 +103,8 @@
             </div>
           </div>
         </div>
-        <div class="salary-btn" :class="{ disabled: !isLeader || teamLeaderInfo.teamSalary.receiveStatus === '1' || teamLeaderInfo.teamSalary.receiveStatus === '' }" @click="claimSalary">
-          {{ !teamLeaderInfo.teamSalary ? '领取团队长工资' : teamLeaderInfo.teamSalary.receiveStatus === '1' ? '已领取' : '领取团队长工资' }}
+        <div class="salary-btn" :class="{ disabled: !isLeader || teamLeaderInfo.teamSalary.id===0 }" @click="claimSalary">
+          {{ teamLeaderInfo.teamSalary.receiveStatus === '1' ? '已领取' : '领取团队长工资' }}
         </div>
       </div>
 
@@ -356,7 +356,7 @@ const claimSalary = async () => {
   if (!isLeader.value) {
     return
   }
-  if (teamLeaderInfo.value.teamSalary.receiveStatus === '1' || teamLeaderInfo.value.teamSalary.receiveStatus === '') {
+  if (teamLeaderInfo.value.teamSalary.id === 0) {
     return
   }
 
