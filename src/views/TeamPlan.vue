@@ -152,13 +152,12 @@
       </div>
 
       <!-- 奖励卡片 -->
-      <div class="reward-card">
-          <div class="reward-title">
-            <span class="dot"></span>
-            当日直属邀请注册实名奖励
-            <span class="dot"></span>
-          </div>
-        <!-- 当日直属邀请注册实名奖励 -->
+      <!-- <div class="reward-card">
+        <div class="reward-title">
+          <span class="dot"></span>
+          当日直属邀请注册实名奖励
+          <span class="dot"></span>
+        </div>
         <div class="reward-section">
           <div class="reward-content">
             <template v-if="teamLeaderInfo.teamTaskVerifiedList.length > 0">
@@ -182,8 +181,7 @@
           </div>
         </div>
 
-        <!-- 当日直属邀请激活奖励 -->
-        <!-- <div class="reward-title">
+        <div class="reward-title">
           <span class="dot"></span>
           当日直属邀请激活奖励
           <span class="dot"></span>
@@ -209,8 +207,8 @@
               <div class="reward-info">暂无激活任务</div>
             </div>
           </div>
-        </div> -->
-      </div>
+        </div>
+      </div> -->
 
       <!-- 规则说明 -->
       <div class="rule-section">
@@ -362,12 +360,8 @@ const claimSalary = async () => {
     return
   }
 
-  const payload = {
-    id: teamLeaderInfo.value.teamSalary.id
-  }
-
   try {
-    const res = await claimTeamLeaderSalary(payload)
+    const res = await claimTeamLeaderSalary(teamLeaderInfo.value.teamSalary.id)
     if (res && (res.code === 0 || res.code === 200)) {
       showToast('领取成功')
       await fetchTeamLeaderInfo()

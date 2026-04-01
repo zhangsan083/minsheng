@@ -60,10 +60,10 @@
       <div class="team-section">
         <div class="section-header">一级团队</div>
         <div class="section-content">
-          <div class="total-amount">
+          <!-- <div class="total-amount">
             <span class="label">总消费金额</span>
             <span class="value">0000</span>
-          </div>
+          </div> -->
           <div class="stats-row">
             <div class="stat-item">
               <span class="label">总人数</span>
@@ -94,10 +94,10 @@
       <div class="team-section">
         <div class="section-header">二级团队</div>
         <div class="section-content">
-          <div class="total-amount">
+          <!-- <div class="total-amount">
             <span class="label">总消费金额</span>
             <span class="value">0000</span>
-          </div>
+          </div> -->
           <div class="stats-row">
             <div class="stat-item">
               <span class="label">总人数</span>
@@ -128,10 +128,10 @@
       <div class="team-section last-team-section">
         <div class="section-header">三级团队</div>
         <div class="section-content">
-          <div class="total-amount">
+          <!-- <div class="total-amount">
             <span class="label">总消费金额</span>
             <span class="value">0000</span>
-          </div>
+          </div> -->
           <div class="stats-row">
             <div class="stat-item">
               <span class="label">总人数</span>

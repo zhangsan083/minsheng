@@ -71,7 +71,7 @@
 
         <!-- Payment Password Form -->
         <div v-else class="form-content">
-          <div class="form-group">
+          <div v-if="isPayPassword" class="form-group">
             <div class="form-label">原支付密码</div>
             <van-field
               v-model="paymentForm.oldPassword"
@@ -128,13 +128,16 @@
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue'
+import { ref, reactive, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { showToast } from 'vant'
 import { updatePassword } from '@/api/auth'
+import { useUserStore } from '@/stores/user'
 
 const router = useRouter()
+const userStore = useUserStore()
 const activeTab = ref('login') // Default to login
+const isPayPassword = ref(false) // 原支付密码是否存在
 
 const loginForm = reactive({
   oldPassword: '',
@@ -152,6 +155,12 @@ const paymentForm = reactive({
   showOld: false,
   showNew: false,
   showConfirm: false
+})
+
+onMounted(() => {
+  // 从缓存中获取 isPayPassword 字段，1表示有支付密码，0表示没有
+  const userInfo = userStore.userInfo
+  isPayPassword.value = userInfo?.isPayPassword === 1
 })
 
 const onClickLeft = () => {
@@ -190,7 +199,7 @@ const handleSubmit = async () => {
       showToast(error.msg || '修改失败，请重试')
     }
   } else {
-    if (!paymentForm.oldPassword || !paymentForm.newPassword || !paymentForm.confirmPassword) {
+    if (!paymentForm.newPassword || !paymentForm.confirmPassword) {
       showToast('请填写完整信息')
       return
     }
@@ -204,11 +213,21 @@ const handleSubmit = async () => {
     }
     
     try {
-      const res = await updatePassword({
-        oriPassword: paymentForm.oldPassword,
+      // 根据 isPayPassword 决定是否包含原支付密码
+      const payload = {
         newPassword: paymentForm.newPassword,
         type: '1' // 1支付密码
-      })
+      }
+      
+      if (isPayPassword.value) {
+        if (!paymentForm.oldPassword) {
+          showToast('请填写原支付密码')
+          return
+        }
+        payload.oriPassword = paymentForm.oldPassword
+      }
+      
+      const res = await updatePassword(payload)
       
       if (res.code === 0 || res.code === 200) {
         showToast('支付密码修改成功')

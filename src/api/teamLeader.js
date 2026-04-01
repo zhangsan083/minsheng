@@ -16,8 +16,10 @@ export function applyTeamLeader(data) {
 }
 
 // 领取团队长工资
-export function claimTeamLeaderSalary(data) {
-  return request.post('/teamLeader/salary/claim', data)
+export function claimTeamLeaderSalary(id) {
+  return request.post('/teamLeader/salary/claim', {}, {
+    params: { id }
+  })
 }
 
 // 获取团队长信息

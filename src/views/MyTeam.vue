@@ -201,7 +201,7 @@
           <div class="th">姓名</div>
           <div class="th">手机号</div>
           <div class="th">注册时间</div>
-          <div class="th">激活状态</div>
+          <div class="th">实名状态</div>
         </div>
         
         <van-list
@@ -211,11 +211,11 @@
           @load="onLoadMember"
         >
           <div class="table-row" v-for="item in memberList" :key="item.id">
-            <div class="td">{{ item.realName || '未实名' }}</div>
+            <div class="td">{{ item.realName || '无' }}</div>
             <div class="td">{{ item.phonenumber }}</div>
             <div class="td">{{ formatDate(item.createDt) }}</div>
             <div class="td" :class="item.isActivate === 1 ? 'status-active' : 'status-inactive'">
-              {{ item.isActivate === 1 ? '已激活' : '未激活' }}
+              {{ item.isActivate === 1 ? '已实名' : '未实名' }}
             </div>
           </div>
         </van-list>

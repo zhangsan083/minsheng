@@ -108,7 +108,7 @@
                 <div class="user-avatar" style="display: inline-block; width: 24px; height: 24px; border-radius: 50%; overflow: hidden; vertical-align: middle; margin-right: 8px;">
                   <img :src="item.avatar && item.avatar !== '' ? item.avatar : '/logo主图形.png'" alt="头像" style="width: 100%; height: 100%; object-fit: cover;" />
                 </div>
-                {{ item.realName || '' }}
+                <span class="user-name">{{ item.realName || '' }}</span>
               </div>
               <div class="item-region region-col">{{ item.province || '' }}</div>
               <div class="item-team team-col">{{ item.memberCount || 0 }}</div>
@@ -383,22 +383,38 @@ onMounted(() => {
 }
 
 .rank-col {
-  width: 60px;
+  width: 40px;
   flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .user-col {
-  flex: 1;
+  flex: 2;
+  min-width: 0;
+  white-space: nowrap;
+}
+
+.user-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+  max-width: 100%;
+  vertical-align: middle;
 }
 
 .region-col {
-  flex: 1.5;
+  flex: 2.5;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .team-col {
   width: 80px;
   flex-shrink: 0;
   color: #0944fc;
+  white-space: nowrap;
 }
 
 .list-body {

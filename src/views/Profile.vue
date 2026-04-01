@@ -33,7 +33,7 @@
         <div class="card-title">我的钱包</div>
         <div class="wallet-grid">
           <div class="wallet-item blue-box">
-            <div class="wallet-icon"><img :src="iconWallet1" class="wallet-icon-img" /> 充值余额</div>
+            <div class="wallet-icon"><img :src="iconWallet1" class="wallet-icon-img" /> 钱包余额</div>
             <div class="wallet-value">{{ formatAmount(userStore.userInfo?.depositBalance) }}</div>
           </div>
           <div class="wallet-item blue-box">

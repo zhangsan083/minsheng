@@ -23,11 +23,7 @@
           <van-field v-model="mobile" label="手机号码" placeholder="请输入手机号" type="tel" maxlength="11" @input="handlePhoneInput" />
           <van-field v-model="password" type="password" label="账号密码" placeholder="请输入密码" />
           <van-field v-model="confirm" type="password" label="确认密码" placeholder="请确认密码" />
-          <van-field v-model="paymentPassword" type="password" label="支付密码" placeholder="请输入支付密码" />
-          <van-field v-model="confirmPaymentPassword" type="password" label="确认支付密码" placeholder="请确认支付密码" />
           <van-field v-model="invite" label="邀请码" placeholder="请输入邀请码" />
-          <van-field v-model="realname" label="真实姓名" placeholder="请输入真实姓名" />
-          <van-field v-model="idcard" label="身份证号" placeholder="请如实填写身份证号" />
           <van-field
             v-model="captchaInput"
             label="验证码"
@@ -78,11 +74,7 @@ const user = useUserStore()
 const mobile = ref('')
 const password = ref('')
 const confirm = ref('')
-const paymentPassword = ref('')
-const confirmPaymentPassword = ref('')
 const invite = ref('')
-const realname = ref('')
-const idcard = ref('')
 const captchaInput = ref('')
 const captchaImg = ref('')
 const uuid = ref('')
@@ -119,7 +111,7 @@ onMounted(() => {
 })
 
 const submit = () => {
-  if (!mobile.value || !password.value || !confirm.value || !captchaInput.value || !paymentPassword.value || !confirmPaymentPassword.value) {
+  if (!mobile.value || !password.value || !confirm.value || !captchaInput.value) {
     showToast('请完整填写信息')
     return
   }
@@ -127,27 +119,16 @@ const submit = () => {
     showToast('两次账号密码不一致')
     return
   }
-  if (paymentPassword.value !== confirmPaymentPassword.value) {
-    showToast('两次支付密码不一致')
-    return
-  }
   if (password.value.length < 6) {
     showToast('账号密码长度至少6位')
-    return
-  }
-  if (paymentPassword.value.length < 6) {
-    showToast('支付密码长度至少6位')
     return
   }
   
   loading.value = true
   const payload = {
-    idNumber: idcard.value || '',
     invitationCode: invite.value || '',
     phonenumber: mobile.value,
     password: password.value,
-    payPassword: paymentPassword.value,
-    realName: realname.value,
     code: captchaInput.value,
     uuid: uuid.value
   }

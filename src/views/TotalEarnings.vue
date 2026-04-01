@@ -441,8 +441,8 @@ onMounted(async () => {
 
 /* 收益项目标签 */
 .earnings-tags {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  display: flex;
+  flex-wrap: wrap;
   gap: 12px;
   margin-bottom: 16px;
 }
@@ -457,6 +457,8 @@ onMounted(async () => {
   font-weight: 500;
   cursor: pointer;
   transition: all 0.3s ease;
+  width: 76px;
+  box-sizing: border-box;
 }
 
 .tag-item.active {

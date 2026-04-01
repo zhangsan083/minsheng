@@ -37,7 +37,7 @@
               <div class="product-name">{{ item.goodsName }}</div>
               <div class="product-score">{{ item.score }}积分</div>
             </div>
-            <div class="product-tags">
+            <div class="product-tags" v-if="item.tags">
               <span v-for="(tag, index) in item.tags.split(',')" :key="index" class="product-tag">{{ tag }}</span>
             </div>
             <div class="product-stock">商品数量 {{ item.stock }} 件</div>
@@ -234,23 +234,26 @@ const goAddressManage = () => {
 }
 
 .product-name-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  display: block;
   margin-bottom: 8px;
+  width: 100%;
 }
 
 .product-name {
   font-size: var(--font-size-small);
   color: #333;
   font-weight: 500;
-  flex: 1;
+  margin-bottom: 4px;
+  word-wrap: break-word;
+  white-space: normal;
+  line-height: 1.4;
 }
 
 .product-score {
   font-size: var(--font-size-small);
-  color: #1890ff;
-  font-weight: bold;
+  color: #ff4d4f;
+  font-weight: 500;
+  text-align: right;
 }
 
 .product-tags {

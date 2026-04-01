@@ -63,7 +63,7 @@
             placeholder="请输入您的真实姓名"
             input-align="right"
             :border="false"
-            :disabled="hasApplied"
+            :disabled="hasApplied && reviewStatus !== '2'"
             class="form-item"
           />
           <div class="divider"></div>
@@ -74,7 +74,7 @@
             input-align="right"
             type="tel"
             :border="false"
-            :disabled="hasApplied"
+            :disabled="hasApplied && reviewStatus !== '2'"
             class="form-item"
           />
           <div class="divider"></div>
@@ -84,10 +84,17 @@
             placeholder="请输入您的身份证号码"
             input-align="right"
             :border="false"
-            :disabled="hasApplied"
+            :disabled="hasApplied && reviewStatus !== '2'"
             class="form-item"
           />
           <div class="divider"></div>
+          
+          <!-- 帮扶金额显示，仅当审核通过时显示 -->
+          <div v-if="hasApplied && reviewStatus === '1'" class="form-item">
+            <div class="form-label">帮扶金额：</div>
+            <div class="form-value">{{ amount || 0 }} 元</div>
+          </div>
+          <div v-if="hasApplied && reviewStatus === '1'" class="divider"></div>
 
           <div class="upload-grid">
             <div class="upload-item">
@@ -95,8 +102,8 @@
                 v-model="fileList1"
                 max-count="1"
                 :after-read="afterRead"
-                :disabled="hasApplied"
-                :deletable="!hasApplied"
+                :disabled="hasApplied && reviewStatus !== '2'"
+                :deletable="!hasApplied || reviewStatus === '2'"
               >
                 <div class="upload-box">
                   <van-icon name="plus" class="upload-icon" />
@@ -109,8 +116,8 @@
                 v-model="fileList2"
                 max-count="1"
                 :after-read="afterRead"
-                :disabled="hasApplied"
-                :deletable="!hasApplied"
+                :disabled="hasApplied && reviewStatus !== '2'"
+                :deletable="!hasApplied || reviewStatus === '2'"
               >
                 <div class="upload-box">
                   <van-icon name="plus" class="upload-icon" />
@@ -123,8 +130,8 @@
                 v-model="fileList3"
                 max-count="1"
                 :after-read="afterRead"
-                :disabled="hasApplied"
-                :deletable="!hasApplied"
+                :disabled="hasApplied && reviewStatus !== '2'"
+                :deletable="!hasApplied || reviewStatus === '2'"
               >
                 <div class="upload-box">
                   <van-icon name="plus" class="upload-icon" />
@@ -137,8 +144,8 @@
                 v-model="fileList4"
                 max-count="1"
                 :after-read="afterRead"
-                :disabled="hasApplied"
-                :deletable="!hasApplied"
+                :disabled="hasApplied && reviewStatus !== '2'"
+                :deletable="!hasApplied || reviewStatus === '2'"
               >
                 <div class="upload-box">
                   <van-icon name="plus" class="upload-icon" />
@@ -151,8 +158,8 @@
                 v-model="fileList5"
                 max-count="1"
                 :after-read="afterRead"
-                :disabled="hasApplied"
-                :deletable="!hasApplied"
+                :disabled="hasApplied && reviewStatus !== '2'"
+                :deletable="!hasApplied || reviewStatus === '2'"
               >
                 <div class="upload-box">
                   <van-icon name="plus" class="upload-icon" />
@@ -169,9 +176,9 @@
               type="primary" 
               native-type="submit" 
               class="submit-btn"
-              :disabled="hasApplied"
+              :disabled="hasApplied && reviewStatus !== '2'"
             >
-              {{ hasApplied ? '已提交' : '提交审核' }}
+              {{ hasApplied ? (reviewStatus && reviewStatus !== '2' ? getStatusText(reviewStatus) : '重新提交审核') : '提交审核' }}
             </van-button>
           </div>
         </van-form>
@@ -182,8 +189,11 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import { showToast } from 'vant'
 import { uploadFile, addAssistanceApply, getAssistanceApplyDetail } from '@/api/assets'
+
+const router = useRouter()
 
 const form = ref({
   name: '',
@@ -199,6 +209,7 @@ const fileList5 = ref([]) // 加入会聊官方群截图
 
 const hasApplied = ref(false)
 const reviewStatus = ref('')
+const amount = ref(0) // 帮扶金额
 
 const getStatusText = (status) => {
   const statusMap = {
@@ -215,46 +226,50 @@ const loadApplyDetail = async () => {
     if (res.code === 200 && res.data) {
       hasApplied.value = true
       reviewStatus.value = res.data.reviewStatus || ''
+      amount.value = res.data.amount || 0 // 获取帮扶金额
       // 可以在这里填充表单数据，以便用户查看
       form.value.name = res.data.realName || ''
       form.value.phone = res.data.phonenumber || ''
       form.value.idCard = res.data.idNumber || ''
       
-      // 填充图片数据
-      if (res.data.idFrontImg) {
-        fileList1.value = [{
-          url: res.data.idFrontImg,
-          status: 'done',
-          serverFileName: res.data.idFrontImg
-        }]
-      }
-      if (res.data.idBackImg) {
-        fileList2.value = [{
-          url: res.data.idBackImg,
-          status: 'done',
-          serverFileName: res.data.idBackImg
-        }]
-      }
-      if (res.data.meetingImg) {
-        fileList3.value = [{
-          url: res.data.meetingImg,
-          status: 'done',
-          serverFileName: res.data.meetingImg
-        }]
-      }
-      if (res.data.assetImg) {
-        fileList4.value = [{
-          url: res.data.assetImg,
-          status: 'done',
-          serverFileName: res.data.assetImg
-        }]
-      }
-      if (res.data.groupImg) {
-        fileList5.value = [{
-          url: res.data.groupImg,
-          status: 'done',
-          serverFileName: res.data.groupImg
-        }]
+      // 只有当审核状态不是驳回时，才填充图片数据
+      if (reviewStatus.value !== '2') {
+        // 填充图片数据
+        if (res.data.idFrontImg) {
+          fileList1.value = [{
+            url: res.data.idFrontImg,
+            status: 'done',
+            serverFileName: res.data.idFrontImg
+          }]
+        }
+        if (res.data.idBackImg) {
+          fileList2.value = [{
+            url: res.data.idBackImg,
+            status: 'done',
+            serverFileName: res.data.idBackImg
+          }]
+        }
+        if (res.data.meetingImg) {
+          fileList3.value = [{
+            url: res.data.meetingImg,
+            status: 'done',
+            serverFileName: res.data.meetingImg
+          }]
+        }
+        if (res.data.assetImg) {
+          fileList4.value = [{
+            url: res.data.assetImg,
+            status: 'done',
+            serverFileName: res.data.assetImg
+          }]
+        }
+        if (res.data.groupImg) {
+          fileList5.value = [{
+            url: res.data.groupImg,
+            status: 'done',
+            serverFileName: res.data.groupImg
+          }]
+        }
       }
     }
   } catch (error) {
@@ -326,7 +341,11 @@ const onSubmit = async () => {
     if (res.code === 200) {
       showToast('提交申请成功')
       hasApplied.value = true
-      // 可以在这里跳转到成功页面或返回上一页
+      reviewStatus.value = '0'
+      // 返回上一页
+      setTimeout(() => {
+        router.back()
+      }, 1500)
     } else {
       showToast(res.msg || '提交失败')
     }
@@ -460,6 +479,21 @@ onMounted(() => {
 
 .form-item {
   padding: 8px 0;
+}
+
+.form-label {
+  width: 100px;
+  color: #333;
+  font-weight: 500;
+  font-size: var(--font-size-base);
+  display: inline-block;
+}
+
+.form-value {
+  color: #c8c9cc;
+  font-weight: 500;
+  font-size: var(--font-size-xs);
+  float: right;
 }
 
 .divider {
