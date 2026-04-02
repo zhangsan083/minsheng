@@ -1,0 +1,1 @@
+import{i as e}from"./index-BIffKO3f.js";function a(){return e.get("/consumer/team")}function r(a){return e.get("/consumer/team/data",{params:a})}function t(a){return e.get("/consumer/team/memberPage",{params:a})}export{r as a,t as b,a as g};

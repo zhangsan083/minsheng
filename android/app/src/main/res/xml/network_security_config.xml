@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <!-- 关键：允许所有明文传输（HTTP） -->
+    <base-config cleartextTrafficPermitted="true" />
+    
+    <!-- 保留调试功能，方便抓包排查 -->
+    <debug-overrides>
+        <trust-anchors>
+            <certificates src="user" />
+        </trust-anchors>
+    </debug-overrides>
+</network-security-config>

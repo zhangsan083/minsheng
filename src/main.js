@@ -11,6 +11,7 @@ import 'vant/es/image-preview/style'
 
 import { useUserStore } from './stores/user'
 import { useConfigStore } from './stores/config'
+import { StatusBar, Style } from '@capacitor/status-bar'
 
 const app = createApp(App)
 
@@ -31,3 +32,7 @@ config.loadConfig().finally(() => {
 app.use(router)
 
 app.mount('#app')
+
+// 初始化状态栏配置
+StatusBar.setStyle({ style: Style.Light })
+StatusBar.setOverlaysWebView({ overlay: true })

@@ -1,6 +1,6 @@
 <template>
   <div class="page">
-    <div class="header-bg">
+    <div class="header-bg" :class="{ 'browser-safe-area': !isApp }">
       <van-nav-bar
         title="登录"
         :border="false"
@@ -51,6 +51,8 @@ import { useUserStore } from '@/stores/user'
 import { login as loginApi, getUserInfo } from '@/api/auth'
 import { showToast, showDialog } from 'vant'
 
+// 环境检测：判断是否在App环境中
+const isApp = ref(navigator.userAgent.includes('MinshengApp'))
 const mobile = ref('')
 const password = ref('')
 const remember = ref(false)
@@ -147,6 +149,12 @@ const handlePhoneInput = (e) => {
   background: var(--blue-gradient);
   position: relative;
   z-index: 1;
+}
+
+/* 只在浏览器环境下添加安全区域样式 */
+.header-bg.browser-safe-area {
+  padding-top: constant(safe-area-inset-top);
+  padding-top: env(safe-area-inset-top);
 }
 
 .card__banner {

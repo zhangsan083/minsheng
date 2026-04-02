@@ -1,0 +1,9 @@
+{
+  "appId": "com.minsheng.app",
+  "appName": "民生资产",
+  "webDir": "dist",
+  "server": {
+    "cleartext": true,
+    "allowNavigation": ["*"]
+  }
+}

@@ -77,7 +77,7 @@
               </div>
               <div class="item-footer">
                 <div class="item-time">会议时间: {{ item.conferenceDt }}</div>
-                <div class="item-count">{{ item.viewCount || 0 }}人次观看</div>
+                <div class="item-count">{{ item.browse}}人次观看</div>
               </div>
             </div>
           </div>

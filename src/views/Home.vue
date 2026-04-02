@@ -2,7 +2,7 @@
   <div class="page">
     <!-- 顶部 Header -->
     <div class="header">
-      <div class="header__top">
+      <div class="header__top" :class="{ 'browser-safe-area': !isApp }">
         <div class="brand">
           <img src="@/assets/首页/logo图标.png" class="logo" alt="logo" />
           <div class="title">民 生 资 产</div>
@@ -241,6 +241,8 @@ import { getHomeIndex } from '@/api/home'
 
 import noticeBg from '@/assets/首页/弹窗海报.png'
 
+// 环境检测：判断是否在App环境中
+const isApp = ref(navigator.userAgent.includes('MinshengApp'))
 const router = useRouter()
 const route = useRoute()
 const userStore = useUserStore()
@@ -499,6 +501,12 @@ const handleNoticeClose = () => {
   margin-bottom: 0;
   display: flex;
   flex-direction: column;
+}
+
+/* 只在浏览器环境下添加安全区域样式 */
+.header__top.browser-safe-area {
+  padding-top: calc(40px + constant(safe-area-inset-top));
+  padding-top: calc(40px + env(safe-area-inset-top));
 }
 .brand {
   display: flex;

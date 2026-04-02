@@ -115,22 +115,18 @@ export const useConfigStore = defineStore('config', {
       }
       
       try {
-        const mode = import.meta.env.VITE_CONFIG_MODE || 'auto'
+        // 强制使用 URL 模式，直接通过 HTTP 请求获取配置，避免 COS SDK 配置问题
+        const mode = 'url'
         // 构建候选配置地址列表：优先使用环境变量
         const candidateUrls = [
-           import.meta.env.VITE_ENABLE_TENCENT !== 'false' ? import.meta.env.VITE_CONFIG_URL_COS : null
+          import.meta.env.VITE_CONFIG_URL_COS
         ].filter(Boolean)
 
         const config = await configLoader.init({
           mode,
-          tencent: import.meta.env.VITE_ENABLE_TENCENT !== 'false' ? {
-            SecretId: import.meta.env.VITE_TENCENT_SECRET_ID,
-            SecretKey: import.meta.env.VITE_TENCENT_SECRET_KEY,
-            Region: import.meta.env.VITE_TENCENT_REGION,
-            Bucket: import.meta.env.VITE_TENCENT_BUCKET,
-            Key: import.meta.env.VITE_TENCENT_KEY
-          } : undefined,
-          // 远程配置地址，包含同源兜底，避免 CORS 阻塞
+          // 禁用腾讯云 COS SDK，直接使用 URL 请求
+          tencent: undefined,
+          // 远程配置地址
           urls: candidateUrls,
           // 兼容旧的单 URL 配置
           url: import.meta.env.VITE_CONFIG_URL,
@@ -147,17 +143,28 @@ export const useConfigStore = defineStore('config', {
         })
       } catch (error) {
         console.error('Failed to load remote config:', error)
-        // 用户要求不兜底，严格依赖远程配置
+        // 移除本地回退机制，只使用远程配置
+        console.error('No configuration available!')
+        // 标记为已加载，避免无限循环尝试加载
+        this.configLoaded = true
       }
     },
 
     updateConfig(config) {
       if (!config) return
 
+      // 清理 URL 中的反引号和空格
+      const cleanUrl = (url) => {
+        if (typeof url === 'string') {
+          return url.replace(/[`\s]/g, '').trim()
+        }
+        return url
+      }
+
       // 处理主域名和备用域名列表
-      const primaryUrl = config.apiBaseUrl || config.apiBase || config.baseUrl || config.domain || config.primary
+      const primaryUrl = cleanUrl(config.apiBaseUrl || config.apiBase || config.baseUrl || config.domain || config.primary)
       const backupsRaw = config.backupUrls || config.backups || config.urls || config.endpoints
-      const backups = Array.isArray(backupsRaw) ? backupsRaw : []
+      const backups = Array.isArray(backupsRaw) ? backupsRaw.map(cleanUrl) : []
       
       // 合并去重，构成完整的候选列表
       const allUrls = [primaryUrl, ...backups].filter(url => url && !this.failedUrls.includes(url))

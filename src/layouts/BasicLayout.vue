@@ -1,5 +1,5 @@
 <template>
-  <div class="basic-layout">
+  <div class="basic-layout" :class="{ 'browser-safe-area': !isApp }">
     <router-view />
     
     <van-tabbar
@@ -62,6 +62,8 @@ import iconServiceSelect from '@/assets/底功能区/服务-select.png'
 import iconProfile from '@/assets/底功能区/我的.png'
 import iconProfileSelect from '@/assets/底功能区/我的-select.png'
 
+// 环境检测：判断是否在App环境中
+const isApp = ref(navigator.userAgent.includes('MinshengApp'))
 const route = useRoute()
 const active = ref('home')
 
@@ -140,6 +142,12 @@ const onChange = index => {
   min-height: 100vh;
   background: #f7f8fa;
   box-sizing: border-box;
+}
+
+/* 只在浏览器环境下添加安全区域样式 */
+.browser-safe-area {
+  padding-top: constant(safe-area-inset-top);
+  padding-top: env(safe-area-inset-top);
 }
 
 /* 提高层级，防止被页面内容遮挡 */
