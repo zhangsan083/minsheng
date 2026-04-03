@@ -1,1 +1,0 @@
-import{i as t}from"./index-BIffKO3f.js";function s(){return t.get("/asset/checkin")}function a(){return t.post("/asset/checkin/add")}function e(s){return t.get("/asset/fundDetails/page",{params:s})}function n(s){return t.get("/asset/fundDetails",{params:s})}export{a,e as b,n as c,s as g};

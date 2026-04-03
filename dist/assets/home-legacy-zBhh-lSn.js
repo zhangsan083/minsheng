@@ -1,1 +1,0 @@
-System.register(["./index-legacy-0SKpx5Fn.js"],function(e,t){"use strict";var n;return{setters:[function(e){n=e.i}],execute:function(){e({a:function(e){return n.get("/asset/news/page",{params:e})},b:function(e){return n.get("/asset/news/detail",{params:{id:e}})},c:function(){return n.get("/asset/download")},g:function(){return n.get("/asset/index")}})}}});
