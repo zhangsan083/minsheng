@@ -31,7 +31,7 @@
         <div class="info-row">
           <div class="p-score">{{ detail.score || 0 }}积分</div>
         </div>
-        <div class="info-row">
+        <div class="info-row" v-if="detail.tags">
           <div class="p-tags">
             <span v-for="(tag, index) in detail.tags?.split(',') || []" :key="index" class="p-tag">{{ tag }}</span>
           </div>
@@ -607,11 +607,15 @@ onMounted(() => {
 }
 
 .detail-images {
-  margin-top: 16px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .detail-img-item {
-  margin-bottom: 8px;
+  width: 100%;
+  height: auto;
   display: block;
 }
 
