@@ -15,10 +15,21 @@ export const useConfigStore = defineStore('config', {
     /**
      * 检查并重定向到正确的网站域名
      * 逻辑：如果当前域名不在配置的允许列表中，或者配置要求跳转，则尝试跳转到第一个可用的配置域名
+     * 注意：App环境下不执行Web域名跳转（capacitor:// 或非 http/https 协议）
      */
     async checkAndRedirectWebDomain() {
-      // 仅在生产环境执行，且必须有配置
-      if (!import.meta.env.PROD || !this.webBaseUrl) return
+      // 仅在生产环境执行
+      if (!import.meta.env.PROD) return
+      
+      // App环境下不执行Web域名跳转（capacitor://, ionic://, file:// 等）
+      const isApp = !window.location.protocol.startsWith('http')
+      if (isApp) {
+        console.log('App environment detected, skipping web domain redirect.')
+        return
+      }
+      
+      // 必须有配置才执行
+      if (!this.webBaseUrl) return
 
       const currentOrigin = window.location.origin
       const candidates = [this.webBaseUrl, ...this.webBackupUrls].filter(Boolean)
@@ -202,13 +213,18 @@ export const useConfigStore = defineStore('config', {
       this.failedUrls.push(this.baseUrl)
       
       // 从备用列表中找一个没失败过的
-      const nextUrl = this.backupUrls.find(url => !this.failedUrls.includes(url))
+      const nextUrlIndex = this.backupUrls.findIndex(url => !this.failedUrls.includes(url))
+      const nextUrl = nextUrlIndex >= 0 ? this.backupUrls[nextUrlIndex] : null
       
       if (nextUrl) {
+        // 从备用列表中移除这个域名，作为新的主域名
+        this.backupUrls.splice(nextUrlIndex, 1)
         this.baseUrl = nextUrl
         // 切换域名后也要更新本地存储
         localStorage.setItem('api_base_url', this.baseUrl)
+        localStorage.setItem('api_backup_urls', JSON.stringify(this.backupUrls))
         console.log(`Successfully switched to backup domain: ${nextUrl}`)
+        console.log('Remaining backup domains:', this.backupUrls)
         return true
       } else {
         console.error('All configured domains failed!')

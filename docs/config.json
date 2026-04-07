@@ -1,5 +1,6 @@
 {
   "apiBaseUrl": "http://43.135.95.88:28002",
+  "backupUrls": [],
   "webBaseUrl": "http://43.135.95.88:29002",
   "webBackupUrls": []
 }
