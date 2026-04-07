@@ -65,14 +65,12 @@
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { showToast } from 'vant'
-import { register as registerApi, login as loginApi, getCaptchaImage, getUserInfo } from '@/api/auth'
-import { useUserStore } from '@/stores/user'
+import { register as registerApi, getCaptchaImage } from '@/api/auth'
 
 // 环境检测：判断是否在App环境中
 const isApp = ref(navigator.userAgent.includes('MinshengApp'))
 const router = useRouter()
 const route = useRoute()
-const user = useUserStore()
 const mobile = ref('')
 const password = ref('')
 const confirm = ref('')
@@ -137,23 +135,9 @@ const submit = () => {
   
   registerApi(payload)
     .then((resp) => {
-      if (resp?.code === 200 && resp?.data) {
-        showToast('注册成功')
-        // 直接使用注册返回的token
-        user.setToken(resp.data)
-        
-        localStorage.setItem('remember_mobile', mobile.value)
-        localStorage.setItem('remember_password', password.value)
-
-        getUserInfo().then(infoResp => {
-          if (infoResp?.code === 200 && infoResp?.data) {
-            user.setUserInfo(infoResp.data)
-          }
-        }).catch(e => {
-          console.error('获取用户信息失败', e)
-        }).finally(() => {
-          router.replace('/home')
-        })
+      if (resp?.code === 200 && resp?.data === true) {
+        showToast('注册成功，请登录')
+        router.replace({ name: 'login' })
       } else {
         showToast(resp?.msg || '注册失败')
         getCaptcha()
