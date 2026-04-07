@@ -6,12 +6,13 @@ const routes = [
   {
     path: '/',
     component: () => import('@/layouts/BasicLayout.vue'),
-    redirect: '/login',
+    redirect: '',
     children: [
       {
         path: 'home',
         name: 'home',
-        component: () => import('@/views/Home.vue')
+        component: () => import('@/views/Home.vue'),
+        meta: { requiresAuth: true }
       },
       {
         path: 'strategy',
@@ -421,6 +422,16 @@ router.beforeEach(to => {
   const user = useUserStore(pinia)
   const whiteList = ['login', 'register', 'customer-service']
   
+  // 处理根路径的动态重定向
+  if (to.path === '/' || to.path === '') {
+    if (user.isAuthenticated) {
+      return { name: 'home' }  // 已登录 -> 跳转到首页
+    } else {
+      return { name: 'login' }  // 未登录 -> 跳转到登录页
+    }
+  }
+  
+  // 其他路由的权限检查
   if (!user.isAuthenticated && !whiteList.includes(to.name)) {
     return { name: 'login', query: { redirect: to.fullPath } }
   }
