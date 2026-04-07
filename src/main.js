@@ -22,16 +22,17 @@ user.loadFromStorage()
 
 // 初始化远程配置
 const config = useConfigStore(pinia)
-// 注意：这里不阻塞应用挂载，而是让配置在后台加载
-// 实际生产中，可能需要显示一个 Loading 页面直到配置加载完成
-config.loadConfig().finally(() => {
-  // 如果需要严格保证配置加载完再渲染，可以将 app.mount 移到这里
-  // 但为了用户体验，通常先渲染 UI（可能显示骨架屏），等配置加载完再发起 API 请求
+// 延迟应用挂载，确保配置加载完成并执行域名跳转后再渲染页面
+config.loadConfig().then(() => {
+  // 检查并执行域名跳转
+  if (import.meta.env.PROD) {
+    return config.checkAndRedirectWebDomain()
+  }
+}).finally(() => {
+  // 无论域名跳转是否执行，都挂载应用
+  app.use(router)
+  app.mount('#app')
 })
-
-app.use(router)
-
-app.mount('#app')
 
 // 初始化状态栏配置
 StatusBar.setStyle({ style: Style.Light })
