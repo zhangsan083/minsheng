@@ -34,11 +34,12 @@ export const useConfigStore = defineStore('config', {
         ? this.webBackupUrls 
         : (import.meta.env.VITE_WEB_BACKUP_URLS ? JSON.parse(import.meta.env.VITE_WEB_BACKUP_URLS) : [])
       
-      // 构建候选域名列表
-      const candidates = [webBaseUrl, ...webBackupUrls].filter(Boolean)
+      // 构建候选域名列表：备用域名优先，主域名作为最后备选
+      const backupCandidates = webBackupUrls.filter(Boolean)
+      const allCandidates = [...backupCandidates, webBaseUrl].filter(Boolean)
       
       // 如果没有配置域名，无法执行跳转
-      if (candidates.length === 0) {
+      if (allCandidates.length === 0) {
         console.warn('No web domains configured, skipping redirect.')
         return
       }
@@ -51,25 +52,63 @@ export const useConfigStore = defineStore('config', {
         try { return new URL(url).hostname } catch { return '' }
       }
       const currentHost = normalize(currentOrigin)
-      const isCurrentInCandidates = candidates.some(url => normalize(url) === currentHost)
+      const isCurrentBaseDomain = normalize(webBaseUrl) === currentHost
+      const isCurrentBackupDomain = backupCandidates.some(url => normalize(url) === currentHost)
 
-      // 如果当前域名在列表中，还需要检测当前域名是否可用
-      if (isCurrentInCandidates) {
-        console.log('Current domain is in the configuration list. Checking availability...')
+      // 如果当前域名是备用域名且可访问，维持当前状态
+      if (isCurrentBackupDomain) {
+        console.log('Current domain is a backup domain. Checking availability...')
         const isCurrentReachable = await this.checkDomainConnectivity(currentOrigin)
         
         if (isCurrentReachable) {
-          console.log('Current domain is reachable. No redirect needed.')
+          console.log('Current backup domain is reachable. No redirect needed.')
           return
         } else {
-          console.warn('Current domain is in the configuration list but unreachable! Will try to redirect to other domains.')
+          console.warn('Current backup domain is unreachable! Will try to redirect to other domains.')
         }
-      } else {
-        console.log('Current domain is not in the allowed list. Checking for available redirect target...')
+      }
+      
+      // 如果当前域名是主域名且可访问，随机选择一个可访问的备用域名并跳转
+      if (isCurrentBaseDomain) {
+        console.log('Current domain is the base domain. Checking backup domains...')
+        const isCurrentReachable = await this.checkDomainConnectivity(currentOrigin)
+        
+        if (isCurrentReachable && backupCandidates.length > 0) {
+          console.log('Base domain is reachable. Trying to find an available backup domain...')
+          
+          // 并行检测所有备用域名的可访问性
+          const reachabilityChecks = backupCandidates.map(async (url) => {
+            const isReachable = await this.checkDomainConnectivity(url)
+            return { url, isReachable }
+          })
+          
+          const results = await Promise.all(reachabilityChecks)
+          const availableBackups = results.filter(result => result.isReachable).map(result => result.url)
+          
+          if (availableBackups.length > 0) {
+            // 随机选择一个可用的备用域名
+            const randomBackup = availableBackups[Math.floor(Math.random() * availableBackups.length)]
+            console.log(`Redirecting from base domain to random available backup: ${randomBackup}`)
+            
+            // 构建新的跳转地址，保留路径和参数
+            const newUrl = new URL(randomBackup)
+            newUrl.pathname = window.location.pathname
+            newUrl.search = window.location.search
+            newUrl.hash = window.location.hash
+            
+            window.location.href = newUrl.toString()
+            return // 跳转后停止执行
+          } else {
+            console.log('No backup domains available. Staying on base domain.')
+            return
+          }
+        } else if (!isCurrentReachable) {
+          console.warn('Base domain is unreachable! Will try to redirect to backup domains.')
+        }
       }
 
-      // 遍历候选列表，寻找第一个可用的域名
-      for (const url of candidates) {
+      // 遍历候选列表（备用域名优先），寻找第一个可用的域名
+      for (const url of allCandidates) {
         // 避免跳转回当前已经失败的域名
         if (normalize(url) === currentHost) continue
 
