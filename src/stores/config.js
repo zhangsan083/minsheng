@@ -28,11 +28,22 @@ export const useConfigStore = defineStore('config', {
         return
       }
       
-      // 必须有配置才执行
-      if (!this.webBaseUrl) return
+      // 从配置或环境变量获取web域名列表
+      const webBaseUrl = this.webBaseUrl || import.meta.env.VITE_WEB_BASE_URL || ''
+      const webBackupUrls = this.webBackupUrls.length > 0 
+        ? this.webBackupUrls 
+        : (import.meta.env.VITE_WEB_BACKUP_URLS ? JSON.parse(import.meta.env.VITE_WEB_BACKUP_URLS) : [])
+      
+      // 构建候选域名列表
+      const candidates = [webBaseUrl, ...webBackupUrls].filter(Boolean)
+      
+      // 如果没有配置域名，无法执行跳转
+      if (candidates.length === 0) {
+        console.warn('No web domains configured, skipping redirect.')
+        return
+      }
 
       const currentOrigin = window.location.origin
-      const candidates = [this.webBaseUrl, ...this.webBackupUrls].filter(Boolean)
       
       // 检查当前域名是否在候选列表中
       // 注意：我们需要处理协议差异（http vs https），最好统一比较 hostname
@@ -42,14 +53,20 @@ export const useConfigStore = defineStore('config', {
       const currentHost = normalize(currentOrigin)
       const isCurrentInCandidates = candidates.some(url => normalize(url) === currentHost)
 
-      // 如果当前域名在列表中，说明是合法入口，暂不强制跳转（除非做更高级的可用性检测）
-      // 这里为了防止无限循环跳转，只要当前域名匹配配置中的任一域名，就认为安全
+      // 如果当前域名在列表中，还需要检测当前域名是否可用
       if (isCurrentInCandidates) {
-        console.log('Current domain is in the configuration list. No redirect needed.')
-        return
+        console.log('Current domain is in the configuration list. Checking availability...')
+        const isCurrentReachable = await this.checkDomainConnectivity(currentOrigin)
+        
+        if (isCurrentReachable) {
+          console.log('Current domain is reachable. No redirect needed.')
+          return
+        } else {
+          console.warn('Current domain is in the configuration list but unreachable! Will try to redirect to other domains.')
+        }
+      } else {
+        console.log('Current domain is not in the allowed list. Checking for available redirect target...')
       }
-
-      console.log('Current domain is not in the allowed list (or might be blocked). Checking for available redirect target...')
 
       // 遍历候选列表，寻找第一个可用的域名
       for (const url of candidates) {
@@ -118,6 +135,8 @@ export const useConfigStore = defineStore('config', {
         console.log(`Using local configuration (ForceLocal: ${forceLocal}, DevDefault: ${isDevDefault}).`)
         this.updateConfig({
           apiBaseUrl: import.meta.env.VITE_API_BASE_URL || '/api',
+          webBaseUrl: import.meta.env.VITE_WEB_BASE_URL || '',
+          webBackupUrls: import.meta.env.VITE_WEB_BACKUP_URLS ? JSON.parse(import.meta.env.VITE_WEB_BACKUP_URLS) : [],
           version: 'local',
           notice: '当前为本地/测试配置模式'
         })
@@ -139,8 +158,6 @@ export const useConfigStore = defineStore('config', {
           tencent: undefined,
           // 远程配置地址
           urls: candidateUrls,
-          // 兼容旧的单 URL 配置
-          url: import.meta.env.VITE_CONFIG_URL,
           interval: Number(import.meta.env.VITE_CONFIG_REFRESH_INTERVAL) || 0
         })
 
@@ -154,8 +171,15 @@ export const useConfigStore = defineStore('config', {
         })
       } catch (error) {
         console.error('Failed to load remote config:', error)
-        // 移除本地回退机制，只使用远程配置
-        console.error('No configuration available!')
+        // 使用环境变量作为默认值
+        console.log('Using fallback configuration from environment variables')
+        this.updateConfig({
+          apiBaseUrl: import.meta.env.VITE_API_BASE_URL || '/api',
+          webBaseUrl: import.meta.env.VITE_WEB_BASE_URL || '',
+          webBackupUrls: import.meta.env.VITE_WEB_BACKUP_URLS ? JSON.parse(import.meta.env.VITE_WEB_BACKUP_URLS) : [],
+          version: 'fallback',
+          notice: '使用环境变量配置'
+        })
         // 标记为已加载，避免无限循环尝试加载
         this.configLoaded = true
       }
@@ -191,16 +215,19 @@ export const useConfigStore = defineStore('config', {
       }
 
       // 解析网站主域名和备用域名
-      this.webBaseUrl = config.webBaseUrl || config.siteUrl || ''
+      this.webBaseUrl = config.webBaseUrl || config.siteUrl || import.meta.env.VITE_WEB_BASE_URL || ''
       this.webBackupUrls = Array.isArray(config.webBackupUrls || config.siteBackupUrls) 
         ? (config.webBackupUrls || config.siteBackupUrls) 
-        : []
+        : (import.meta.env.VITE_WEB_BACKUP_URLS ? JSON.parse(import.meta.env.VITE_WEB_BACKUP_URLS) : [])
 
       this.rawConfig = config
       // 持久化存储，防止刷新丢失
       localStorage.setItem('api_base_url', this.baseUrl)
       localStorage.setItem('api_backup_urls', JSON.stringify(this.backupUrls))
+      localStorage.setItem('web_base_url', this.webBaseUrl)
+      localStorage.setItem('web_backup_urls', JSON.stringify(this.webBackupUrls))
       console.log('Config updated. Current:', this.baseUrl, 'Backups:', this.backupUrls)
+      console.log('Web domain updated. Current:', this.webBaseUrl, 'Web backups:', this.webBackupUrls)
     },
 
     /**
