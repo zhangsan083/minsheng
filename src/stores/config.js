@@ -34,9 +34,9 @@ export const useConfigStore = defineStore('config', {
         ? this.webBackupUrls 
         : (import.meta.env.VITE_WEB_BACKUP_URLS ? JSON.parse(import.meta.env.VITE_WEB_BACKUP_URLS) : [])
       
-      // 构建候选域名列表：备用域名优先，主域名作为最后备选
+      // 构建候选域名列表：主域名优先，备用域名作为备选
       const backupCandidates = webBackupUrls.filter(Boolean)
-      const allCandidates = [...backupCandidates, webBaseUrl].filter(Boolean)
+      const allCandidates = [webBaseUrl, ...backupCandidates].filter(Boolean)
       
       // 如果没有配置域名，无法执行跳转
       if (allCandidates.length === 0) {
@@ -55,6 +55,19 @@ export const useConfigStore = defineStore('config', {
       const isCurrentBaseDomain = normalize(webBaseUrl) === currentHost
       const isCurrentBackupDomain = backupCandidates.some(url => normalize(url) === currentHost)
 
+      // 如果当前域名是主域名且可访问，维持当前状态（不跳转到备用域名）
+      if (isCurrentBaseDomain) {
+        console.log('Current domain is the base domain. Checking availability...')
+        const isCurrentReachable = await this.checkDomainConnectivity(currentOrigin)
+        
+        if (isCurrentReachable) {
+          console.log('Base domain is reachable. No redirect needed.')
+          return
+        } else {
+          console.warn('Base domain is unreachable! Will try to redirect to backup domains.')
+        }
+      }
+
       // 如果当前域名是备用域名且可访问，维持当前状态
       if (isCurrentBackupDomain) {
         console.log('Current domain is a backup domain. Checking availability...')
@@ -67,47 +80,8 @@ export const useConfigStore = defineStore('config', {
           console.warn('Current backup domain is unreachable! Will try to redirect to other domains.')
         }
       }
-      
-      // 如果当前域名是主域名且可访问，随机选择一个可访问的备用域名并跳转
-      if (isCurrentBaseDomain) {
-        console.log('Current domain is the base domain. Checking backup domains...')
-        const isCurrentReachable = await this.checkDomainConnectivity(currentOrigin)
-        
-        if (isCurrentReachable && backupCandidates.length > 0) {
-          console.log('Base domain is reachable. Trying to find an available backup domain...')
-          
-          // 并行检测所有备用域名的可访问性
-          const reachabilityChecks = backupCandidates.map(async (url) => {
-            const isReachable = await this.checkDomainConnectivity(url)
-            return { url, isReachable }
-          })
-          
-          const results = await Promise.all(reachabilityChecks)
-          const availableBackups = results.filter(result => result.isReachable).map(result => result.url)
-          
-          if (availableBackups.length > 0) {
-            // 随机选择一个可用的备用域名
-            const randomBackup = availableBackups[Math.floor(Math.random() * availableBackups.length)]
-            console.log(`Redirecting from base domain to random available backup: ${randomBackup}`)
-            
-            // 构建新的跳转地址，保留路径和参数
-            const newUrl = new URL(randomBackup)
-            newUrl.pathname = window.location.pathname
-            newUrl.search = window.location.search
-            newUrl.hash = window.location.hash
-            
-            window.location.href = newUrl.toString()
-            return // 跳转后停止执行
-          } else {
-            console.log('No backup domains available. Staying on base domain.')
-            return
-          }
-        } else if (!isCurrentReachable) {
-          console.warn('Base domain is unreachable! Will try to redirect to backup domains.')
-        }
-      }
 
-      // 遍历候选列表（备用域名优先），寻找第一个可用的域名
+      // 遍历候选列表（主域名优先），寻找第一个可用的域名
       for (const url of allCandidates) {
         // 避免跳转回当前已经失败的域名
         if (normalize(url) === currentHost) continue
@@ -270,7 +244,7 @@ export const useConfigStore = defineStore('config', {
     },
 
     /**
-     * 标记当前域名失败，并尝试切换到下一个
+     * 标记当前域名失败，并尝试随机切换到备用域名
      */
     switchToNextDomain() {
       if (!this.baseUrl) return false
@@ -278,18 +252,25 @@ export const useConfigStore = defineStore('config', {
       console.warn(`Domain ${this.baseUrl} marked as failed. Switching...`)
       this.failedUrls.push(this.baseUrl)
       
-      // 从备用列表中找一个没失败过的
-      const nextUrlIndex = this.backupUrls.findIndex(url => !this.failedUrls.includes(url))
-      const nextUrl = nextUrlIndex >= 0 ? this.backupUrls[nextUrlIndex] : null
+      // 从备用列表中过滤出未失败的域名
+      const availableBackups = this.backupUrls.filter(url => !this.failedUrls.includes(url))
       
-      if (nextUrl) {
+      if (availableBackups.length > 0) {
+        // 随机选择一个可用的备用域名
+        const randomIndex = Math.floor(Math.random() * availableBackups.length)
+        const nextUrl = availableBackups[randomIndex]
+        
         // 从备用列表中移除这个域名，作为新的主域名
-        this.backupUrls.splice(nextUrlIndex, 1)
+        const removeIndex = this.backupUrls.indexOf(nextUrl)
+        if (removeIndex >= 0) {
+          this.backupUrls.splice(removeIndex, 1)
+        }
+        
         this.baseUrl = nextUrl
         // 切换域名后也要更新本地存储
         localStorage.setItem('api_base_url', this.baseUrl)
         localStorage.setItem('api_backup_urls', JSON.stringify(this.backupUrls))
-        console.log(`Successfully switched to backup domain: ${nextUrl}`)
+        console.log(`Successfully switched to random backup domain: ${nextUrl}`)
         console.log('Remaining backup domains:', this.backupUrls)
         return true
       } else {
