@@ -22,9 +22,6 @@
         <!-- 第二名 -->
         <div class="top-item top-2">
           <div class="avatar-container">
-            <div class="avatar">
-              <img v-if="topThree.length >= 2" :src="topThree[1].avatar && topThree[1].avatar !== '' ? topThree[1].avatar : '/logo主图形.png'" alt="头像" />
-            </div>
             <div class="top-badge">
               <img src="@/assets/团队长排行榜/团队长排行榜-top2.png" alt="TOP 2" />
             </div>
@@ -42,9 +39,6 @@
         <!-- 第一名 -->
         <div class="top-item top-1">
           <div class="avatar-container">
-            <div class="avatar">
-              <img  v-if="topThree.length >= 1" :src="topThree[0].avatar && topThree[0].avatar !== '' ? topThree[0].avatar : '/logo主图形.png'" alt="头像" />
-            </div>
             <div class="top-badge">
               <img src="@/assets/团队长排行榜/团队长排行榜-top1.png" alt="TOP 1" />
             </div>
@@ -62,9 +56,6 @@
         <!-- 第三名 -->
         <div class="top-item top-3">
           <div class="avatar-container">
-            <div class="avatar">
-              <img v-if="topThree.length >= 3" :src="topThree[2].avatar && topThree[2].avatar !== '' ? topThree[2].avatar : '/logo主图形.png'" alt="头像" />
-            </div>
             <div class="top-badge">
               <img src="@/assets/团队长排行榜/团队长排行榜-top3.png" alt="TOP 3" />
             </div>
@@ -105,9 +96,6 @@
             <div class="item-content">
               <div class="item-rank rank-col">{{ item.rank }}</div>
               <div class="item-user user-col">
-                <div class="user-avatar" style="display: inline-block; width: 24px; height: 24px; border-radius: 50%; overflow: hidden; vertical-align: middle; margin-right: 8px;">
-                  <img :src="item.avatar && item.avatar !== '' ? item.avatar : '/logo主图形.png'" alt="头像" style="width: 100%; height: 100%; object-fit: cover;" />
-                </div>
                 <span class="user-name">{{ item.realName || '' }}</span>
               </div>
               <div class="item-region region-col">{{ item.province || '' }}</div>
@@ -220,6 +208,7 @@ onMounted(() => {
   justify-content: center;
   align-items: flex-end;
   gap: 20px;
+  margin-top: 135px;
   margin-bottom: 20px;
   position: relative;
   z-index: 1;
@@ -253,6 +242,7 @@ onMounted(() => {
   width: 80px;
   height: 80px;
   border-radius: 50%;
+  overflow: hidden;
   background: white;
   padding: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
@@ -266,7 +256,8 @@ onMounted(() => {
 .avatar img {
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
 .top-badge {
