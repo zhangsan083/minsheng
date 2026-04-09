@@ -443,7 +443,7 @@ onMounted(() => {
   padding: 3px 45px 3px 35px;
   color: #fff;
   font-weight: 700;
-  background: url('@/assets/惠民补助金/未标题-1.png') no-repeat center;
+  background: url('@/assets/民生保障补助金/未标题-1.png') no-repeat center;
   background-size: 100% 100%;
   border-radius: 999px;
   position: relative;

@@ -1,5 +1,18 @@
 apply plugin: 'com.android.application'
 
+// 自动版本管理：versionCode 从文件读取并自增，versionName 从 package.json 读取
+def versionFile = file('version.properties')
+if (!versionFile.exists()) {
+    versionFile.text = 'VERSION_CODE=1'
+}
+def versionProps = new Properties()
+versionProps.load(versionFile.newReader())
+def autoVersionCode = versionProps['VERSION_CODE'].toInteger()
+
+// 从 package.json 读取版本号作为 versionName
+def packageJson = new groovy.json.JsonSlurper().parseText(file('../../package.json').text)
+def autoVersionName = packageJson.version
+
 android {
     namespace = "com.minsheng.app"
     compileSdk = rootProject.ext.compileSdkVersion
@@ -7,8 +20,8 @@ android {
         applicationId "com.minsheng.app"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode autoVersionCode
+        versionName autoVersionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
@@ -16,10 +29,24 @@ android {
             ignoreAssetsPattern = '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
         }
     }
+    signingConfigs {
+        release {
+            storeFile file('minsheng.keystore')
+            storePassword 'minsheng123'
+            keyAlias 'minsheng'
+            keyPassword 'minsheng123'
+        }
+    }
     buildTypes {
         release {
+            signingConfig signingConfigs.release
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    applicationVariants.all { variant ->
+        variant.outputs.all {
+            outputFileName = "民生资产-${variant.versionName}.apk"
         }
     }
     compileOptions {
@@ -42,6 +69,21 @@ dependencies {
 }
 
 apply from: 'capacitor.build.gradle'
+
+// Release 打包时自动递增 versionCode
+tasks.configureEach { task ->
+    if (task.name == 'assembleRelease') {
+        task.doFirst {
+            def vf = file('version.properties')
+            def vp = new Properties()
+            vp.load(vf.newReader())
+            def code = vp['VERSION_CODE'].toInteger() + 1
+            vp['VERSION_CODE'] = code.toString()
+            vp.store(vf.newWriter(), null)
+            println ">>> versionCode auto incremented to ${code}"
+        }
+    }
+}
 
 try {
     def servicesJSON = file('google-services.json')
