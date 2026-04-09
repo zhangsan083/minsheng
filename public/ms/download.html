@@ -201,8 +201,8 @@
             let downloadUrl = '';
             
             if (userAgent.includes('iPhone') || userAgent.includes('iPad')) {
-                // iOS下载链接
-                downloadUrl = 'https://apps.apple.com/cn/app/民生资产/id1234567890';
+                // iOS: 下载 mobileconfig 描述文件，安装后在桌面生成 Web Clip 图标
+                downloadUrl = './minsheng.mobileconfig';
             } else if (userAgent.includes('Android')) {
                 // Android下载链接
                 downloadUrl = './app-debug.apk';
