@@ -1,25 +1,22 @@
 <template>
   <div class="page">
-    <div class="header-bg" :class="{ 'browser-safe-area': !isApp }">
-      <van-nav-bar
-        title="登录"
-        :border="false"
-        style="background: transparent; --van-nav-bar-title-text-color: #ffffff; --van-nav-bar-icon-color: #ffffff;"
-      />
-    </div>
-    
     <div class="page__body">
+      <div class="logo-area">
+        <img src="/logo主图形.png" class="logo-img" alt="logo" />
+        <div class="logo-text">民 生 资 产</div>
+      </div>
       <div class="card">
-        <div class="card__banner">
-          <img
-            class="card__banner-img"
-            src="@/assets/登录/登录背景图.png"
-            alt="民生资产"
-          />
-        </div>
         <div class="card__body">
-          <van-field v-model="mobile" label="手机号码" placeholder="请填写账号或者手机号" type="tel" maxlength="11" @input="handlePhoneInput" />
-          <van-field v-model="password" type="password" label="账号密码" placeholder="请输入密码" />
+          <van-field v-model="mobile" label="手机号码" label-width="5em" placeholder="请填写账号或者手机号" type="tel" maxlength="11" @input="handlePhoneInput">
+            <template #left-icon>
+              <img src="@/assets/登录/手机.png" class="field-icon" alt="手机" />
+            </template>
+          </van-field>
+          <van-field v-model="password" label="账号密码" label-width="5em" type="password" placeholder="请输入密码">
+            <template #left-icon>
+              <img src="@/assets/登录/密码.png" class="field-icon" alt="密码" />
+            </template>
+          </van-field>
           <div class="row">
             <van-checkbox v-model="remember">记住密码</van-checkbox>
             <span class="link" @click="forgot">忘记密码</span>
@@ -31,7 +28,7 @@
         </div>
       </div>
     </div>
-    
+
     <van-floating-bubble axis="xy" magnetic="x" :gap="24" style="--van-floating-bubble-background: transparent; box-shadow: none; border: none; overflow: hidden">
       <div class="helper__icon" @click.stop.prevent="goService">
         <img
@@ -49,10 +46,8 @@ import { ref, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import { login as loginApi, getUserInfo } from '@/api/auth'
-import { showToast, showDialog } from 'vant'
+import { showDialog } from 'vant'
 
-// 环境检测：判断是否在App环境中
-const isApp = ref(navigator.userAgent.includes('MinshengApp'))
 const mobile = ref('')
 const password = ref('')
 const remember = ref(false)
@@ -83,7 +78,6 @@ const login = () => {
       if (resp?.code === 200 && resp?.data) {
         user.setToken(resp.data)
         
-        // 处理记住密码
         if (remember.value) {
           localStorage.setItem('remember_mobile', mobile.value)
           localStorage.setItem('remember_password', password.value)
@@ -92,7 +86,6 @@ const login = () => {
           localStorage.removeItem('remember_password')
         }
 
-        // 获取用户信息
         getUserInfo().then(infoResp => {
           if (infoResp?.code === 200 && infoResp?.data) {
             user.setUserInfo(infoResp.data)
@@ -117,7 +110,6 @@ const login = () => {
       if (err.response?.data?.msg) {
         msg = err.response.data.msg
       } else if (err instanceof Error && !err.response) {
-        // 捕获代码逻辑错误（如 getUserInfo 未定义）
         msg = '应用执行错误: ' + err.message
       }
       showDialog({ message: msg })
@@ -131,7 +123,6 @@ const goRegister = () => router.push({ name: 'register' })
 const goService = () => router.push({ name: 'customer-service' })
 
 const handlePhoneInput = (e) => {
-  // 只允许输入数字
   e.target.value = e.target.value.replace(/[^0-9]/g, '')
   mobile.value = e.target.value
 }
@@ -140,40 +131,45 @@ const handlePhoneInput = (e) => {
 <style scoped>
 .page {
   min-height: 100vh;
-  background: #f7f8fa;
-  padding-bottom: 40px;
+  background: url('@/assets/登录/登录背景图.png') no-repeat center top;
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
 }
-
-.header-bg {
-  height: 220px;
-  background: var(--blue-gradient);
-  position: relative;
-  z-index: 1;
-}
-
-/* 只在浏览器环境下添加安全区域样式 */
-.header-bg.browser-safe-area {
-  padding-top: constant(safe-area-inset-top);
-  padding-top: env(safe-area-inset-top);
-}
-
-.card__banner {
-  position: relative;
-}
-.card__banner-img {
-  width: 100%;
-  display: block;
-}
-
 
 .page__body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
   padding: 16px;
-  margin-top: -160px;
-  position: relative;
-  z-index: 2;
+  padding-top: 15vh;
+}
+
+.logo-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.logo-img {
+  width: 110px;
+  height: 110px;
+  object-fit: contain;
+}
+
+.logo-text {
+  margin-top: 12px;
+  font-size: 24px;
+  font-weight: bold;
+  color: #0b3d91;
+  letter-spacing: 6px;
 }
 
 .card {
+  width: 100%;
   border-radius: 20px;
   background: #ffffff;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
@@ -186,20 +182,30 @@ const handlePhoneInput = (e) => {
   grid-auto-rows: min-content;
   gap: 16px;
 }
+
 .row {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
+
 .link {
   color: var(--blue-deep);
 }
+
 .footer {
   text-align: center;
   font-size: var(--font-size-xs);
   color: #8c8c8c;
   margin-top: 8px;
 }
+
+.field-icon {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+}
+
 .btn-login {
   border: none;
   background: var(--blue-gradient);
@@ -207,14 +213,11 @@ const handlePhoneInput = (e) => {
   border-radius: 999px;
   margin-top: 16px;
 }
+
 .btn-login:active {
   opacity: 0.9;
 }
-.helper {
-  display: flex;
-  justify-content: flex-end;
-  padding: 0 24px 24px;
-}
+
 .helper__icon {
   width: 48px;
   height: 48px;
@@ -222,6 +225,7 @@ const handlePhoneInput = (e) => {
   align-items: center;
   justify-content: center;
 }
+
 .helper__img {
   width: 100%;
   height: 100%;
