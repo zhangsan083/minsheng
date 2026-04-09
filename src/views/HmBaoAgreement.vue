@@ -2,7 +2,7 @@
   <div class="page">
     <div class="header-bg">
       <van-nav-bar
-        title="惠民宝理财服务用户协议"
+        title="民生保理财服务用户协议"
         left-arrow
         @click-left="onClickLeft"
         :border="false"
@@ -13,7 +13,7 @@
     <div class="content-wrapper">
       <div class="content-card">
         <div class="content">
-          <p>欢迎使用民生资产APP“惠民宝”理财服务（以下简称“本服务”）！</p>
+          <p>欢迎使用民生资产APP“民生保”理财服务（以下简称“本服务”）！</p>
           <p>本协议明确了您与平台之间的权利义务关系，包括参与资格、收益规则、分配方式及双方责任等内容。您通过实名认证并同意本协议，即视为已充分知悉并自愿接受其约束。民生宝致力于为您提供安全、透明的理财服务，如有疑问，可随时联系平台客服咨询。</p>
           <p>为保障您的权益，请在参与前仔细阅读并充分理解本协议的全部条款。</p>
           

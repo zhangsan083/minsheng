@@ -2,7 +2,7 @@
   <div class="page">
     <div class="header-bg">
       <van-nav-bar
-        title="惠民补贴金"
+        title="民生保障补助金"
         left-arrow
         @click-left="$router.back()"
         :border="false"
@@ -13,13 +13,13 @@
     <div class="content">
       <div class="balance-card">
         <div class="balance-header">
-          <div class="balance-title">惠民补贴金余额</div>
+          <div class="balance-title">民生保障补助金余额</div>
           <div class="channel-badge" @click="goFundDetails">资金明细</div>
         </div>
         <div class="balance-value">{{ subsidyData.welfareSubsidy || 0 }} 元</div>
         <div class="balance-actions">
           <van-button round class="primary-btn" @click="goCheckin">前往签到 ></van-button>
-          <van-button round class="primary-btn" @click="goMinshengTreasure">前往惠民宝 ></van-button>
+          <van-button round class="primary-btn" @click="goMinshengTreasure">前往民生保 ></van-button>
         </div>
         <div class="balance-tip">签到得补贴，稳增长</div>
       </div>
@@ -30,21 +30,21 @@
           <div class="route-item">
             <div class="route-title"><span class="route-title-chip" data-index="1">新人专享</span></div>
             <div class="route-desc">
-              新用户注册并完成实名认证即可获得 <span class="blue-text">{{ subsidyData.hmSubsidyVerified || 0 }}元</span> 惠民补贴金。
+              新用户注册并完成实名认证即可获得 <span class="blue-text">{{ subsidyData.hmSubsidyVerified || 0 }}元</span> 民生保障补助金。
             </div>
           </div>
           <div class="route-item">
             <div class="route-title"><span class="route-title-chip" data-index="2">推荐有奖</span></div>
             <div class="route-desc">
-              <span class="blue-text">首次推荐奖励:</span>首次推荐直属用户注册并实名，您与下级各获得 <span class="blue-text">{{ subsidyData.hmSubsidyFirstRecommend || 0 }}元</span> 惠民补贴金。<br>
-              <span class="blue-text">持续推荐收益:</span>每新增一位直属用户注册并实名即获得 <span class="blue-text">{{ subsidyData.hmSubsidyRecommend || 0 }}元</span> 惠民补贴金。
+              <span class="blue-text">首次推荐奖励:</span>首次推荐直属用户注册并实名，您与下级各获得 <span class="blue-text">{{ subsidyData.hmSubsidyFirstRecommend || 0 }}元</span> 民生保障补助金。<br>
+              <span class="blue-text">持续推荐收益:</span>每新增一位直属用户注册并实名即获得 <span class="blue-text">{{ subsidyData.hmSubsidyRecommend || 0 }}元</span> 民生保障补助金。
             </div>
           </div>
           <div class="route-item">
             <div class="route-title"><span class="route-title-chip" data-index="3">每日签到</span></div>
             <div class="route-desc">
-              <span class="blue-text">每日签到:</span>每天签到完成及获得 <span class="blue-text">{{ subsidyData.hmSubsidyCheckin || 0 }}元</span> 惠民补贴金；<br>
-              <span class="blue-text">连续打卡:</span>坚持连续签到15天即获得 <span class="blue-text">{{ subsidyData.hmSubsidyCheckin15 || 0 }}元</span> 惠民补贴金。
+              <span class="blue-text">每日签到:</span>每天签到完成及获得 <span class="blue-text">{{ subsidyData.hmSubsidyCheckin || 0 }}元</span> 民生保障补助金；<br>
+              <span class="blue-text">连续打卡:</span>坚持连续签到15天即获得 <span class="blue-text">{{ subsidyData.hmSubsidyCheckin15 || 0 }}元</span> 民生保障补助金。
             </div>
           </div>
         </div>
@@ -54,7 +54,7 @@
         <div class="section-tag">规则说明</div>
         <div class="section-body">
           <div class="rule-desc">
-            <span class="blue-text">“惠民补贴金”仅限用于“惠民宝”定期理财到期后，由系统自动释放至个人账户方可提现。</span>
+            <span class="blue-text">“民生保障补助金”仅限用于“民生保”定期理财到期后，由系统自动释放至个人账户方可提现。</span>
           </div>
         </div>
       </div>

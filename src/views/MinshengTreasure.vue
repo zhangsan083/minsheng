@@ -2,7 +2,7 @@
   <div class="page">
     <div class="header">
       <van-nav-bar
-        title="惠民宝"
+        title="民生保"
         left-arrow
         @click-left="$router.back()"
         :border="false"
@@ -33,7 +33,7 @@
 
         <div class="balance-row">
           <div class="balance-box">
-            <div class="balance-name">惠民补贴金总金额</div>
+            <div class="balance-name">民生保障补助金总金额</div>
             <div class="balance-num">
               <span v-if="showBalance">{{ hmbaoData.welfareSubsidy || 0 }}元</span>
               <span v-else>*****元</span>
@@ -42,7 +42,7 @@
           </div>
           <div class="balance-box">
             <div class="balance-header-row">
-              <div class="balance-name">惠民宝理财金额</div>
+              <div class="balance-name">民生保理财金额</div>
               <van-icon :name="showBalance ? 'eye-o' : 'closed-eye'" size="16" color="#2b7afb" @click="showBalance = !showBalance" />
             </div>
             <div class="balance-num">
@@ -60,7 +60,7 @@
         <div class="transfer-input">
           <van-field
             v-model="amount"
-            placeholder="请输入您需要转入惠民宝的金额"
+            placeholder="请输入您需要转入民生保的金额"
             input-align="left"
             type="number"
             class="amount-field"
@@ -96,7 +96,7 @@
           <van-checkbox v-model="agreed" icon-size="14" checked-color="var(--blue-deep)">
             已阅读并同意
           </van-checkbox>
-          <span class="agree-link" @click="goAgreement">《惠民宝理财服务用户协议》</span>
+          <span class="agree-link" @click="goAgreement">《民生保理财服务用户协议》</span>
         </div>
       </div>
 
@@ -104,12 +104,12 @@
       <div class="service-card">
         <div class="service-content-box">
           <div class="service-text">
-            为响应国家“共同富裕”战略号召，民生资产APP创新推出“惠民补贴金+惠民宝理财”双轨服务体系，通过“财政补贴+普惠金融”的联动模式，为中低收入家庭及参与国家重点项目建设的“追梦人群体提供”即时纾困+长效增收”的综合解决方案。
-            针对传统金融服务难以触达的群体，以惠民补贴金缓解日常生活压力，同时通过惠民宝理财实现财富增值，形成“补贴保基本、理财促发展”的良性循环，让每一笔资金都能成为改变生活的起点。
-            用户可通过每日签到、邀请好友等方式获取惠民补贴金；惠民宝理财服务起投金额仅需20,000元
-            惠民补贴金，大幅降低理财门槛，真正惠及普通家庭。资金由财政专项托管账户监管，流向全程公开可追溯，严格符合国家补贴政策要求，确保资金安全与合规性。
-            2025年试点期间，惠民宝将构建完整服务链：从补贴发放到理财增值，再到民生消费与经济内循环，形成”改善生活 积累财富 反哺社会”的可持续发展路径。
-            惠民宝不仅是理财产品，更是国家与人民携手共进的纽带——以惠民补贴金温暖当下生活，以理财增值守护未来希望。我们致力于让每一位努力前行的追梦人，都能在时代浪潮中扎根成长，共享发展成果。
+            为响应国家“共同富裕”战略号召，民生资产APP创新推出“民生保障补助金+民生保理财”双轨服务体系，通过“财政补贴+普惠金融”的联动模式，为中低收入家庭及参与国家重点项目建设的“追梦人群体提供”即时纾困+长效增收”的综合解决方案。
+            针对传统金融服务难以触达的群体，以民生保障补助金缓解日常生活压力，同时通过民生保理财实现财富增值，形成“补贴保基本、理财促发展”的良性循环，让每一笔资金都能成为改变生活的起点。
+            用户可通过每日签到、邀请好友等方式获取民生保障补助金；民生保理财服务起投金额仅需20,000元
+            民生保障补助金，大幅降低理财门槛，真正惠及普通家庭。资金由财政专项托管账户监管，流向全程公开可追溯，严格符合国家补贴政策要求，确保资金安全与合规性。
+            2025年试点期间，民生保将构建完整服务链：从补贴发放到理财增值，再到民生消费与经济内循环，形成”改善生活 积累财富 反哺社会”的可持续发展路径。
+            民生保不仅是理财产品，更是国家与人民携手共进的纽带——以民生保障补助金温暖当下生活，以理财增值守护未来希望。我们致力于让每一位努力前行的追梦人，都能在时代浪潮中扎根成长，共享发展成果。
           </div>
         </div>
       </div>
@@ -204,7 +204,7 @@ const goAgreement = () => {
 
 const doTransfer = async () => {
   if (!agreed.value) {
-    showToast('已阅读并同意惠民宝理财服务用户协议')
+    showToast('已阅读并同意民生保理财服务用户协议')
     return
   }
   
@@ -272,7 +272,7 @@ onMounted(() => {
 }
 .header {
   height: 220px;
-  background: url('@/assets/惠民宝/惠民宝底图.png') no-repeat center top;
+  background: url('@/assets/民生保/民生保底图.png') no-repeat center top;
   background-size: 100% 100%;
   position: relative;
   padding-top: 4px;

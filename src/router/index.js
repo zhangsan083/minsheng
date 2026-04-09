@@ -67,6 +67,30 @@ const routes = [
         component: () => import('@/views/Assets.vue')
       },
       {
+        path: 'asset-query',
+        name: 'asset-query',
+        component: () => import('@/views/AssetQuery.vue'),
+        meta: { requiresAuth: true }
+      },
+      {
+        path: 'asset-confirm',
+        name: 'asset-confirm',
+        component: () => import('@/views/AssetConfirm.vue'),
+        meta: { requiresAuth: true }
+      },
+      {
+        path: 'asset-issue',
+        name: 'asset-issue',
+        component: () => import('@/views/AssetIssue.vue'),
+        meta: { requiresAuth: true }
+      },
+      {
+        path: 'asset-data',
+        name: 'asset-data',
+        component: () => import('@/views/AssetData.vue'),
+        meta: { requiresAuth: true }
+      },
+      {
         path: 'service',
         name: 'service',
         component: () => import('@/views/Service.vue')
@@ -380,6 +404,12 @@ const routes = [
         name: 'internal-browser',
         component: () => import('@/views/InternalBrowser.vue'),
         meta: { hideTabbar: true }
+      },
+      {
+        path: 'organization',
+        name: 'organization',
+        component: () => import('@/views/Organization.vue'),
+        meta: { requiresAuth: true }
       }
     ]
   },

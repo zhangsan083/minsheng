@@ -50,7 +50,12 @@ export function getPolicyDetail(id) {
 
 // 获取资产备案信息
 export function getAssetFiling() {
-  return request.get('/asset/filing')
+  return request.get('/asset/filing/rc')
+}
+
+// 获取资产备案首页数据
+export function getAssetFilingIndex() {
+  return request.get('/asset/filing/index')
 }
 
 // 提交资产备案登记
@@ -72,22 +77,22 @@ export function claimTaskReward(id) {
   })
 }
 
-// 获取惠民宝信息
+// 获取民生保信息
 export function getHmBao() {
   return request.get('/asset/hmBao')
 }
 
-// 惠民宝投资
+// 民生保投资
 export function investHmBao(data) {
   return request.post('/asset/hmBao/investment', data)
 }
 
-// 获取惠民宝投资记录
+// 获取民生保投资记录
 export function getHmBaoInvestmentPage(params) {
   return request.get('/asset/hmBao/investmentPage', { params })
 }
 
-// 获取惠民补贴金
+// 获取民生保障补助金
 export function getHmSubsidy() {
   return request.get('/asset/hmSubsidy')
 }

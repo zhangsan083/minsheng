@@ -2,7 +2,7 @@
   <div class="page">
     <div class="header">
       <van-nav-bar
-        title="惠民宝投资记录"
+        title="民生保投资记录"
         left-arrow
         @click-left="$router.back()"
         :border="false"
@@ -20,7 +20,7 @@
       <div class="list">
         <div class="card" v-for="record in records" :key="record.id">
           <div class="card-header">
-            <div class="title">惠民宝{{ record.period || 0 }}天理财产品 · 日利率{{ record.interestRate || 0 }}%</div>
+            <div class="title">民生保{{ record.period || 0 }}天理财产品 · 日利率{{ record.interestRate || 0 }}%</div>
           </div>
           <div class="card-body">
             <div class="row">
@@ -136,7 +136,7 @@ watch(activeTab, () => {
 }
 .header {
   height: 220px;
-  background: url('@/assets/惠民宝/惠民宝底图.png') no-repeat center top;
+  background: url('@/assets/民生保/民生保底图.png') no-repeat center top;
   background-size: 100% 100%;
 }
 .nav-bar {

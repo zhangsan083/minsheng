@@ -87,9 +87,9 @@
           <img src="@/assets/首页/会议中心.png" class="grid__icon-img" alt="会议中心" />
           <div class="grid__text">会议中心</div>
         </div>
-        <div class="grid__item" @click="goCert">
-          <img src="@/assets/首页/确权证书.png" class="grid__icon-img" alt="确权证书" />
-          <div class="grid__text">确权证书</div>
+        <div class="grid__item" @click="goOrg">
+          <img src="@/assets/首页/组织机构.png" class="grid__icon-img" alt="组织机构" />
+          <div class="grid__text">组织机构</div>
         </div>
         <div class="grid__item" @click="goRewards">
           <img src="@/assets/首页/贡献奖励.png" class="grid__icon-img" alt="贡献奖励" />
@@ -110,12 +110,12 @@
       </section> -->
       <section class="quick-actions">
         <div class="quick-actions__btn quick-actions__btn--subsidy" @click="goSubsidy">
-          <img src="@\assets\首页\惠民补贴金.png" class="quick-actions__icon" alt="惠民补贴金" />
-          <span class="quick-actions__text">惠民补贴金</span>
+          <img src="@\assets\首页\民生保障补助金.png" class="quick-actions__icon" alt="民生保障补助金" />
+          <span class="quick-actions__text">民生保障补助金</span>
         </div>
         <div class="quick-actions__btn quick-actions__btn--minsheng" @click="goMinshengTreasure">
-          <img src="@\assets\首页\惠民宝.png" class="quick-actions__icon" alt="惠民宝" />
-          <span class="quick-actions__text">惠民宝</span>
+          <img src="@\assets\首页\民生保.png" class="quick-actions__icon" alt="民生保" />
+          <span class="quick-actions__text">民生保</span>
         </div>
       </section>
 
@@ -380,9 +380,9 @@ const goMeeting = () => {
     router.push({ name: 'meeting-center' })
   }
 }
-const goCert = () => {
+const goOrg = () => {
   if (checkLogin()) {
-    router.push({ name: 'certificate' })
+    router.push({ name: 'organization' })
   }
 }
 const serviceUrl = './chatlink.html'
@@ -655,11 +655,11 @@ const handleNoticeClose = () => {
   box-shadow: 0 6px 16px rgba(25, 137, 250, 0.25);
 }
 .quick-actions__btn--subsidy {
-  background: url('@/assets/首页/惠民补贴金背景图.png') no-repeat center;
+  background: url('@/assets/首页/民生保障补助金背景图.png') no-repeat center;
   background-size: 100% 100%;
 }
 .quick-actions__btn--minsheng {
-  background: url('@/assets/首页/惠民宝背景图.png') no-repeat center;
+  background: url('@/assets/首页/民生保背景图.png') no-repeat center;
   background-size: 100% 100%;
 }
 .quick-actions__icon {

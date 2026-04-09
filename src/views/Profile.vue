@@ -37,7 +37,7 @@
             <div class="wallet-value">{{ formatAmount(userStore.userInfo?.depositBalance) }}</div>
           </div>
           <div class="wallet-item blue-box">
-            <div class="wallet-icon"><img :src="iconWallet2" class="wallet-icon-img" /> 惠民补贴金</div>
+            <div class="wallet-icon"><img :src="iconWallet2" class="wallet-icon-img" /> 民生保障补助金</div>
             <div class="wallet-value">{{ formatAmount(userStore.userInfo?.welfareSubsidy) }}</div>
           </div>
           <div class="wallet-item blue-box">
@@ -108,7 +108,7 @@
                   </div>
                   <div class="service-item" @click="goCertificate">
                     <div class="service-icon"><img :src="iconService3" class="service-img" /></div>
-                    <div class="service-label">我的证书</div>
+                    <div class="service-label">确权证书</div>
                   </div>
                   <div class="service-item" @click="goGroupChat">
                     <div class="service-icon"><img :src="iconService4" class="service-img" /></div>

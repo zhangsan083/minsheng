@@ -43,7 +43,7 @@
               <img :src="item.avatar || '/logo主图形.png'" alt="头像" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;" />
             </div>
             <div class="contributor-details">
-              <div class="name">{{ item.realName || '匿名' }}</div>
+              <div class="name">{{ item.realName || '未知' }}</div>
               <div class="time">{{ item.publishDt || '未知时间' }}</div>
             </div>
           </div>

@@ -44,6 +44,22 @@
           </div>
         </div>
 
+        <div class="upload-section">
+          <div class="upload-label">上传收款码：</div>
+          <van-uploader
+            v-model="qrFileList"
+            :max-count="1"
+            :after-read="afterReadQr"
+            accept="image/*"
+            :deletable="true"
+          >
+            <div v-if="qrFileList.length === 0" class="upload-placeholder">
+              <van-icon name="plus" size="28" color="#999" />
+              <div class="upload-text">点击上传收款码</div>
+            </div>
+          </van-uploader>
+        </div>
+
         <div class="submit-btn-wrapper">
           <van-button 
             block 
@@ -70,6 +86,7 @@ import { ref, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { showLoadingToast, showToast } from 'vant'
 import { getAccountDetail, saveAccount } from '@/api/auth'
+import { uploadFile } from '@/api/assets'
 
 import iconBindMy from '@/assets/收款账户/绑定我的.png'
 import iconBindAlipay from '@/assets/收款账户/绑定支付宝.png'
@@ -78,6 +95,8 @@ const router = useRouter()
 const route = useRoute()
 const realName = ref('')
 const alipayAccount = ref('')
+const qrFileList = ref([])
+const qrImgUrl = ref('')
 
 onMounted(async () => {
   const id = route.query?.id
@@ -89,11 +108,36 @@ onMounted(async () => {
     if (res && res.code === 200 && res.data) {
       realName.value = res.data.realName || ''
       alipayAccount.value = res.data.accountNum || ''
+      if (res.data.qrImg) {
+        qrImgUrl.value = res.data.qrImg
+        qrFileList.value = [{ url: res.data.qrImg, status: 'done', message: '' }]
+      }
     }
   } catch (e) {
     toast.close()
   }
 })
+
+const afterReadQr = async (file) => {
+  file.status = 'uploading'
+  file.message = '上传中...'
+  try {
+    const res = await uploadFile(file.file)
+    if (res && res.code === 200) {
+      file.status = 'done'
+      file.message = ''
+      qrImgUrl.value = res.fileName || res.url || ''
+    } else {
+      file.status = 'failed'
+      file.message = '上传失败'
+      showToast(res?.msg || '上传失败')
+    }
+  } catch (error) {
+    file.status = 'failed'
+    file.message = '上传失败'
+    showToast('上传出错')
+  }
+}
 
 const handleSubmit = () => {
   if (!realName.value) return showToast('请输入真实姓名')
@@ -102,8 +146,9 @@ const handleSubmit = () => {
   const idParam = route.query?.id
   const payload = {
     accountNum: alipayAccount.value,
-    openName: '支付宝', // Default value as field is removed from UI
-    realName: realName.value
+    openName: '支付宝',
+    realName: realName.value,
+    qrImg: qrImgUrl.value
   }
   if (idParam) {
     payload.id = Number(idParam)
@@ -257,5 +302,48 @@ const handleSubmit = () => {
   color: #999;
   line-height: 1.6;
   text-align: justify;
+}
+
+/* 上传收款码 */
+.upload-section {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.upload-label {
+  font-size: var(--font-size-small);
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.upload-placeholder {
+  width: 120px;
+  height: 120px;
+  background: #f5f7fa;
+  border: 1px dashed #ccc;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.upload-text {
+  font-size: 12px;
+  color: #999;
+}
+
+:deep(.van-uploader__preview) {
+  width: 120px;
+  height: 120px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+:deep(.van-uploader__preview-image) {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 </style>

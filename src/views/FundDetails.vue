@@ -89,7 +89,7 @@ import { getFundDetailsRecords, getFundDetailsHeader } from '@/api/checkin'
 
 const chips = [
   // { label: '充值余额', value: 'recharge', walletType: '1' },
-  { label: '惠民补贴金', value: 'benefit', walletType: '5' },
+  { label: '民生保障补助金', value: 'benefit', walletType: '5' },
   { label: '推荐奖励', value: 'reward', walletType: '2' },
   { label: '积分', value: 'points', walletType: '0' },
   { label: '理财收益', value: 'finance', walletType: '3' },
@@ -237,7 +237,7 @@ const getWalletTypeName = (walletType) => {
     '2': '推荐奖励',
     '3': '理财收益',
     '4': '申报资产',
-    '5': '惠民补贴金'
+    '5': '民生保障补助金'
   }
   return typeMap[walletType] || '其他'
 }

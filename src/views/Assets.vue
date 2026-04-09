@@ -14,26 +14,26 @@
             <span class="center-text">资产登记中心</span>
             <div class="center-arrow"></div>
           </router-link>
-          <!-- <router-link class="center-item" to="/asset-query">
+          <router-link class="center-item" to="/asset-query">
             <div class="center-icon query-icon"></div>
             <span class="center-text">资产查询中心</span>
             <div class="center-arrow"></div>
           </router-link>
-          <router-link class="center-item" to="/asset-confirm">
+          <div class="center-item" @click="goWithCheck('/asset-confirm')">
             <div class="center-icon confirm-icon"></div>
             <span class="center-text">资产确权中心</span>
             <div class="center-arrow"></div>
-          </router-link>
-          <router-link class="center-item" to="/asset-issue">
+          </div>
+          <div class="center-item" @click="goWithCheck('/asset-issue')">
             <div class="center-icon issue-icon"></div>
             <span class="center-text">资产下发中心</span>
             <div class="center-arrow"></div>
-          </router-link>
-          <router-link class="center-item" to="/asset-data">
+          </div>
+          <div class="center-item" @click="goWithCheck('/asset-data')">
             <div class="center-icon data-icon"></div>
             <span class="center-text">资产数据中心</span>
             <div class="center-arrow"></div>
-          </router-link> -->
+          </div>
         </div>
       </div>
 
@@ -118,24 +118,32 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import { useUserStore } from '@/stores/user'
+import { useRouter } from 'vue-router'
+import { showToast } from 'vant'
+import { getAssetFilingIndex } from '@/api/assets'
 
-const userStore = useUserStore()
+const router = useRouter()
 const assetFilingQty = ref(0)
+const completeFilingQty = ref(0)
 
 onMounted(async () => {
-  // 从本地存储加载用户信息
-  userStore.loadFromStorage()
-  
-  // 刷新用户信息，确保获取最新的资产备案数
-  await userStore.refreshUserInfo()
-  
-  // 更新资产备案数
-  updateAssetFilingQty()
+  try {
+    const res = await getAssetFilingIndex()
+    if (res && res.code === 200 && res.data) {
+      assetFilingQty.value = res.data.assetFilingQty || 0
+      completeFilingQty.value = res.data.completeFilingQty || 0
+    }
+  } catch (error) {
+    console.error('Failed to load filing index:', error)
+  }
 })
 
-const updateAssetFilingQty = () => {
-  assetFilingQty.value = userStore.userInfo?.assetFilingQty || 0
+const goWithCheck = (path) => {
+  if (completeFilingQty.value > 0) {
+    router.push(path)
+  } else {
+    showToast('请先前往资产登记中心完成登记')
+  }
 }
 </script>
 
