@@ -57,11 +57,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* App 环境下顶部安全距离（避免内容被状态栏遮挡） */
-body.is-native-app {
-  padding-top: constant(safe-area-inset-top);
-  padding-top: env(safe-area-inset-top);
-}
+/* App 环境下由 Android 原生 fitsSystemWindows 处理顶部安全距离 */
 
 /* 老年人友好的全局样式 */
 * {

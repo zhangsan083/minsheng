@@ -15,6 +15,7 @@ import { Capacitor } from '@capacitor/core'
 import { StatusBar, Style } from '@capacitor/status-bar'
 
 const app = createApp(App)
+const isNative = Capacitor.isNativePlatform()
 
 app.use(pinia)
 
@@ -23,21 +24,26 @@ user.loadFromStorage()
 
 // 初始化远程配置
 const config = useConfigStore(pinia)
-// 延迟应用挂载，确保配置加载完成并执行域名跳转后再渲染页面
 config.loadConfig().then(() => {
-  // 检查并执行域名跳转
-  if (import.meta.env.PROD) {
+  // App 环境下不执行域名跳转（App 不需要）
+  if (import.meta.env.PROD && !isNative) {
     return config.checkAndRedirectWebDomain()
   }
 }).finally(() => {
-  // 无论域名跳转是否执行，都挂载应用
   app.use(router)
   app.mount('#app')
 })
 
 // 初始化状态栏配置（仅在 App 环境下执行）
-if (Capacitor.isNativePlatform()) {
+if (isNative) {
   StatusBar.setStyle({ style: Style.Light })
+  StatusBar.setBackgroundColor({ color: '#0944fc' })
   StatusBar.setOverlaysWebView({ overlay: false })
-  document.body.classList.add('is-native-app')
+  // 兜底：如果原生注入的 CSS 还没生效，先用默认值
+  if (!document.querySelector('#status-bar-padding')) {
+    const style = document.createElement('style')
+    style.id = 'status-bar-padding'
+    style.textContent = 'html { padding-top: 28px !important; }'
+    document.head.appendChild(style)
+  }
 }
