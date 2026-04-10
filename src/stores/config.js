@@ -181,7 +181,7 @@ export const useConfigStore = defineStore('config', {
         this.updateConfig(config)
         this.configLoaded = true
 
-        // 监听配置热更新
+        // 监听配置热更新（只更新 API 域名，不重复检测 Web 域名）
         configLoader.subscribe(newConfig => {
           console.log('Configuration hot updated')
           this.updateConfig(newConfig)

@@ -17,12 +17,13 @@
         <template v-else>
           <video
             v-if="homeData.publicizeVod"
+            ref="bannerVideo"
             class="banner-video"
             autoplay
             loop
             muted
             playsinline
-            preload="auto"
+            preload="metadata"
             controls
           >
             <source :src="homeData.publicizeVod" type="video/mp4">
@@ -229,7 +230,7 @@
 </template>
 
 <script setup>
-import { computed, ref, onMounted, watch } from 'vue'
+import { computed, ref, onMounted, onUnmounted, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { showToast } from 'vant'
 import { useUserStore } from '@/stores/user'
@@ -240,6 +241,17 @@ import noticeBg from '@/assets/首页/弹窗海报.png'
 const router = useRouter()
 const route = useRoute()
 const userStore = useUserStore()
+const bannerVideo = ref(null)
+
+// 页面不可见时暂停视频，可见时恢复，减少内存占用
+const handleVisibility = () => {
+  if (!bannerVideo.value) return
+  if (document.hidden) {
+    bannerVideo.value.pause()
+  } else {
+    bannerVideo.value.play().catch(() => {})
+  }
+}
 
 const showNoticeDialog = ref(false)
 const currentBulletinIndex = ref(0)
@@ -295,6 +307,17 @@ const loadHomeData = async () => {
 
 onMounted(() => {
   loadHomeData()
+  document.addEventListener('visibilitychange', handleVisibility)
+})
+
+onUnmounted(() => {
+  document.removeEventListener('visibilitychange', handleVisibility)
+  // 释放视频资源
+  if (bannerVideo.value) {
+    bannerVideo.value.pause()
+    bannerVideo.value.src = ''
+    bannerVideo.value.load()
+  }
 })
 
 watch(

@@ -39,4 +39,5 @@ config.loadConfig().then(() => {
 if (Capacitor.isNativePlatform()) {
   StatusBar.setStyle({ style: Style.Light })
   StatusBar.setOverlaysWebView({ overlay: true })
+  document.body.classList.add('is-native-app')
 }
