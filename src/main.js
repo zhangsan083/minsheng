@@ -38,6 +38,6 @@ config.loadConfig().then(() => {
 // 初始化状态栏配置（仅在 App 环境下执行）
 if (Capacitor.isNativePlatform()) {
   StatusBar.setStyle({ style: Style.Light })
-  StatusBar.setOverlaysWebView({ overlay: true })
+  StatusBar.setOverlaysWebView({ overlay: false })
   document.body.classList.add('is-native-app')
 }
