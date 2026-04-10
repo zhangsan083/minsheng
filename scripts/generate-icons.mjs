@@ -21,14 +21,22 @@ const sizes = {
   'mipmap-xxxhdpi': { launcher: 192, foreground: 432 },
 }
 
-async function generateIcon(inputPath, outputPath, size) {
+async function generateIcon(inputPath, outputPath, size, padding = 0) {
   const dir = dirname(outputPath)
   if (!existsSync(dir)) mkdirSync(dir, { recursive: true })
-  await sharp(inputPath)
-    .resize(size, size, { fit: 'contain', background: { r: 255, g: 255, b: 255, alpha: 0 } })
+  const innerSize = Math.round(size * (1 - padding * 2))
+  const offset = Math.round(size * padding)
+  const resized = await sharp(inputPath)
+    .resize(innerSize, innerSize, { fit: 'contain', background: { r: 255, g: 255, b: 255, alpha: 0 } })
+    .png()
+    .toBuffer()
+  await sharp({
+    create: { width: size, height: size, channels: 4, background: { r: 255, g: 255, b: 255, alpha: 0 } }
+  })
+    .composite([{ input: resized, top: offset, left: offset }])
     .png()
     .toFile(outputPath)
-  console.log(`✅ ${outputPath} (${size}x${size})`)
+  console.log(`✅ ${outputPath} (${size}x${size}, padding: ${Math.round(padding*100)}%)`)
 }
 
 async function generateRoundIcon(inputPath, outputPath, size) {
@@ -39,10 +47,16 @@ async function generateRoundIcon(inputPath, outputPath, size) {
     `<svg width="${size}" height="${size}"><circle cx="${size/2}" cy="${size/2}" r="${size/2}" fill="white"/></svg>`
   )
   const resized = await sharp(inputPath)
-    .resize(size, size, { fit: 'contain', background: { r: 255, g: 255, b: 255, alpha: 0 } })
+    .resize(Math.round(size * 0.7), Math.round(size * 0.7), { fit: 'contain', background: { r: 255, g: 255, b: 255, alpha: 0 } })
     .png()
     .toBuffer()
-  await sharp(resized)
+  const bg = await sharp({
+    create: { width: size, height: size, channels: 4, background: { r: 255, g: 255, b: 255, alpha: 255 } }
+  })
+    .composite([{ input: resized, top: Math.round(size * 0.15), left: Math.round(size * 0.15) }])
+    .png()
+    .toBuffer()
+  await sharp(bg)
     .composite([{ input: roundedMask, blend: 'dest-in' }])
     .png()
     .toFile(outputPath)
@@ -54,12 +68,12 @@ async function main() {
 
   for (const [folder, { launcher, foreground }] of Object.entries(sizes)) {
     const base = resolve(resDir, folder)
-    // ic_launcher.png
-    await generateIcon(sourceIcon, resolve(base, 'ic_launcher.png'), launcher)
+    // ic_launcher.png（留 10% 边距）
+    await generateIcon(sourceIcon, resolve(base, 'ic_launcher.png'), launcher, 0.1)
     // ic_launcher_round.png
     await generateRoundIcon(sourceIcon, resolve(base, 'ic_launcher_round.png'), launcher)
-    // ic_launcher_foreground.png (自适应图标前景层，尺寸更大)
-    await generateIcon(sourceIcon, resolve(base, 'ic_launcher_foreground.png'), foreground)
+    // ic_launcher_foreground.png（自适应图标前景层，留 25% 安全边距）
+    await generateIcon(sourceIcon, resolve(base, 'ic_launcher_foreground.png'), foreground, 0.25)
   }
 
   console.log('\n🎉 所有图标生成完成！')
