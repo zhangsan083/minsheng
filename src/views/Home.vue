@@ -108,35 +108,31 @@
           <img src="@/assets/首页/首页-幸运大抽奖.png" class="lucky-draw__img" alt="幸运大抽奖" />
         </div>
       </section> -->
-      <section class="quick-actions">
-        <div class="quick-actions__btn quick-actions__btn--subsidy" @click="goSubsidy">
-          <img src="@\assets\首页\民生保障补助金.png" class="quick-actions__icon" alt="民生保障补助金" />
-          <span class="quick-actions__text">民生保障补助金</span>
-        </div>
-        <div class="quick-actions__btn quick-actions__btn--minsheng" @click="goMinshengTreasure">
-          <img src="@\assets\首页\民生保.png" class="quick-actions__icon" alt="民生保" />
-          <span class="quick-actions__text">民生保</span>
+      
+
+      <!-- 便捷服务 -->
+      <section class="service-grid">
+        <div class="service-grid__title">便捷服务</div>
+        <div class="service-grid__content">
+          <div class="service-grid__item" @click="goTeamRanking">
+            <img src="@/assets/首页/团队长排行榜背景图.png" class="service-grid__img" alt="团队长排行榜" />
+          </div>
+          <div class="service-grid__item" @click="goNationalWelfare">
+            <img src="@/assets/首页/民生福祉背景图.png" class="service-grid__img" alt="民生福祉栏" />
+          </div>
+          <div class="service-grid__item" @click="goSubsidy">
+            <img src="@/assets/首页/民生保障补助金背景图.png" class="service-grid__img" alt="民生保障补助金" />
+          </div>
+          <div class="service-grid__item" @click="goMinshengTreasure">
+            <img src="@/assets/首页/民生保背景图.png" class="service-grid__img" alt="民生保" />
+          </div>
         </div>
       </section>
 
-      <!-- 团队长合作计划 -->
+      <!-- 团队协同推进计划 -->
       <section class="team-plan">
         <div class="team-plan__header" @click="goTeamPlan">
           <img src="@/assets/首页/首页-团队长合作计划.png" class="team-plan__header-img" alt="团队长合作计划" />
-        </div>
-        <div class="team-plan__btns">
-          <div class="team-plan__btn" @click="goTeamRanking">
-            <div class="team-btn__content">
-              <img src="@/assets/首页/首页-团队长排行榜.png" class="team-btn__icon" alt="团队长排行榜" />
-              <span class="team-btn__text">团队长排行榜</span>
-            </div>
-          </div>
-          <div class="team-plan__btn" @click="goNationalWelfare">
-            <div class="team-btn__content">
-              <img src="@/assets/首页/首页-国家民生福祉.png" class="team-btn__icon" alt="国家民生福祉" />
-              <span class="team-btn__text">国家民生福祉</span>
-            </div>
-          </div>
         </div>
       </section>
 
@@ -637,39 +633,38 @@ const handleNoticeClose = () => {
   color: #333;
 }
 
-.quick-actions {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: var(--spacing-small);
+/* 便捷服务 */
+.service-grid {
+  background: #fff;
+  border-radius: 12px;
+  padding: 16px;
   margin-bottom: var(--spacing-base);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
-.quick-actions__btn {
-  height: var(--button-normal-height);
-  border-radius: 10px;
-  background: var(--blue-gradient);
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  box-shadow: 0 6px 16px rgba(25, 137, 250, 0.25);
-}
-.quick-actions__btn--subsidy {
-  background: url('@/assets/首页/民生保障补助金背景图.png') no-repeat center;
-  background-size: 100% 100%;
-}
-.quick-actions__btn--minsheng {
-  background: url('@/assets/首页/民生保背景图.png') no-repeat center;
-  background-size: 100% 100%;
-}
-.quick-actions__icon {
-  width: var(--icon-size-small);
-  height: var(--icon-size-small);
-  object-fit: contain;
-}
-.quick-actions__text {
+
+.service-grid__title {
   font-size: var(--font-size-base);
-  font-weight: 600;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 12px;
+}
+
+.service-grid__content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.service-grid__item {
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.service-grid__img {
+  width: 100%;
+  height: auto;
+  display: block;
 }
 
 .lucky-draw__container {
@@ -705,59 +700,6 @@ const handleNoticeClose = () => {
   height: auto;
   display: block;
   border-radius: 12px;
-}
-
-.team-plan__btns {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-}
-
-.team-plan__btn {
-  height: var(--button-normal-height);
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  cursor: pointer;
-  transition: all 0.3s ease;
-  position: relative;
-  background-color: #0944fc;
-  background-image: url('@/assets/首页/光效线条.png'), linear-gradient(180deg, #0944fc 0%, #0680f4 100%);
-  background-repeat: no-repeat;
-  background-position: bottom -18px center, center;
-  background-size: 100% auto, 100% 100%;
-  padding: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.team-plan__btn:hover {
-  /* transform: translateY(-2px); */
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
-}
-
-.team-btn__content {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  position: relative;
-  z-index: 1;
-}
-
-.team-btn__icon {
-  width: 24px;
-  height: 24px;
-  object-fit: contain;
-}
-
-.team-btn__text {
-  color: white;
-  font-size: var(--font-size-base);
-  font-weight: bold;
-  flex: 1;
-  text-align: center;
 }
 
 /* News */

@@ -113,12 +113,16 @@ export const useConfigStore = defineStore('config', {
      */
     async checkDomainConnectivity(url) {
       try {
+        // 如果当前页面是 HTTPS，强制将检测目标也升级为 HTTPS，避免混合内容错误
+        let checkUrl = url
+        if (window.location.protocol === 'https:' && checkUrl.startsWith('http://')) {
+          checkUrl = checkUrl.replace('http://', 'https://')
+        }
+
         const controller = new AbortController()
         const timeoutId = setTimeout(() => controller.abort(), 3000) // 3秒超时
         
-        // 尝试请求 index.html 来检测连通性
-        // mode: 'no-cors' 允许跨域请求（虽然拿不到内容，但只要不报错/不超时就说明域名解析和连接是通的）
-        await fetch(`${url}/index.html?t=${Date.now()}`, { 
+        await fetch(`${checkUrl}/index.html?t=${Date.now()}`, { 
           mode: 'no-cors', 
           signal: controller.signal 
         })
@@ -204,7 +208,12 @@ export const useConfigStore = defineStore('config', {
       // 清理 URL 中的反引号和空格
       const cleanUrl = (url) => {
         if (typeof url === 'string') {
-          return url.replace(/[`\s]/g, '').trim()
+          let cleaned = url.replace(/[`\s]/g, '').trim()
+          // 如果当前页面是 HTTPS，强制将 API 地址也升级为 HTTPS
+          if (window.location.protocol === 'https:' && cleaned.startsWith('http://')) {
+            cleaned = cleaned.replace('http://', 'https://')
+          }
+          return cleaned
         }
         return url
       }
