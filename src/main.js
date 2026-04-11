@@ -47,36 +47,6 @@ if (isNative) {
     document.head.appendChild(style)
   }
 
-  // 修复 Android 键盘弹出时输入框被遮挡的问题（兼容搜狗等第三方输入法）
-  let activeInput = null
-  const scrollToInput = () => {
-    if (activeInput && document.activeElement === activeInput) {
-      activeInput.scrollIntoView({ behavior: 'smooth', block: 'center' })
-    }
-  }
-  document.addEventListener('focusin', (e) => {
-    const el = e.target
-    if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.isContentEditable) {
-      activeInput = el
-      setTimeout(scrollToInput, 200)
-      setTimeout(scrollToInput, 500)
-      setTimeout(scrollToInput, 800)
-    }
-  })
-  document.addEventListener('focusout', () => {
-    activeInput = null
-  })
-  // 使用 visualViewport 检测键盘弹出（比 resize 更可靠）
-  if (window.visualViewport) {
-    window.visualViewport.addEventListener('resize', () => {
-      if (activeInput) {
-        setTimeout(scrollToInput, 100)
-      }
-    })
-    window.visualViewport.addEventListener('scroll', () => {
-      if (activeInput) {
-        setTimeout(scrollToInput, 100)
-      }
-    })
-  }
+  // 键盘适配由原生 MainActivity 的 onGlobalLayout 处理
+  // JS 端不再重复滚动
 }

@@ -80,7 +80,7 @@ public class MainActivity extends BridgeActivity {
                             "(function(){" +
                             "var el=document.activeElement;" +
                             "if(el&&(el.tagName==='INPUT'||el.tagName==='TEXTAREA')){" +
-                            "setTimeout(function(){el.scrollIntoView({behavior:'smooth',block:'center'});},100);" +
+                            "setTimeout(function(){el.scrollIntoView({behavior:'smooth',block:'start'});window.scrollBy(0,-80);},100);" +
                             "}" +
                             "})()",
                             null
