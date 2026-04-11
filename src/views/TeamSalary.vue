@@ -79,16 +79,12 @@
                   <div class="overlay-title">{{ level.levelName }}</div>
                   <div class="overlay-content">
                     <div class="info-row">
-                      <span class="info-label">直推人数要求</span>
-                      <span class="info-value">{{ level.inviteReg || 0 }}</span>
+                      <span class="info-label">直推人数</span>
+                      <span class="info-value">{{ level.recomNum || 0 }}</span>
                     </div>
                     <div class="info-row">
-                      <span class="info-label">总实名人数要求</span>
-                      <span class="info-value">{{ level.inviteVerified || 0 }}</span>
-                    </div>
-                    <div class="info-row">
-                      <span class="info-label">活跃度要求</span>
-                      <span class="info-value">{{ level.inviteActive || 0 }}</span>
+                      <span class="info-label">团队人数</span>
+                      <span class="info-value">{{ level.teamNum || 0 }}</span>
                     </div>
                     <div class="info-row">
                       <span class="info-label">月工资</span>

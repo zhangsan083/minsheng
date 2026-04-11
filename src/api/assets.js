@@ -53,6 +53,16 @@ export function getAssetFiling() {
   return request.get('/asset/filing/rc')
 }
 
+// 获取资产备案公示分页
+export function getAssetFilingPubPage(params) {
+  return request.get('/asset/filing/pubapply/page', { params })
+}
+
+// 获取资产备案申请分页
+export function getAssetFilingApplyPage(params) {
+  return request.get('/asset/filing/apply/page', { params })
+}
+
 // 获取资产备案首页数据
 export function getAssetFilingIndex() {
   return request.get('/asset/filing/index')

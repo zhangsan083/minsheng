@@ -49,18 +49,6 @@ const routes = [
     component: () => import('@/views/FilingRecord.vue'),
     meta: { requiresAuth: true }
   },
-  {
-        path: 'payment-progress',
-        name: 'payment-progress',
-        component: () => import('@/views/PaymentProgress.vue'),
-        meta: { requiresAuth: true }
-      },
-      {
-        path: 'payment-progress-detail',
-        name: 'payment-progress-detail',
-        component: () => import('@/views/PaymentProgressDetail.vue'),
-        meta: { requiresAuth: true }
-      },
       {
         path: 'assets',
         name: 'assets',

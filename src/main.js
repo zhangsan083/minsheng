@@ -46,4 +46,14 @@ if (isNative) {
     style.textContent = 'html { padding-top: 28px !important; }'
     document.head.appendChild(style)
   }
+
+  // 修复 Android 15 键盘弹出时输入框被遮挡的问题
+  document.addEventListener('focusin', (e) => {
+    const el = e.target
+    if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.isContentEditable) {
+      setTimeout(() => {
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+      }, 300)
+    }
+  })
 }

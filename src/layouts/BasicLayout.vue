@@ -92,8 +92,6 @@ const ASSETS_ROUTES = new Set([
   'asset-filing',
   'filing-registration',
   'filing-record',
-  'payment-progress',
-  'payment-progress-detail',
   'policy',
   'policy-detail',
   'recharge',
