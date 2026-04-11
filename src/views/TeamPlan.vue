@@ -228,7 +228,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user'
-import { showToast } from 'vant'
+import { showToast, showDialog } from 'vant'
 import { getTeamLeader, claimTeamLeaderSalary, claimTeamLeaderTask } from '@/api/teamLeader'
 
 const router = useRouter()
@@ -459,6 +459,16 @@ onMounted(async () => {
   }
 
   await fetchTeamLeaderInfo()
+
+  // 检查：工资未领取且签到率低于50时提示
+  const salary = teamLeaderInfo.value.teamSalary
+  if (salary.id !== 0 && salary.receiveStatus === '0' && salary.activeCount < 50) {
+    showDialog({
+      title: '温馨提示',
+      message: '当前团队整体签到率略有下降，建议适当加强日常提醒与组织带动，提升整体参与度。签到率作为团队运行的重要参考指标之一，长期偏低可能会对团队评估及相关档位产生一定影响，请关注并适当优化。',
+      confirmButtonText: '我知道了'
+    })
+  }
 })
 </script>
 

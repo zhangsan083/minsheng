@@ -27,20 +27,6 @@
           </div>
         </div>
       </div>
-
-      <!-- Action Button -->
-      <div class="action-buttons">
-        <van-button 
-          block 
-          round 
-          type="primary"
-          class="action-btn"
-          @click="$router.back()"
-        >
-          返回
-        </van-button>
-      </div>
-
       <!-- Progress Timeline -->
       <div class="progress-card">
         <div class="card-title">兑付进度查询</div>

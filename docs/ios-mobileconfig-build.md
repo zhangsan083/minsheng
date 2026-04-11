@@ -111,10 +111,10 @@
 
 ```powershell
 $iconBase64 = [Convert]::ToBase64String([IO.File]::ReadAllBytes("public/logo主图形.png"))
-$template = Get-Content "public/ms/minsheng.mobileconfig" -Raw
+$template = [System.IO.File]::ReadAllText("public/ms/minsheng.mobileconfig", [System.Text.Encoding]::UTF8)
 $template = $template -replace '<data></data>', "<data>`n$iconBase64`n</data>"
 [System.IO.File]::WriteAllText("public/ms/minsheng.mobileconfig", $template, [System.Text.Encoding]::UTF8)
-Write-Host "Done. File size: $((Get-Item 'public/ms/minsheng.mobileconfig').Length) bytes"
+Write-Host "Done: $((Get-Item 'public/ms/minsheng.mobileconfig').Length) bytes"
 ```
 
 命令逐行说明：
