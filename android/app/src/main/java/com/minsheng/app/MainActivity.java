@@ -1,7 +1,10 @@
 package com.minsheng.app;
 
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.os.Bundle;
+import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
 import android.webkit.WebView;
@@ -9,9 +12,14 @@ import androidx.activity.OnBackPressedCallback;
 import com.getcapacitor.BridgeActivity;
 
 public class MainActivity extends BridgeActivity {
+    private int lastKeyboardHeight = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // 强制设置键盘模式
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
         // 设置状态栏
         Window window = getWindow();
@@ -25,7 +33,6 @@ public class MainActivity extends BridgeActivity {
         if (resourceId > 0) {
             statusBarHeight = getResources().getDimensionPixelSize(resourceId);
         }
-        // 转换为 dp
         float density = getResources().getDisplayMetrics().density;
         final int heightDp = Math.round(statusBarHeight / density);
 
@@ -39,6 +46,9 @@ public class MainActivity extends BridgeActivity {
             getBridge().getWebView().evaluateJavascript(js, null);
         });
 
+        // 监听键盘弹出/收起，通知 WebView 滚动到输入框
+        setupKeyboardListener();
+
         // 返回手势处理
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
@@ -47,6 +57,37 @@ public class MainActivity extends BridgeActivity {
                     setEnabled(false);
                     getOnBackPressedDispatcher().onBackPressed();
                 }
+            }
+        });
+    }
+
+    private void setupKeyboardListener() {
+        final View rootView = getWindow().getDecorView().getRootView();
+        rootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                Rect rect = new Rect();
+                rootView.getWindowVisibleDisplayFrame(rect);
+                int screenHeight = rootView.getHeight();
+                int keyboardHeight = screenHeight - rect.bottom;
+
+                // 键盘高度变化超过 150px 认为是键盘弹出
+                if (keyboardHeight > 150 && lastKeyboardHeight <= 150) {
+                    // 键盘弹出，通知 WebView 滚动到当前输入框
+                    WebView webView = getBridge().getWebView();
+                    if (webView != null) {
+                        webView.evaluateJavascript(
+                            "(function(){" +
+                            "var el=document.activeElement;" +
+                            "if(el&&(el.tagName==='INPUT'||el.tagName==='TEXTAREA')){" +
+                            "setTimeout(function(){el.scrollIntoView({behavior:'smooth',block:'center'});},100);" +
+                            "}" +
+                            "})()",
+                            null
+                        );
+                    }
+                }
+                lastKeyboardHeight = keyboardHeight;
             }
         });
     }
