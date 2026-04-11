@@ -1,6 +1,5 @@
 package com.minsheng.app;
 
-import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.View;
@@ -21,13 +20,13 @@ public class MainActivity extends BridgeActivity {
         // 强制设置键盘模式
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
-        // 设置状态栏
+        // 设置状态栏透明
         Window window = getWindow();
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        window.setStatusBarColor(Color.parseColor("#0944fc"));
+        window.setStatusBarColor(android.graphics.Color.TRANSPARENT);
 
-        // 获取状态栏实际高度并注入到 WebView
+        // 获取状态栏实际高度并注入到 WebView（覆盖 JS 兜底的 28px）
         int statusBarHeight = 0;
         int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
         if (resourceId > 0) {
@@ -36,12 +35,12 @@ public class MainActivity extends BridgeActivity {
         float density = getResources().getDisplayMetrics().density;
         final int heightDp = Math.round(statusBarHeight / density);
 
-        // 等 WebView 加载完后注入 CSS
+        // 用同一个 id='status-bar-padding'，覆盖 JS 兜底
         getBridge().getWebView().post(() -> {
-            String js = "javascript:(function(){" +
-                "var s=document.createElement('style');" +
+            String js = "(function(){" +
+                "var s=document.getElementById('status-bar-padding');" +
+                "if(!s){s=document.createElement('style');s.id='status-bar-padding';document.head.appendChild(s);}" +
                 "s.textContent='html{padding-top:" + heightDp + "px!important;}';" +
-                "document.head.appendChild(s);" +
                 "})()";
             getBridge().getWebView().evaluateJavascript(js, null);
         });

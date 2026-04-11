@@ -37,16 +37,12 @@ config.loadConfig().then(() => {
 // 初始化状态栏配置（仅在 App 环境下执行）
 if (isNative) {
   StatusBar.setStyle({ style: Style.Light })
-  StatusBar.setBackgroundColor({ color: '#0944fc' })
-  StatusBar.setOverlaysWebView({ overlay: false })
-  // 兜底：如果原生注入的 CSS 还没生效，先用默认值
+  StatusBar.setOverlaysWebView({ overlay: true })
+  // JS 兜底：28px，原生会用精确值覆盖这个 style 标签
   if (!document.querySelector('#status-bar-padding')) {
     const style = document.createElement('style')
     style.id = 'status-bar-padding'
     style.textContent = 'html { padding-top: 28px !important; }'
     document.head.appendChild(style)
   }
-
-  // 键盘适配由原生 MainActivity 的 onGlobalLayout 处理
-  // JS 端不再重复滚动
 }
