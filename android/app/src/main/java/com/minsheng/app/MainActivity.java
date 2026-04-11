@@ -35,12 +35,21 @@ public class MainActivity extends BridgeActivity {
         float density = getResources().getDisplayMetrics().density;
         final int heightDp = Math.round(statusBarHeight / density);
 
-        // 用同一个 id='status-bar-padding'，覆盖 JS 兜底
+        // 获取导航栏高度并注入底部安全距离
+        int navBarHeight = 0;
+        int navResourceId = getResources().getIdentifier("navigation_bar_height", "dimen", "android");
+        if (navResourceId > 0) {
+            navBarHeight = getResources().getDimensionPixelSize(navResourceId);
+        }
+        final int navHeightDp = Math.round(navBarHeight / density);
+
+        // 用同一个 id='status-bar-padding'，覆盖 JS 兜底，同时加底部安全距离
         getBridge().getWebView().post(() -> {
             String js = "(function(){" +
                 "var s=document.getElementById('status-bar-padding');" +
                 "if(!s){s=document.createElement('style');s.id='status-bar-padding';document.head.appendChild(s);}" +
-                "s.textContent='html{padding-top:" + heightDp + "px!important;}';" +
+                "s.textContent='html{padding-top:" + heightDp + "px!important;}" +
+                ".app-tabbar{padding-bottom:" + navHeightDp + "px!important;}';" +
                 "})()";
             getBridge().getWebView().evaluateJavascript(js, null);
         });
