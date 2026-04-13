@@ -44,12 +44,13 @@ public class MainActivity extends BridgeActivity {
         final int navHeightDp = Math.round(navBarHeight / density);
 
         // 用同一个 id='status-bar-padding'，覆盖 JS 兜底，同时加底部安全距离
+        final int tabbarTotalDp = navHeightDp + 60;
         getBridge().getWebView().post(() -> {
             String js = "(function(){" +
                 "var s=document.getElementById('status-bar-padding');" +
                 "if(!s){s=document.createElement('style');s.id='status-bar-padding';document.head.appendChild(s);}" +
-                "s.textContent='html{padding-top:" + heightDp + "px!important;}" +
-                ".app-tabbar{padding-bottom:" + navHeightDp + "px!important;}';" +
+                "s.textContent='html{padding-top:" + heightDp + "px!important;padding-bottom:" + navHeightDp + "px!important;}" +
+                ".app-tabbar{bottom:" + navHeightDp + "px!important;}';" +
                 "})()";
             getBridge().getWebView().evaluateJavascript(js, null);
         });

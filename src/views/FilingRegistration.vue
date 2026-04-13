@@ -62,30 +62,37 @@
       </div>
 
       <!-- National Projects Grid -->
-      <div class="national-projects-grid">
-        <div 
-          v-for="(project, index) in nationalProjects" 
-          :key="index" 
-          class="national-project-card"
-        >
-          <div class="project-badge">国家级项目</div>
-          <div class="project-image" v-if="project.coverImg">
-            <img :src="project.coverImg" alt="项目封面" style="width: 100%; height: 100%; object-fit: cover;" />
-          </div>
-          <div class="project-image" v-else></div>
-          <div class="project-info">
-            <div class="project-name">{{ project.name }}</div>
-            <van-button 
-              type="primary" 
-              round 
-              class="submit-btn"
-              @click="submitNationalProject(project.name, project.id)"
-            >
-              提交审核
-            </van-button>
+      <van-list
+        v-model:loading="hotLoading"
+        :finished="hotFinished"
+        finished-text="没有更多了"
+        @load="loadHotProjects"
+      >
+        <div class="national-projects-grid">
+          <div 
+            v-for="(project, index) in nationalProjects" 
+            :key="index" 
+            class="national-project-card"
+          >
+            <div class="project-badge">国家级项目</div>
+            <div class="project-image" v-if="project.coverImg">
+              <img :src="project.coverImg" alt="项目封面" style="width: 100%; height: 100%; object-fit: cover;" />
+            </div>
+            <div class="project-image" v-else></div>
+            <div class="project-info">
+              <div class="project-name">{{ project.name }}</div>
+              <van-button 
+                type="primary" 
+                round 
+                class="submit-btn"
+                @click="submitNationalProject(project.name, project.id)"
+              >
+                提交审核
+              </van-button>
+            </div>
           </div>
         </div>
-      </div>
+      </van-list>
 
       <div class="notice">
         <span class="dot">●</span> 注意事项：根据《中华人民共和国统计法》等相关法律法规规定，登记人在填写资料时，应当依法如实提交申请资料，确保所提供信息的真实性、准确性和完整性。对于采取虚构事实、隐瞒真相等方式提交虚假材料的行为，国家数据局有权依法撤销相关申请认证，并按照有关规定采取信用惩戒等监管措施。因登记资料缺失实引发的项目受阻、权益受损等不利后果，均由登记申请人自行承担一切法律责任及由此造成的经济损失。
@@ -226,10 +233,7 @@ onMounted(async () => {
     await userStore.refreshUserInfo()
   }
   
-  // 加载国家级项目（热门项目）
-  await loadProjects(true, true)
-  
-  // 加载更多项目
+  // 加载更多项目（搜索用）
   projectPage.value = 1
   projectList.value = []
   hasMore.value = true
@@ -238,6 +242,36 @@ onMounted(async () => {
 
 // 国家级项目列表
 const nationalProjects = ref([])
+const hotLoading = ref(false)
+const hotFinished = ref(false)
+const hotPage = ref(1)
+
+const loadHotProjects = async () => {
+  try {
+    const res = await getProjectPage({
+      pageNum: hotPage.value,
+      pageSize: 10,
+      isHot: 1
+    })
+    if (res.code === 200 && res.data) {
+      const rows = res.data.records.map(item => ({
+        name: item.projectName,
+        id: item.id,
+        coverImg: item.coverImg
+      }))
+      nationalProjects.value.push(...rows)
+      if (nationalProjects.value.length >= res.data.total) {
+        hotFinished.value = true
+      } else {
+        hotPage.value++
+      }
+    }
+  } catch (error) {
+    console.error('Failed to load hot projects:', error)
+  } finally {
+    hotLoading.value = false
+  }
+}
 
 // 分页相关状态
 const projectPage = ref(1)

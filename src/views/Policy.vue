@@ -47,7 +47,6 @@
             </div>
             <div class="item-info">
               <div class="item-title">{{ item.title }}</div>
-              <div class="item-desc">{{ item.content }}</div>
             </div>
           </div>
         </van-list>
@@ -209,10 +208,11 @@ const goDetail = (item) => {
   font-size: var(--font-size-small);
   font-weight: bold;
   color: #333;
-  margin-bottom: 8px;
-  white-space: nowrap;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
   overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .item-desc {
