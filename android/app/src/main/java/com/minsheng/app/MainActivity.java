@@ -35,25 +35,28 @@ public class MainActivity extends BridgeActivity {
         float density = getResources().getDisplayMetrics().density;
         final int heightDp = Math.round(statusBarHeight / density);
 
-        // 获取导航栏高度并注入底部安全距离
-        int navBarHeight = 0;
-        int navResourceId = getResources().getIdentifier("navigation_bar_height", "dimen", "android");
-        if (navResourceId > 0) {
-            navBarHeight = getResources().getDimensionPixelSize(navResourceId);
-        }
-        final int navHeightDp = Math.round(navBarHeight / density);
+        // 延迟获取导航栏高度（等布局完成后更准确）
+        final int finalStatusBarHeight = statusBarHeight;
+        getBridge().getWebView().postDelayed(() -> {
+            android.util.DisplayMetrics realMetrics = new android.util.DisplayMetrics();
+            getWindowManager().getDefaultDisplay().getRealMetrics(realMetrics);
+            int realHeight = realMetrics.heightPixels;
 
-        // 用同一个 id='status-bar-padding'，覆盖 JS 兜底，同时加底部安全距离
-        final int tabbarTotalDp = navHeightDp + 60;
-        getBridge().getWebView().post(() -> {
+            android.graphics.Rect usableRect = new android.graphics.Rect();
+            getWindow().getDecorView().getWindowVisibleDisplayFrame(usableRect);
+
+            // 实际导航栏高度 = 真实屏幕高度 - 可见区域底部
+            int navHeight = Math.max(0, realHeight - usableRect.bottom);
+            int navDp = Math.round(navHeight / density);
+
             String js = "(function(){" +
                 "var s=document.getElementById('status-bar-padding');" +
                 "if(!s){s=document.createElement('style');s.id='status-bar-padding';document.head.appendChild(s);}" +
-                "s.textContent='html{padding-top:" + heightDp + "px!important;padding-bottom:" + navHeightDp + "px!important;}" +
-                ".app-tabbar{bottom:" + navHeightDp + "px!important;}';" +
+                "s.textContent='html{padding-top:" + heightDp + "px!important;padding-bottom:" + navDp + "px!important;}" +
+                ".app-tabbar{bottom:" + navDp + "px!important;}';" +
                 "})()";
             getBridge().getWebView().evaluateJavascript(js, null);
-        });
+        }, 500);
 
         // 监听键盘弹出/收起，通知 WebView 滚动到输入框
         setupKeyboardListener();

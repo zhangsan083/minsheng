@@ -46,7 +46,7 @@ android {
     }
     applicationVariants.all { variant ->
         variant.outputs.all {
-            outputFileName = "民生资产.apk"
+            outputFileName = "minsheng.apk"
         }
     }
     compileOptions {

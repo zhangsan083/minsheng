@@ -176,7 +176,7 @@
         // 动态获取文件大小
         function getFileSize() {
             const xhr = new XMLHttpRequest();
-            xhr.open('HEAD', './民生资产.apk', true);
+            xhr.open('HEAD', './minsheng.apk', true);
             xhr.onreadystatechange = function() {
                 if (xhr.readyState === 4 && xhr.status === 200) {
                     const contentLength = xhr.getResponseHeader('Content-Length');
@@ -205,10 +205,10 @@
                 downloadUrl = './minsheng.mobileconfig';
             } else if (userAgent.includes('Android')) {
                 // Android下载链接
-                downloadUrl = './民生资产.apk';
+                downloadUrl = './minsheng.apk';
             } else {
                 // 默认下载链接
-                downloadUrl = './民生资产.apk';
+                downloadUrl = './minsheng.apk';
             }
             
             window.location.href = downloadUrl;
