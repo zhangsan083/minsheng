@@ -14,7 +14,7 @@
             <span class="center-text">资产登记中心</span>
             <div class="center-arrow"></div>
           </router-link>
-          <router-link class="center-item" to="/asset-issue">
+          <router-link class="center-item" to="/asset-query">
             <div class="center-icon query-icon"></div>
             <span class="center-text">资产查询中心</span>
             <div class="center-arrow"></div>
@@ -24,7 +24,7 @@
             <span class="center-text">资产确权中心</span>
             <div class="center-arrow"></div>
           </div>
-          <div class="center-item" @click="goWithCheck('/asset-query')">
+          <div class="center-item" @click="goWithCheck('/asset-issue')">
             <div class="center-icon issue-icon"></div>
             <span class="center-text">资产下发中心</span>
             <div class="center-arrow"></div>
