@@ -307,17 +307,21 @@ onMounted(() => {
   gap: 8px;
   justify-content: center;
   padding: 6px 0 10px;
+  flex-wrap: wrap;
 }
 .term-pill {
-  min-width: 100px;
+  flex: 1;
+  min-width: 0;
   height: 36px;
   border-radius: 999px;
   background: #eef5ff;
   color: #2b7afb;
-  font-size: var(--font-size-base);
+  font-size: var(--font-size-small);
   display: flex;
   align-items: center;
   justify-content: center;
+  white-space: nowrap;
+  padding: 0 8px;
 }
 .term-pill.active {
   background: #fff;

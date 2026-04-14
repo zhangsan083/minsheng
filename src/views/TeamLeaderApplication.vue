@@ -736,8 +736,8 @@ onMounted(() => {
 }
 
 .seal-img {
-  width: 120px;
-  height: 120px;
+  width: 100px;
+  height: 100px;
 }
 
 /* 提交按钮 */
