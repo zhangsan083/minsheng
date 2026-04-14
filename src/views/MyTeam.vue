@@ -24,11 +24,11 @@
     <div class="content">
       <!-- Stats Overview Card -->
       <div class="card stats-card">
-        <div class="total-revenue">
+        <!-- <div class="total-revenue">
           <div class="label">团队总收益</div>
           <div class="value red">¥ {{ teamInfo.revenueTotal || 0 }}</div>
         </div>
-        <div class="divider-h"></div>
+        <div class="divider-h"></div> -->
         <div class="stats-grid">
           <!-- <div class="stat-item">
             <div class="label">团队总充值</div>
@@ -204,21 +204,23 @@
           <div class="th">实名状态</div>
         </div>
         
-        <van-list
-          v-model:loading="loading"
-          :finished="finished"
-          finished-text="没有更多了"
-          @load="onLoadMember"
-        >
-          <div class="table-row" v-for="item in memberList" :key="item.id">
-            <div class="td">{{ item.realName || '无' }}</div>
-            <div class="td">{{ item.phonenumber }}</div>
-            <div class="td">{{ formatDate(item.createDt) }}</div>
-            <div class="td" :class="item.isActivate === 1 ? 'status-active' : 'status-inactive'">
-              {{ item.isActivate === 1 ? '已实名' : '未实名' }}
+        <div class="member-list-scroll">
+          <van-list
+            v-model:loading="loading"
+            :finished="finished"
+            finished-text="没有更多了"
+            @load="onLoadMember"
+          >
+            <div class="table-row" v-for="item in memberList" :key="item.id">
+              <div class="td">{{ item.realName || '未知' }}</div>
+              <div class="td">{{ item.phonenumber }}</div>
+              <div class="td">{{ formatDate(item.createDt) }}</div>
+              <div class="td" :class="item.isActivate === 1 ? 'status-active' : 'status-inactive'">
+                {{ item.isActivate === 1 ? '已实名' : '未实名' }}
+              </div>
             </div>
-          </div>
-        </van-list>
+          </van-list>
+        </div>
       </div>
     </div>
   </div>
@@ -363,7 +365,7 @@ const formatDate = (dateStr) => {
 onMounted(() => {
   fetchTeamInfo()
   fetchTeamData()
-  // Member list will be loaded by van-list automatically on mount
+  onLoadMember()
 })
 </script>
 
@@ -371,7 +373,7 @@ onMounted(() => {
 .page {
   min-height: 100vh;
   background: #f7f8fa;
-  padding-bottom: 20px;
+  padding-bottom: 50px;
 }
 
 .header-bg {
@@ -804,6 +806,12 @@ onMounted(() => {
 .th {
   flex: 1;
   text-align: center;
+}
+
+.member-list-scroll {
+  max-height: 50vh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .table-row {

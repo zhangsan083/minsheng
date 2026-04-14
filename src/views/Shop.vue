@@ -40,7 +40,7 @@
             <div class="product-tags" v-if="item.tags">
               <span v-for="(tag, index) in item.tags.split(',')" :key="index" class="product-tag">{{ tag }}</span>
             </div>
-            <div class="product-stock">商品数量 {{ item.stock }} 件</div>
+            <div class="product-stock">商品库存 {{ item.stock }} 件</div>
           </div>
         </div>
       </div>

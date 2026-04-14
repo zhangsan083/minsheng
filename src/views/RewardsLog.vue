@@ -38,19 +38,32 @@
             <span class="label">任务奖励:</span>
             <span class="value">{{ reward.reward }}</span>
           </div>
-          <div class="btn-container" v-if="reward.progress >= reward.num || reward.isComplete === 1">
+          <div class="btn-container">
             <van-button 
+              v-if="reward.isComplete === 1"
+              type="default"
+              class="claim-btn claimed"
+              disabled
+            >
+              已领取
+            </van-button>
+            <van-button 
+              v-else-if="reward.progress >= reward.num"
               type="primary" 
               color="var(--blue-gradient)" 
               class="claim-btn"
               @click="claimReward(reward.id)"
-              v-if="reward.isComplete !== 1"
             >
               领取奖励
             </van-button>
-            <div class="claimed-text" v-else>
-              已领取
-            </div>
+            <van-button 
+              v-else
+              type="default"
+              class="claim-btn claimed"
+              disabled
+            >
+              领取奖励
+            </van-button>
           </div>
         </div>
       </div>
@@ -205,6 +218,12 @@ onMounted(() => {
   border-radius: 6px;
   font-size: var(--font-size-base);
   height: 40px;
+}
+
+.claim-btn.claimed {
+  background: #e6e6e6 !important;
+  color: #999 !important;
+  border: none !important;
 }
 
 .claimed-text {

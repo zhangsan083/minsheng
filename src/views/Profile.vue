@@ -390,14 +390,18 @@ const confirmLogout = () => {
   display: flex;
   flex-direction: column;
   gap: 4px;
-  width:150px;
+  width:130px;
 }
 
 .user-name {
   font-size: var(--font-size-large);
   font-weight: bold;
   color: var(--blue-deep);
-  word-break: break-all;
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: inline-block;
 }
 
 .user-phone {

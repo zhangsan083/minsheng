@@ -2,7 +2,7 @@
   <div class="page">
     <div class="header">
       <van-nav-bar
-        title="团队长合作计划"
+        title="团队协同推进计划"
         left-arrow
         @click-left="goBack"
         :border="false"

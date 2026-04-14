@@ -155,6 +155,8 @@ const onChange = index => {
   bottom: 0 !important;
   left: 0 !important;
   width: 100% !important;
+  padding-bottom: constant(safe-area-inset-bottom) !important;
+  padding-bottom: env(safe-area-inset-bottom) !important;
 }
 
 :deep(.van-tabbar-item__icon img) {

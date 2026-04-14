@@ -36,7 +36,7 @@
           <div class="staff-body">
             <div class="staff-grid">
               <div v-for="(img, index) in staffList" :key="index" class="staff-item">
-                <img :src="img" :alt="'职位图' + (index + 1)" class="staff-card-img" />
+                <img :src="img" :alt="'职位图' + (index + 1)" class="staff-card-img" @click="previewImage(index)" />
               </div>
             </div>
           </div>
@@ -51,6 +51,7 @@
 </template>
 
 <script setup>
+import { showImagePreview } from 'vant'
 import imgGuowuyuan from '@/assets/组织机构/国务院.jpg'
 import imgRenminBank from '@/assets/组织机构/中国人民银行.jpeg'
 import imgCaizhengbu from '@/assets/组织机构/财政部.jpg'
@@ -79,6 +80,14 @@ const staffList = [
   staff1, staff2, staff3, staff4, staff5, staff6, staff7, staff8,
   staff9, staff10, staff11, staff12, staff13, staff14, staff15, staff16
 ]
+
+const previewImage = (index) => {
+  showImagePreview({
+    images: staffList,
+    startPosition: index,
+    closeable: true
+  })
+}
 
 const orgList = [
   {

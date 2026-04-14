@@ -37,7 +37,7 @@
           </div>
         </div>
         <div class="info-row">
-          <div class="p-stock">商品数量 {{ detail.stock || 0 }} 件</div>
+          <div class="p-stock">商品库存 {{ detail.stock || 0 }} 件</div>
         </div>
       </div>
 
@@ -405,12 +405,13 @@ onMounted(() => {
   bottom: 0;
   left: 0;
   right: 0;
-  height: 60px;
   background: #fff;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 16px;
+  padding: 10px 16px;
+  padding-bottom: calc(10px + constant(safe-area-inset-bottom));
+  padding-bottom: calc(10px + env(safe-area-inset-bottom));
   box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
   z-index: 99;
 }

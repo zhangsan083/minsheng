@@ -3,7 +3,7 @@
     <!-- 头部 -->
     <div class="header">
       <van-nav-bar
-        title="团队长排行榜"
+        title="团队排行榜"
         left-arrow
         @click-left="goBack"
         :border="false"

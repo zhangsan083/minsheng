@@ -57,6 +57,13 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* iOS Web Clip / 全面屏安全区域底部适配 */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  body {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
 /* App 环境下由 Android 原生 fitsSystemWindows 处理顶部安全距离 */
 
 /* 老年人友好的全局样式 */

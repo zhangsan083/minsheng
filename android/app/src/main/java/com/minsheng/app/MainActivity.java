@@ -32,8 +32,12 @@ public class MainActivity extends BridgeActivity {
 
         Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        window.setStatusBarColor(0x01000000);
+        window.setStatusBarColor(android.graphics.Color.WHITE);
         window.setNavigationBarColor(android.graphics.Color.WHITE);
+
+        // 强制状态栏图标为深色，确保在所有手机上可见
+        WindowCompat.getInsetsController(window, window.getDecorView())
+            .setAppearanceLightStatusBars(true);
 
         // 用 WindowInsets 监听实际的系统栏高度，给 WebView 父容器加 padding
         View contentView = findViewById(android.R.id.content);
@@ -52,14 +56,20 @@ public class MainActivity extends BridgeActivity {
         }
         final int statusDp = Math.round(statusBarHeight / density);
 
-        getBridge().getWebView().postDelayed(() -> {
-            String js = "(function(){" +
-                "var s=document.getElementById('status-bar-padding');" +
-                "if(!s){s=document.createElement('style');s.id='status-bar-padding';document.head.appendChild(s);}" +
-                "s.textContent='html{padding-top:" + statusDp + "px!important;padding-bottom:" + statusDp + "px!important;}';" +
-                "})()";
-            getBridge().getWebView().evaluateJavascript(js, null);
-        }, 300);
+        // 延迟检测：如果系统已为状态栏留了空间，清除 CSS 兜底
+        final WebView webView = getBridge().getWebView();
+        View contentView2 = findViewById(android.R.id.content);
+        contentView2.post(() -> {
+            int[] location = new int[2];
+            webView.getLocationOnScreen(location);
+            // 如果 WebView 顶部位置 > 状态栏高度的一半，说明系统留了空间
+            if (location[1] > statusDp) {
+                webView.evaluateJavascript(
+                    "(function(){var s=document.getElementById('status-bar-padding');if(s)s.textContent='';})()",
+                    null
+                );
+            }
+        });
 
         // 键盘监听
         setupKeyboardListener();
