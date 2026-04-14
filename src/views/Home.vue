@@ -20,7 +20,6 @@
             ref="bannerVideo"
             class="banner-video"
             autoplay
-            loop
             playsinline
             preload="metadata"
             controls
