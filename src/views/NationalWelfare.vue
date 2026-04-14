@@ -107,7 +107,9 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { showDialog } from 'vant'
 import { getWellbeingArticle, getWellbeingPage } from '@/api/assets'
+import { useUserStore } from '@/stores/user'
 import { Icon } from 'vant'
 
 const router = useRouter()
@@ -139,6 +141,19 @@ const goBack = () => {
 }
 
 const goToContribute = () => {
+  const userStore = useUserStore()
+  if (!userStore.userInfo?.realName) {
+    showDialog({
+      title: '提示',
+      message: '请先完成实名认证后再投稿',
+      confirmButtonText: '去认证',
+      showCancelButton: true,
+      cancelButtonText: '取消'
+    }).then(() => {
+      router.push('/real-name-auth')
+    }).catch(() => {})
+    return
+  }
   router.push('/contribute')
 }
 

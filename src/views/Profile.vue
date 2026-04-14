@@ -14,14 +14,17 @@
           </div>
           <div class="info-details">
             <div class="user-row">
-              <span class="user-phone">{{ userStore.userInfo?.phonenumber ? hidePhone(userStore.userInfo.phonenumber) : '0000****0000' }}</span>
+              <div class="user-info-text">
+                <span v-if="userStore.userInfo?.realName" class="user-name">{{ userStore.userInfo.realName }}</span>
+                <span class="user-phone">{{ userStore.userInfo?.phonenumber ? hidePhone(userStore.userInfo.phonenumber) : '0000****0000' }}</span>
+              </div>
               <div class="status-badge" :class="{ 'verified': Number(userStore.userInfo?.isVerified) === 1, 'unverified': Number(userStore.userInfo?.isVerified) !== 1 }">
                 <img :src="Number(userStore.userInfo?.isVerified) === 1 ? iconVerified : iconUnverified" class="badge-icon" />
                 <span>{{ Number(userStore.userInfo?.isVerified) === 1 ? '已实名' : '未实名' }}</span>
               </div>
             </div>
             <div class="invite-row">
-              <span>邀请码：{{ userStore.userInfo?.invitationCode || '0000000' }}</span>
+              <span>邀请码：{{ userStore.userInfo?.invitationCode || '' }}</span>
               <img :src="iconCopy" class="copy-icon-img" @click="copyCode" />
             </div>
           </div>
@@ -72,7 +75,7 @@
           <div class="action-icon blue-light-bg"><img :src="iconAction1" class="action-img" /></div>
           <div class="action-text">立即充值</div>
         </div> -->
-        <div class="action-btn-item" @click="goWithdraw">
+        <!-- <div class="action-btn-item" @click="goWithdraw">
           <div class="action-icon blue-light-bg"><img :src="iconAction2" class="action-img" /></div>
           <div class="action-text">立即提现</div>
         </div>
@@ -83,13 +86,13 @@
         <div class="action-btn-item" @click="goFundTransfer">
           <div class="action-icon blue-light-bg"><img :src="iconAction4" class="action-img" /></div>
           <div class="action-text">资金转出</div>
-        </div>
+        </div> -->
       </div>
 
       <!-- Ad Placeholder -->
-      <div class="ad-placeholder" @click="$router.push({ name: 'dream-mutual-aid' })">
+      <!-- <div class="ad-placeholder" @click="$router.push({ name: 'dream-mutual-aid' })">
         <img :src="posterBg" class="poster-bg-img" alt="海报" />
-      </div>
+      </div> -->
 
       <!-- Functional Services -->
       <div class="section-group">
@@ -98,6 +101,10 @@
           <span class="section-name">功能服务</span>
         </div>
         <div class="service-grid">
+                  <div class="service-item" @click="goWithdraw">
+                    <div class="service-icon"><img :src="iconAction2" class="service-img" /></div>
+                    <div class="service-label">立即提现</div>
+                  </div>
                   <div class="service-item" @click="goFundDetails">
                     <div class="service-icon"><img :src="iconService1" class="service-img" /></div>
                     <div class="service-label">资金明细</div>
@@ -377,6 +384,20 @@ const confirmLogout = () => {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 8px;
+}
+
+.user-info-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width:150px;
+}
+
+.user-name {
+  font-size: var(--font-size-large);
+  font-weight: bold;
+  color: var(--blue-deep);
+  word-break: break-all;
 }
 
 .user-phone {

@@ -11,7 +11,6 @@
     </div>
 
     <div class="content">
-      <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
         <!-- Tonight's Meeting Card -->
         <div v-if="todayMeeting" class="meeting-card highlight-card">
           <div class="badge-container">
@@ -82,7 +81,6 @@
             </div>
           </div>
         </van-list>
-      </van-pull-refresh>
     </div>
   </div>
 </template>
@@ -297,8 +295,7 @@ onMounted(() => {
 
 .meeting-cover {
   width: 110px;
-  min-height: 110px;
-  height: auto;
+  height: 110px;
   background: #d9d9d9;
   border-radius: 4px;
   flex-shrink: 0;
@@ -314,6 +311,11 @@ onMounted(() => {
   font-size: var(--font-size-small);
   color: #666;
   line-height: 1.4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
 }
 
 .meeting-time-row {

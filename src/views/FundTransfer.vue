@@ -61,34 +61,32 @@
           <div class="item-value-text">{{ transferType === 'recommend' ? '推荐奖励余额' : '理财收益余额' }}</div>
         </div>
 
-        <div class="form-item">
-          <div class="item-icon">
+        <van-field
+          v-model="phone"
+          type="tel"
+          label="收款人手机号"
+          placeholder="请输入收款人手机号"
+          maxlength="11"
+          input-align="right"
+          @update:model-value="handlePhoneInput"
+        >
+          <template #left-icon>
             <img :src="iconPhone" class="form-icon-img" />
-          </div>
-          <div class="item-label">收款人手机号</div>
-          <input 
-            v-model="phone" 
-            type="tel" 
-            placeholder="请输入收款人手机号" 
-            class="item-input text-blue-deep"
-            maxlength="11"
-            @input="handlePhoneInput"
-          />
-        </div>
+          </template>
+        </van-field>
 
-        <div class="form-item">
-          <div class="item-icon">
+        <van-field
+          v-model="amount"
+          type="digit"
+          label="转出金额"
+          placeholder="请输入转出金额"
+          input-align="right"
+          @update:model-value="handleAmountInput"
+        >
+          <template #left-icon>
             <img :src="iconAmountSmall" class="form-icon-img" />
-          </div>
-          <div class="item-label">转出金额</div>
-          <input 
-            v-model="amount" 
-            type="text" 
-            placeholder="请输入转出金额" 
-            class="item-input text-blue-deep"
-            @input="handleAmountInput"
-          />
-        </div>
+          </template>
+        </van-field>
 
         <van-button 
           block 
@@ -144,25 +142,20 @@ const handleAll = () => {
   amount.value = availableAmount.value.toString()
 }
 
-const handlePhoneInput = (e) => {
-  // 只允许输入数字
-  e.target.value = e.target.value.replace(/[^0-9]/g, '')
-  phone.value = e.target.value
+const handlePhoneInput = (val) => {
+  phone.value = val.replace(/[^0-9]/g, '')
 }
 
-const handleAmountInput = (e) => {
-  // 只允许输入数字和小数点
-  e.target.value = e.target.value.replace(/[^0-9.]/g, '')
-  // 限制只能有一个小数点
-  const parts = e.target.value.split('.')
+const handleAmountInput = (val) => {
+  let v = val.replace(/[^0-9.]/g, '')
+  const parts = v.split('.')
   if (parts.length > 2) {
-    e.target.value = parts[0] + '.' + parts.slice(1).join('')
+    v = parts[0] + '.' + parts.slice(1).join('')
   }
-  // 限制小数位数为2位
   if (parts.length === 2 && parts[1].length > 2) {
-    e.target.value = parts[0] + '.' + parts[1].substring(0, 2)
+    v = parts[0] + '.' + parts[1].slice(0, 2)
   }
-  amount.value = e.target.value
+  amount.value = v
 }
 
 const handleTransfer = async () => {
@@ -293,9 +286,22 @@ const handleTransfer = async () => {
 }
 
 .form-icon-img {
-  width: 100%;
-  height: 100%;
+  width: 20px;
+  height: 20px;
   object-fit: contain;
+}
+
+/* van-field 内图标和输入框样式 */
+:deep(.van-field__left-icon) {
+  display: flex;
+  align-items: center;
+  margin-right: 8px;
+}
+
+:deep(.van-field__label) {
+  width: auto;
+  max-width: 110px;
+  font-weight: bold;
 }
 
 .type-options {
