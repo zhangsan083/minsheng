@@ -297,7 +297,8 @@ onMounted(() => {
 
 .meeting-cover {
   width: 110px;
-  height: 110px;
+  min-height: 110px;
+  height: auto;
   background: #d9d9d9;
   border-radius: 4px;
   flex-shrink: 0;
@@ -313,11 +314,6 @@ onMounted(() => {
   font-size: var(--font-size-small);
   color: #666;
   line-height: 1.4;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 5;
-  -webkit-box-orient: vertical;
 }
 
 .meeting-time-row {

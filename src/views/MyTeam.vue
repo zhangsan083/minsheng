@@ -71,7 +71,7 @@
       <div class="invite-bar">
         <div class="invite-left">
           <van-icon name="share-o" />
-          <span>我的邀请码：{{ (userStore.userInfo?.invitationCode) || '00000000' }}</span>
+          <span>我的邀请码：{{ (userStore.userInfo?.invitationCode) || '' }}</span>
         </div>
         <div class="copy-btn" @click="copyCode">点击复制</div>
       </div>

@@ -37,12 +37,12 @@ config.loadConfig().then(() => {
 // 初始化状态栏配置（仅在 App 环境下执行）
 if (isNative) {
   StatusBar.setStyle({ style: Style.Light })
-  StatusBar.setOverlaysWebView({ overlay: true })
-  // JS 兜底：28px，原生会用精确值覆盖这个 style 标签
+  StatusBar.setOverlaysWebView({ overlay: false })
+  // JS 兜底顶部 padding，原生会用精确值覆盖
   if (!document.querySelector('#status-bar-padding')) {
     const style = document.createElement('style')
     style.id = 'status-bar-padding'
-    style.textContent = 'html { padding-top: 28px !important; padding-bottom: 48px !important; } .app-tabbar { bottom: 48px !important; }'
+    style.textContent = 'html { padding-top: 28px !important; }'
     document.head.appendChild(style)
   }
 }

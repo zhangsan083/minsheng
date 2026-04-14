@@ -402,9 +402,12 @@ const handleTransfer = async () => {
   border: none;
   background: transparent;
   flex: 1;
+  width: 0;
+  min-width: 0;
   text-align: right;
   font-size: var(--font-size-small);
   outline: none;
+  box-sizing: border-box;
 }
 
 .blue-text { color: var(--blue-deep); }

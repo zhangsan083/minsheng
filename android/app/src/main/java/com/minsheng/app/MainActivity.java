@@ -1,13 +1,18 @@
 package com.minsheng.app;
 
 import android.graphics.Rect;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
 import android.webkit.WebView;
 import androidx.activity.OnBackPressedCallback;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsCompat;
 import com.getcapacitor.BridgeActivity;
 
 public class MainActivity extends BridgeActivity {
@@ -17,51 +22,44 @@ public class MainActivity extends BridgeActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // 强制设置键盘模式
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        // 关闭 edge-to-edge，让系统自动为状态栏和导航栏留空间
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), true);
 
-        // 设置状态栏透明
+        getWindow().setSoftInputMode(
+            WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING |
+            WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN
+        );
+
+        // 状态栏透明但不覆盖内容
         Window window = getWindow();
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(android.graphics.Color.TRANSPARENT);
+        window.setNavigationBarColor(android.graphics.Color.WHITE);
 
-        // 获取状态栏实际高度并注入到 WebView（覆盖 JS 兜底的 28px）
+        // 获取状态栏高度注入顶部 padding（因为状态栏透明，内容会延伸上去）
+        float density = getResources().getDisplayMetrics().density;
         int statusBarHeight = 0;
         int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
         if (resourceId > 0) {
             statusBarHeight = getResources().getDimensionPixelSize(resourceId);
         }
-        float density = getResources().getDisplayMetrics().density;
-        final int heightDp = Math.round(statusBarHeight / density);
+        final int statusDp = Math.round(statusBarHeight / density);
 
-        // 延迟获取导航栏高度（等布局完成后更准确）
-        final int finalStatusBarHeight = statusBarHeight;
         getBridge().getWebView().postDelayed(() -> {
-            android.util.DisplayMetrics realMetrics = new android.util.DisplayMetrics();
-            getWindowManager().getDefaultDisplay().getRealMetrics(realMetrics);
-            int realHeight = realMetrics.heightPixels;
-
-            android.graphics.Rect usableRect = new android.graphics.Rect();
-            getWindow().getDecorView().getWindowVisibleDisplayFrame(usableRect);
-
-            // 实际导航栏高度 = 真实屏幕高度 - 可见区域底部
-            int navHeight = Math.max(0, realHeight - usableRect.bottom);
-            int navDp = Math.round(navHeight / density);
-
             String js = "(function(){" +
                 "var s=document.getElementById('status-bar-padding');" +
                 "if(!s){s=document.createElement('style');s.id='status-bar-padding';document.head.appendChild(s);}" +
-                "s.textContent='html{padding-top:" + heightDp + "px!important;padding-bottom:" + navDp + "px!important;}" +
-                ".app-tabbar{bottom:" + navDp + "px!important;}';" +
+                "s.textContent='html{padding-top:" + statusDp + "px!important;}';" +
                 "})()";
             getBridge().getWebView().evaluateJavascript(js, null);
-        }, 500);
+        }, 300);
 
-        // 监听键盘弹出/收起，通知 WebView 滚动到输入框
+        // 键盘监听
         setupKeyboardListener();
 
-        // 返回手势处理
+        // 返回手势
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
@@ -74,7 +72,9 @@ public class MainActivity extends BridgeActivity {
     }
 
     private void setupKeyboardListener() {
-        final View rootView = getWindow().getDecorView().getRootView();
+        final View rootView = getWindow().getDecorView();
+        final WebView webView = getBridge().getWebView();
+
         rootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
@@ -83,21 +83,22 @@ public class MainActivity extends BridgeActivity {
                 int screenHeight = rootView.getHeight();
                 int keyboardHeight = screenHeight - rect.bottom;
 
-                // 键盘高度变化超过 150px 认为是键盘弹出
-                if (keyboardHeight > 150 && lastKeyboardHeight <= 150) {
-                    // 键盘弹出，通知 WebView 滚动到当前输入框
-                    WebView webView = getBridge().getWebView();
-                    if (webView != null) {
+                if (keyboardHeight > 150) {
+                    ViewGroup.LayoutParams params = webView.getLayoutParams();
+                    params.height = rect.bottom - rect.top;
+                    webView.setLayoutParams(params);
+
+                    webView.postDelayed(() -> {
                         webView.evaluateJavascript(
-                            "(function(){" +
-                            "var el=document.activeElement;" +
+                            "(function(){var el=document.activeElement;" +
                             "if(el&&(el.tagName==='INPUT'||el.tagName==='TEXTAREA')){" +
-                            "setTimeout(function(){el.scrollIntoView({behavior:'smooth',block:'start'});window.scrollBy(0,-80);},100);" +
-                            "}" +
-                            "})()",
-                            null
-                        );
-                    }
+                            "el.scrollIntoView({behavior:'auto',block:'center'});}" +
+                            "})()", null);
+                    }, 50);
+                } else if (lastKeyboardHeight > 150) {
+                    ViewGroup.LayoutParams params = webView.getLayoutParams();
+                    params.height = ViewGroup.LayoutParams.MATCH_PARENT;
+                    webView.setLayoutParams(params);
                 }
                 lastKeyboardHeight = keyboardHeight;
             }

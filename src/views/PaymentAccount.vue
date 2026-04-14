@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div class="page">
     <div class="header-bg">
       <van-nav-bar
@@ -186,7 +186,7 @@ const goBindBankCard = () => {
 */
 .alipay-card, .bank-card {
   border: 1px solid #2979ff; /* Matching the blue border in the image for cards */
-  height: 160px;
+  min-height: 160px;
   display: flex;
   flex-direction: column;
 }
@@ -236,9 +236,7 @@ const goBindBankCard = () => {
 }
 
 .card-action {
-  position: absolute;
-  bottom: 20px;
-  left: 20px;
+  margin-top: 8px;
   z-index: 10;
   cursor: pointer;
 }
