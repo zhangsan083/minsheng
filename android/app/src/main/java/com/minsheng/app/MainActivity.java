@@ -51,7 +51,7 @@ public class MainActivity extends BridgeActivity {
             String js = "(function(){" +
                 "var s=document.getElementById('status-bar-padding');" +
                 "if(!s){s=document.createElement('style');s.id='status-bar-padding';document.head.appendChild(s);}" +
-                "s.textContent='html{padding-top:" + statusDp + "px!important;}';" +
+                "s.textContent='html{padding-top:" + statusDp + "px!important;padding-bottom:" + statusDp + "px!important;}';" +
                 "})()";
             getBridge().getWebView().evaluateJavascript(js, null);
         }, 300);

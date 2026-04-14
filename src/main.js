@@ -42,7 +42,7 @@ if (isNative) {
   if (!document.querySelector('#status-bar-padding')) {
     const style = document.createElement('style')
     style.id = 'status-bar-padding'
-    style.textContent = 'html { padding-top: 28px !important; }'
+    style.textContent = 'html { padding-top: 28px !important; padding-bottom: 28px !important; }'
     document.head.appendChild(style)
   }
 }

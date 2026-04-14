@@ -21,7 +21,6 @@
             class="banner-video"
             autoplay
             loop
-            muted
             playsinline
             preload="metadata"
             controls
