@@ -22,7 +22,7 @@ public class MainActivity extends BridgeActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // 关闭 edge-to-edge，让系统自动为状态栏和导航栏留空间
+        // 关闭 edge-to-edge
         WindowCompat.setDecorFitsSystemWindows(getWindow(), true);
 
         getWindow().setSoftInputMode(
@@ -30,13 +30,18 @@ public class MainActivity extends BridgeActivity {
             WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN
         );
 
-        // 状态栏透明但不覆盖内容
         Window window = getWindow();
-        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        window.setStatusBarColor(android.graphics.Color.TRANSPARENT);
+        window.setStatusBarColor(0x01000000);
         window.setNavigationBarColor(android.graphics.Color.WHITE);
+
+        // 用 WindowInsets 监听实际的系统栏高度，给 WebView 父容器加 padding
+        View contentView = findViewById(android.R.id.content);
+        ViewCompat.setOnApplyWindowInsetsListener(contentView, (v, insets) -> {
+            int navBarHeight = insets.getInsets(WindowInsetsCompat.Type.navigationBars()).bottom;
+            v.setPadding(0, 0, 0, navBarHeight);
+            return insets;
+        });
 
         // 获取状态栏高度注入顶部 padding（因为状态栏透明，内容会延伸上去）
         float density = getResources().getDisplayMetrics().density;
