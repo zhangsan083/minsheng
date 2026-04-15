@@ -1,4 +1,4 @@
-﻿<template>
+<template>
   <div class="page">
     <div class="header-bg">
       <van-nav-bar
@@ -11,78 +11,63 @@
     </div>
 
     <div class="content">
-      <!-- Alipay Card (Bound) -->
-      <div class="card alipay-card" v-if="alipayAccount">
+      <!-- 添加账户入口（同一行显示，总数未满5个时显示） -->
+      <div class="add-row" v-if="accountList.length < 5">
+        <div class="add-item" @click="goBindAlipay">
+          <img :src="iconAlipayDecor" class="add-item-icon" alt="支付宝" />
+          <span class="add-item-text">支付宝</span>
+        </div>
+        <div class="add-item" @click="goBindBankCard">
+          <img :src="iconUnionPayBind" class="add-item-icon" alt="银行卡" />
+          <span class="add-item-text">银行卡</span>
+        </div>
+        <div class="add-item" @click="goBindWechat">
+          <van-icon name="chat-o" size="32" color="#07c160" />
+          <span class="add-item-text">微信</span>
+        </div>
+      </div>
+      <!-- 账户总数提示 -->
+      <div class="account-count" v-if="accountList.length > 0">
+        已绑定 {{ accountList.length }}/5 个账户
+      </div>
+
+      <!-- 已绑定的账户列表 -->
+      <div 
+        v-for="account in accountList" 
+        :key="account.id"
+        class="card"
+        :class="getCardClass(account)"
+      >
         <div class="card-header">
-          <span class="card-title">支付宝</span>
+          <span class="card-title">
+            {{ getTypeName(account) }}
+            <van-tag v-if="account.isDefault === 1" type="primary" round size="medium">默认</van-tag>
+          </span>
+          <div class="card-header-actions">
+            <div class="default-btn" v-if="account.isDefault !== 1" @click.stop="handleSetDefault(account)">设为默认</div>
+            <div class="delete-btn" @click.stop="handleDelete(account)">
+              <van-icon name="delete-o" size="18" color="#ee0a24" />
+            </div>
+          </div>
         </div>
         <div class="card-body">
           <div class="info-row">
             <span class="label">真实姓名：</span>
-            <span class="value">{{ alipayAccount.realName }}</span>
+            <span class="value">{{ account.realName }}</span>
           </div>
           <div class="info-row">
-            <span class="label">支付宝账号：</span>
-            <span class="value">{{ alipayAccount.accountNum }}</span>
+            <span class="label">{{ getAccountLabel(account) }}</span>
+            <span class="value">{{ account.accountNum }}</span>
           </div>
         </div>
         <div class="card-action">
-          <div class="action-btn" @click.stop="goBindAlipay">
+          <div class="action-btn" @click.stop="goEdit(account)">
             <van-icon name="arrow" color="#999" />
           </div>
         </div>
-        <img :src="iconAlipayDecor" class="watermark-img" alt="alipay" />
-      </div>
-
-      <!-- Bank Card (Bound) -->
-      <div class="card bank-card" v-if="bankAccount">
-        <div class="card-header">
-          <span class="card-title">{{ bankAccount.openName }}</span>
-        </div>
-        <div class="card-body">
-          <div class="info-row">
-            <span class="label">真实姓名：</span>
-            <span class="value">{{ bankAccount.realName }}</span>
-          </div>
-          <div class="info-row">
-            <span class="label">银行卡号：</span>
-            <span class="value">{{ bankAccount.accountNum }}</span>
-          </div>
-        </div>
-        <div class="card-action">
-          <div class="action-btn" @click.stop="goBindBankCard">
-            <van-icon name="arrow" color="#999" />
-          </div>
-        </div>
-        <img :src="iconUnionPayDecor" class="watermark-img" alt="unionpay" />
-      </div>
-
-      <!-- Add Alipay Card (Show if not bound) -->
-      <div class="card add-card" v-if="!alipayAccount">
-        <div class="add-icon-wrapper">
-          <img :src="iconAlipayDecor" class="unionpay-bind-img" alt="alipay-bind" style="object-fit: contain;" />
-        </div>
-        <div class="add-info">
-          <div class="add-title">支付宝添加</div>
-          <div class="add-desc">支持绑定支付宝收款账户</div>
-        </div>
-        <div class="add-btn" @click="goBindAlipay">
-          <van-icon name="plus" size="24" color="#999" />
-        </div>
-      </div>
-
-      <!-- Add Bank Card (Show if not bound) -->
-      <div class="card add-card" v-if="!bankAccount">
-        <div class="add-icon-wrapper">
-          <img :src="iconUnionPayBind" class="unionpay-bind-img" alt="unionpay-bind" />
-        </div>
-        <div class="add-info">
-          <div class="add-title">银行卡添加</div>
-          <div class="add-desc">支持各类银行卡/银联等个大商业银行卡</div>
-        </div>
-        <div class="add-btn" @click="goBindBankCard">
-          <van-icon name="plus" size="24" color="#999" />
-        </div>
+        <img v-if="String(account.accountType) === '1'" :src="iconAlipayDecor" class="watermark-img" alt="alipay" />
+        <img v-else-if="String(account.accountType) === '0'" :src="iconUnionPayDecor" class="watermark-img" alt="unionpay" />
+        <img v-else-if="String(account.accountType) === '3'" :src="iconWeChatDecor" class="watermark-img" alt="wechat" />
       </div>
     </div>
   </div>
@@ -91,21 +76,42 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { showToast, showLoadingToast } from 'vant'
-import { getAccountList } from '@/api/auth'
+import { showToast, showLoadingToast, showDialog } from 'vant'
+import { getAccountList, removeAccount, setAccountDefault } from '@/api/auth'
 
 // Import assets
 import iconAlipayDecor from '@/assets/收款账户/我的账户支付宝装饰.png'
 import iconUnionPayDecor from '@/assets/收款账户/我的账户银联装饰.png'
+import iconWeChatDecor from '@/assets/收款账户/我的账户微信装饰.png'
 import iconUnionPayBind from '@/assets/收款账户/绑定银联.png'
 
 const router = useRouter()
-const alipayAccount = ref(null)
-const bankAccount = ref(null)
+const accountList = ref([])
 
 onMounted(async () => {
   await fetchAccountList()
 })
+
+const getTypeName = (account) => {
+  const type = String(account.accountType)
+  if (type === '1') return '支付宝'
+  if (type === '3') return '微信'
+  return account.openName || '银行卡'
+}
+
+const getAccountLabel = (account) => {
+  const type = String(account.accountType)
+  if (type === '1') return '支付宝账号：'
+  if (type === '3') return '微信号：'
+  return '银行卡号：'
+}
+
+const getCardClass = (account) => {
+  const type = String(account.accountType)
+  if (type === '3') return 'wechat-card'
+  if (type === '1') return 'alipay-card'
+  return 'bank-card'
+}
 
 const fetchAccountList = async () => {
   const toast = showLoadingToast({
@@ -118,10 +124,7 @@ const fetchAccountList = async () => {
     const res = await getAccountList()
     toast.close()
     if (res && res.code === 200) {
-      const list = res.data || []
-      // accountType: 0银行卡 1支付宝
-      alipayAccount.value = list.find(item => String(item.accountType) === '1') || null
-      bankAccount.value = list.find(item => String(item.accountType) === '0') || null
+      accountList.value = res.data || []
     }
   } catch (error) {
     toast.close()
@@ -130,14 +133,78 @@ const fetchAccountList = async () => {
   }
 }
 
+const goEdit = (account) => {
+  const type = String(account.accountType)
+  if (type === '1') router.push({ name: 'bind-alipay', query: { id: account.id } })
+  else if (type === '3') router.push({ name: 'bind-wechat', query: { id: account.id } })
+  else router.push({ name: 'bind-bank-card', query: { id: account.id } })
+}
+
+const checkLimit = () => {
+  if (accountList.value.length >= 5) {
+    showToast('最多添加5个收款账户')
+    return false
+  }
+  return true
+}
+
 const goBindAlipay = () => {
-  const id = alipayAccount.value?.id || ''
-  router.push({ name: 'bind-alipay', query: { id } })
+  if (checkLimit()) router.push({ name: 'bind-alipay' })
 }
 
 const goBindBankCard = () => {
-  const id = bankAccount.value?.id || ''
-  router.push({ name: 'bind-bank-card', query: { id } })
+  if (checkLimit()) router.push({ name: 'bind-bank-card' })
+}
+
+const goBindWechat = () => {
+  if (checkLimit()) router.push({ name: 'bind-wechat' })
+}
+
+const handleDelete = (account) => {
+  if (!account?.id) return
+  const typeName = getTypeName(account)
+  showDialog({
+    title: '删除确认',
+    message: `确定要删除该${typeName}账户吗？`,
+    showCancelButton: true,
+    confirmButtonColor: '#ee0a24'
+  }).then(async () => {
+    const toast = showLoadingToast({ message: '删除中...', forbidClick: true, duration: 0 })
+    try {
+      const res = await removeAccount(account.id)
+      toast.close()
+      if (res && res.code === 200) {
+        showToast('删除成功')
+        await fetchAccountList()
+      } else {
+        showToast(res?.msg || '删除失败')
+      }
+    } catch (error) {
+      toast.close()
+      console.error(error)
+      showToast('删除失败')
+    }
+  }).catch(() => {})
+}
+
+const handleSetDefault = async (account) => {
+  if (!account?.id) return
+  if (account.isDefault === 1) return showToast('已是默认账户')
+  const toast = showLoadingToast({ message: '设置中...', forbidClick: true, duration: 0 })
+  try {
+    const res = await setAccountDefault(account.id)
+    toast.close()
+    if (res && res.code === 200) {
+      showToast(`已设为默认${getTypeName(account)}账户`)
+      await fetchAccountList()
+    } else {
+      showToast(res?.msg || '设置失败')
+    }
+  } catch (error) {
+    toast.close()
+    console.error(error)
+    showToast('设置失败')
+  }
 }
 </script>
 
@@ -164,6 +231,52 @@ const goBindBankCard = () => {
 .content {
   padding: 0 16px;
   margin-top: -160px;
+  padding-bottom: 80px;
+}
+
+.account-count {
+  text-align: center;
+  font-size: var(--font-size-small);
+  color: white;
+  margin-bottom: 12px;
+  font-weight: 500;
+}
+
+.add-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.add-item {
+  flex: 1;
+  background: #fff;
+  border-radius: 12px;
+  padding: 16px 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  border: 1px solid #eee;
+}
+
+.add-item:active {
+  background: #f5f7fa;
+}
+
+.add-item-icon {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
+.add-item-text {
+  font-size: var(--font-size-small);
+  color: #333;
+  font-weight: 500;
 }
 
 .card {
@@ -185,28 +298,68 @@ const goBindBankCard = () => {
    The image shows white cards. Let's keep it simple.
 */
 .alipay-card, .bank-card {
-  border: 1px solid #2979ff; /* Matching the blue border in the image for cards */
-  min-height: 160px;
+  border: 1px solid #2979ff;
+  min-height: 120px;
   display: flex;
   flex-direction: column;
 }
 
-.add-card {
-  border: 1px solid #2979ff;
+.wechat-card {
+  border: 1px solid #07c160;
+  min-height: 120px;
   display: flex;
-  align-items: center;
-  padding: 20px;
-  height: 100px;
+  flex-direction: column;
 }
+
+/* Add Card Styling - removed, using add-row instead */
 
 .card-header {
   margin-bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .card-title {
   font-size: var(--font-size-base);
   font-weight: 600;
   color: #333;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.card-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.default-btn {
+  font-size: var(--font-size-xs);
+  color: var(--blue-deep);
+  cursor: pointer;
+  padding: 4px 10px;
+  border: 1px solid var(--blue-deep);
+  border-radius: 4px;
+  z-index: 10;
+  position: relative;
+}
+
+.delete-btn {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 50%;
+  z-index: 10;
+  position: relative;
+}
+
+.delete-btn:active {
+  background: rgba(238, 10, 36, 0.1);
 }
 
 .card-body {

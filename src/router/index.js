@@ -215,6 +215,12 @@ const routes = [
         meta: { requiresAuth: true}
       },
       {
+        path: 'bind-wechat',
+        name: 'bind-wechat',
+        component: () => import('@/views/BindWechat.vue'),
+        meta: { requiresAuth: true }
+      },
+      {
         path: 'change-password',
         name: 'change-password',
         component: () => import('@/views/ChangePassword.vue'),

@@ -115,17 +115,17 @@
 
         <!-- Quantity Row -->
         <div class="form-row">
-          <div class="row-label">兑换份数</div>
+          <div class="row-label">兑换份数：1份</div>
           <div class="row-right">
              <span class="my-points">我的积分：{{ detail.userScore || 0 }}积分</span>
           </div>
         </div>
         
         <!-- Stepper Row -->
-        <div class="stepper-row">
+        <!-- <div class="stepper-row">
            <van-stepper v-model="quantity" min="1" integer />
            <div class="stepper-label">{{ quantity }}份</div>
-        </div>
+        </div> -->
         
         <!-- Total Row -->
         <div class="total-row">

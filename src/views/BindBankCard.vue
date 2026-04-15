@@ -57,6 +57,11 @@
           </div>
         </div>
 
+        <div class="default-switch">
+          <span class="default-label">设为默认账户</span>
+          <van-switch v-model="isDefault" size="24" active-color="var(--blue-deep)" />
+        </div>
+
         <div class="submit-btn-wrapper">
           <van-button 
             block 
@@ -93,6 +98,7 @@ const route = useRoute()
 const realName = ref('')
 const bankCardNumber = ref('')
 const bankName = ref('')
+const isDefault = ref(false)
 
 onMounted(async () => {
   const id = route.query?.id
@@ -105,6 +111,7 @@ onMounted(async () => {
       realName.value = res.data.realName || ''
       bankCardNumber.value = res.data.accountNum || ''
       bankName.value = res.data.openName || ''
+      isDefault.value = res.data.isDefault === 1
     }
   } catch (e) {
     toast.close()
@@ -119,7 +126,8 @@ const handleSubmit = () => {
   const idParam = route.query?.id
   const payload = {
     accountNum: bankCardNumber.value,
-    openName: bankName.value
+    openName: bankName.value,
+    isDefault: isDefault.value ? 1 : 0
   }
   if (idParam) {
     payload.id = Number(idParam)
@@ -255,6 +263,19 @@ const handleSubmit = () => {
   width: 100%;
   margin-top: 20px;
   margin-bottom: 20px;
+}
+
+.default-switch {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+}
+
+.default-label {
+  font-size: var(--font-size-small);
+  color: #333;
 }
 
 .submit-btn {

@@ -2,7 +2,7 @@
   <div class="page">
     <div class="header-bg">
       <van-nav-bar
-        title="绑定支付宝"
+        title="绑定微信"
         left-arrow
         @click-left="$router.back()"
         :border="false"
@@ -12,11 +12,11 @@
 
     <div class="content">
       <div class="bind-card">
-        <div class="card-title">绑定支付宝</div>
+        <div class="card-title">绑定微信</div>
         
         <div class="form-item">
           <div class="icon-wrapper">
-            <img :src="iconBindMy" class="form-icon-img" alt="my" />
+            <van-icon name="contact" size="24" color="#07c160" />
           </div>
           <div class="form-content">
             <div class="form-label">真实姓名：</div>
@@ -31,14 +31,14 @@
 
         <div class="form-item">
           <div class="icon-wrapper">
-            <img :src="iconBindAlipay" class="form-icon-img" alt="alipay" />
+            <van-icon name="chat-o" size="24" color="#07c160" />
           </div>
           <div class="form-content">
-            <div class="form-label">支付宝账号：</div>
+            <div class="form-label">微信号：</div>
             <input
-              v-model="alipayAccount"
+              v-model="wechatAccount"
               class="input-plain"
-              placeholder="请输入支付宝账号"
+              placeholder="请输入微信号"
               type="text"
             />
           </div>
@@ -78,8 +78,7 @@
         </div>
 
         <div class="tips">
-          温馨提示：为了确保提现顺利到账，请务必填写真实有效的信息。每个账户仅可绑定一个支付宝账户。
-          <!-- ，如需更换绑定信息，请及时联系在线客服 -->
+          温馨提示：为了确保提现顺利到账，请务必填写真实有效的信息。每个账户仅可绑定一个微信账户。
         </div>
       </div>
     </div>
@@ -93,13 +92,10 @@ import { showLoadingToast, showToast } from 'vant'
 import { getAccountDetail, saveAccount } from '@/api/auth'
 import { uploadFile } from '@/api/assets'
 
-import iconBindMy from '@/assets/收款账户/绑定我的.png'
-import iconBindAlipay from '@/assets/收款账户/绑定支付宝.png'
-
 const router = useRouter()
 const route = useRoute()
 const realName = ref('')
-const alipayAccount = ref('')
+const wechatAccount = ref('')
 const qrFileList = ref([])
 const qrImgUrl = ref('')
 const isDefault = ref(false)
@@ -113,7 +109,7 @@ onMounted(async () => {
     toast.close()
     if (res && res.code === 200 && res.data) {
       realName.value = res.data.realName || ''
-      alipayAccount.value = res.data.accountNum || ''
+      wechatAccount.value = res.data.accountNum || ''
       isDefault.value = res.data.isDefault === 1
       if (res.data.qrImg) {
         qrImgUrl.value = res.data.qrImg
@@ -148,12 +144,13 @@ const afterReadQr = async (file) => {
 
 const handleSubmit = () => {
   if (!realName.value) return showToast('请输入真实姓名')
-  if (!alipayAccount.value) return showToast('请输入支付宝账号')
+  if (!wechatAccount.value) return showToast('请输入微信号')
   const toast = showLoadingToast({ message: '保存中...', forbidClick: true, duration: 0 })
   const idParam = route.query?.id
   const payload = {
-    accountNum: alipayAccount.value,
-    openName: '支付宝',
+    accountNum: wechatAccount.value,
+    accountType: '3',
+    openName: '微信',
     realName: realName.value,
     qrImg: qrImgUrl.value,
     isDefault: isDefault.value ? 1 : 0
@@ -176,7 +173,6 @@ const handleSubmit = () => {
     showToast('保存失败')
   })
 }
-
 </script>
 
 <style scoped>
@@ -241,17 +237,6 @@ const handleSubmit = () => {
   justify-content: center;
 }
 
-.form-icon {
-  font-size: 20px;
-  color: #4da9ff; /* Light blue icon color */
-}
-
-.form-icon-img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-
 .form-content {
   flex: 1;
   display: flex;
@@ -262,12 +247,6 @@ const handleSubmit = () => {
 .form-label {
   font-size: var(--font-size-small);
   color: #666;
-}
-
-.form-value {
-  font-size: var(--font-size-small);
-  color: #333;
-  font-weight: 500;
 }
 
 .input-plain {
@@ -288,47 +267,6 @@ const handleSubmit = () => {
   outline: none;
 }
 
-.submit-btn-wrapper {
-  width: 100%;
-  margin-top: 20px;
-  margin-bottom: 20px;
-}
-
-.default-switch {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 0;
-}
-
-.default-label {
-  font-size: var(--font-size-small);
-  color: #333;
-}
-
-.submit-btn {
-  background: var(--blue-gradient);
-  border: none;
-  font-size: var(--font-size-base);
-  height: var(--button-normal-height);
-  opacity: 1 !important; /* Override disabled opacity for 'Bound' state look */
-}
-
-.submit-btn:disabled {
-  background: var(--blue-gradient);
-  color: #fff;
-  opacity: 1;
-}
-
-.tips {
-  font-size: var(--font-size-xs);
-  color: #999;
-  line-height: 1.6;
-  text-align: justify;
-}
-
-/* 上传收款码 */
 .upload-section {
   width: 100%;
   margin-bottom: 16px;
@@ -372,5 +310,38 @@ const handleSubmit = () => {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.submit-btn-wrapper {
+  width: 100%;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.default-switch {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+}
+
+.default-label {
+  font-size: var(--font-size-small);
+  color: #333;
+}
+
+.submit-btn {
+  background: var(--blue-gradient);
+  border: none;
+  font-size: var(--font-size-base);
+  height: var(--button-normal-height);
+}
+
+.tips {
+  font-size: var(--font-size-xs);
+  color: #999;
+  line-height: 1.6;
+  text-align: justify;
 }
 </style>

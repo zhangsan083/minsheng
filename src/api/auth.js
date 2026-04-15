@@ -44,6 +44,14 @@ export function saveAccount(data) {
   return http.post('/consumer/account/save', data)
 }
 
+export function removeAccount(ids) {
+  return http.post('/consumer/account/remove', null, { params: { ids } })
+}
+
+export function setAccountDefault(id) {
+  return http.post('/consumer/account/default', null, { params: { id } })
+}
+
 // 提现
 export function withdraw(data) {
   return http.post('/consumer/withdraw', data)

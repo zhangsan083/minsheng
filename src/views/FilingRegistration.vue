@@ -36,14 +36,8 @@
 
       <!-- China Dream Project Section -->
       <div class="china-dream-section">
-        <div class="china-dream-header">
-          <div class="china-dream-icon">
-            <img src="@/assets/资产/china-dream-logo.png" alt="China Dream" />
-          </div>
-          <div class="china-dream-title">
-            <div class="main-title">其余中国梦项目</div>
-            <div class="select-project-btn" @click="showProjectPicker = true">立即选择项目 →</div>
-          </div>
+        <div class="china-dream-header" @click="showProjectPicker = true">
+          <img src="@/assets/资产/products-selelct.png" class="china-dream-bg" alt="选择项目" />
         </div>
         
         <!-- Selected Project Display -->
@@ -526,7 +520,7 @@ const handleSubmit = () => {
 
 /* China Dream Project Section */
 .china-dream-section {
-  background: linear-gradient(135deg, #0944fc 0%, #0680f4 50%, #00b4d8 100%);
+  background: linear-gradient(135deg, rgba(9, 68, 252, 0.2) 0%, rgba(6, 128, 244, 0.2) 50%, rgba(0, 180, 216, 0.2) 100%);
   border-radius: 16px;
   box-shadow:
     0 8px 24px rgba(9, 68, 252, 0.3),
@@ -563,62 +557,16 @@ const handleSubmit = () => {
 }
 
 .china-dream-header {
-  display: flex;
-  align-items: center;
   cursor: pointer;
   position: relative;
   z-index: 1;
 }
 
-.china-dream-icon {
-  margin-right: 12px;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 12px;
-  padding: 8px;
-  backdrop-filter: blur(4px);
-}
-
-.china-dream-icon img {
-  width: 90px;
-  height: 60px;
-  object-fit: cover;
-  border-radius: 6px;
-}
-
-.china-dream-title {
-  flex: 1;
-}
-
-.china-dream-title .main-title {
-  font-size: var(--font-size-base);
-  font-weight: bold;
-  color: #fff;
-  margin-bottom: 4px;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-}
-
-.china-dream-title .sub-title {
-  font-size: var(--font-size-small);
-  color: rgba(255, 255, 255, 0.8);
-}
-
-.select-project-btn {
-  background: linear-gradient(180deg, #fff1c0 0%, #ffd860 20%, #e8a820 50%, #ffd060 80%, #fff0b0 100%);
-  color: #7a3a00;
-  font-size: var(--font-size-small);
-  font-weight: bold;
-  padding: 8px 16px;
-  border-radius: 999px;
-  text-align: center;
-  cursor: pointer;
-  box-shadow: 0 2px 6px rgba(180, 120, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.6);
-  position: relative;
-  z-index: 1;
-  letter-spacing: 1px;
-  display: inline-block;
-  white-space: nowrap;
-  border: 1px solid #c89020;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
+.china-dream-bg {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 8px;
 }
 
 .selected-project {
