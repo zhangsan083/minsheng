@@ -57,9 +57,9 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* iOS Web Clip / 全面屏安全区域底部适配 */
+/* iOS Web Clip / 全面屏安全区域底部适配（非 App 环境） */
 @supports (padding-bottom: env(safe-area-inset-bottom)) {
-  body {
+  body:not(.native-app) {
     padding-bottom: env(safe-area-inset-bottom);
   }
 }

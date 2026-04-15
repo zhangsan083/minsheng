@@ -76,11 +76,15 @@ public class MainActivity extends BridgeActivity {
                 contentView.setPadding(0, 0, 0, actualNavPx);
             }
 
-            // 顶部：CSS 注入精确值；底部 CSS 清零（原生已处理）
+            // 顶部：CSS 注入精确值
+            // 底部：如果原生 padding 生效了，CSS 清零避免叠加；否则保留 CSS 兜底
+            final int finalNavPx = actualNavPx;
             webView.post(() -> {
+                String bottomCss = finalNavPx > 0 ? "padding-bottom:0px!important;" : "";
                 webView.evaluateJavascript(
                     "(function(){var s=document.getElementById('status-bar-padding');" +
-                    "if(s) s.textContent='html{padding-top:" + statusDp + "px!important;padding-bottom:0px!important;}';})()",
+                    "if(s) s.textContent='html{padding-top:" + statusDp + "px!important;" + bottomCss + "}';" +
+                    "if(" + finalNavPx + ">0){document.body.classList.add('native-app');}else{document.body.classList.remove('native-app');}})()",
                     null
                 );
             });

@@ -8,7 +8,7 @@
       route
       fixed
       placeholder
-      safe-area-inset-bottom
+      :safe-area-inset-bottom="!isNativeApp"
       class="app-tabbar"
       @change="onChange"
     >
@@ -47,7 +47,7 @@
 </template>
 
 <script setup>
-import { computed, ref, watch } from 'vue'
+import { computed, ref, watch, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 
 // 导入底部导航图标
@@ -64,6 +64,14 @@ import iconProfileSelect from '@/assets/底功能区/我的-select.png'
 
 // 环境检测：判断是否在App环境中
 const isApp = ref(navigator.userAgent.includes('MinshengApp'))
+const isNativeApp = ref(document.body.classList.contains('native-app'))
+
+onMounted(() => {
+  // 延迟检测，等 Java 层注入 native-app 类名
+  setTimeout(() => {
+    isNativeApp.value = document.body.classList.contains('native-app')
+  }, 2000)
+})
 const route = useRoute()
 const active = ref('home')
 
