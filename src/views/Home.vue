@@ -935,8 +935,6 @@ const handleNoticeClose = () => {
 }
 :deep(.van-dialog.notice-dialog) {
   background: transparent;
-  width: 90%;
-  max-width: 90%;
   overflow: visible;
 }
 
@@ -978,7 +976,6 @@ const handleNoticeClose = () => {
 }
 
 .notice-dialog-body {
-  padding: 0 16px;
   margin-bottom: 20px;
   /* 确保弹框内容区域能够正确处理滚动 */
   overflow: hidden;
@@ -1008,5 +1005,14 @@ const handleNoticeClose = () => {
   background: #1989fa;
   font-size: 16px;
   box-shadow: 0 4px 8px rgba(25, 137, 250, 0.3);
+}
+</style>
+
+<style>
+/* 全局样式：teleport 到 body 的弹框无法被 scoped 样式覆盖 */
+.van-dialog.notice-dialog {
+  width: 95% !important;
+  max-width: 95% !important;
+  background: transparent !important;
 }
 </style>

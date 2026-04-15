@@ -10,46 +10,43 @@
       />
     </div>
 
-    <div class="content" ref="contentRef">
-      <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
-        <van-list
-          v-model:loading="loading"
-          :finished="finished"
-          finished-text="没有更多了"
-          :scroller="contentRef"
-          @load="onLoad"
-        >
-          <div class="log-list">
-            <div v-for="item in list" :key="item.id" class="log-card">
-              <div class="card-header">
-                <span class="label">兑换时间</span>
-                <span class="time">{{ item.createDt }}</span>
+    <div class="content">
+      <van-list
+        v-model:loading="loading"
+        :finished="finished"
+        finished-text="没有更多了"
+        @load="onLoad"
+      >
+        <div class="log-list">
+          <div v-for="item in list" :key="item.id" class="log-card">
+            <div class="card-header">
+              <span class="label">兑换时间</span>
+              <span class="time">{{ item.createDt }}</span>
+            </div>
+            <div class="card-body">
+              <div class="product-img">
+                <img :src="normalizeUrl(item.coverImg)" alt="product" />
               </div>
-              <div class="card-body">
-                <div class="product-img">
-                  <img :src="normalizeUrl(item.coverImg)" alt="product" />
+              <div class="product-info">
+              <div class="name van-multi-ellipsis--l2">{{ item.goodsName }}</div>
+              <div class="price-row">
+                <div class="left-col">
+                  <span class="tag">{{ item.goodsScore }}积分兑换</span>
                 </div>
-                <div class="product-info">
-                <div class="name van-multi-ellipsis--l2">{{ item.goodsName }}</div>
-                <div class="price-row">
-                  <div class="left-col">
-                    <span class="tag">{{ item.goodsScore }}积分兑换</span>
-                  </div>
-                  <div class="status-box" :class="getStatusClass(item.orderStatus)">
-                    {{ item.orderStatusLabel }}
-                  </div>
-                </div>
-              </div>
-              </div>
-              <div class="card-footer">
-                <div class="summary">
-                  {{ item.qty }}份 合计<span class="total-points">{{ item.score}}积分</span>
+                <div class="status-box" :class="getStatusClass(item.orderStatus)">
+                  {{ item.orderStatusLabel }}
                 </div>
               </div>
             </div>
+            </div>
+            <div class="card-footer">
+              <div class="summary">
+                {{ item.qty }}份 合计<span class="total-points">{{ item.score}}积分</span>
+              </div>
+            </div>
           </div>
-        </van-list>
-      </van-pull-refresh>
+        </div>
+      </van-list>
     </div>
   </div>
 </template>
@@ -61,10 +58,8 @@ import { getExchangeRecords } from '@/api/assets'
 const list = ref([])
 const loading = ref(false)
 const finished = ref(false)
-const refreshing = ref(false)
 const pageNum = ref(1)
 const pageSize = 10
-const contentRef = ref(null)
 
 const normalizeUrl = (url) => {
   if (!url) return ''
@@ -81,12 +76,7 @@ const getStatusClass = (status) => {
   }
 }
 
-const loadData = async (isRefresh = false) => {
-  if (isRefresh) {
-    pageNum.value = 1
-    finished.value = false
-  }
-
+const loadData = async () => {
   try {
     const res = await getExchangeRecords({
       pageNum: pageNum.value,
@@ -95,13 +85,7 @@ const loadData = async (isRefresh = false) => {
 
     if (res.code === 200 && res.data) {
       const { records, total } = res.data
-      
-      if (isRefresh) {
-        list.value = records
-      } else {
-        list.value = [...list.value, ...records]
-      }
-
+      list.value = [...list.value, ...records]
       pageNum.value++
       
       if (list.value.length >= total) {
@@ -115,28 +99,19 @@ const loadData = async (isRefresh = false) => {
     finished.value = true
   } finally {
     loading.value = false
-    refreshing.value = false
   }
 }
 
 const onLoad = () => {
   loadData()
 }
-
-const onRefresh = () => {
-  finished.value = false
-  loading.value = true
-  loadData(true)
-}
 </script>
 
 <style scoped>
 .page {
-  height: 100vh;
+  min-height: 100vh;
   background: #f7f8fa;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
+  padding-bottom: 40px;
 }
 
 .header {
@@ -164,9 +139,6 @@ const onRefresh = () => {
   margin-top: -160px;
   position: relative;
   z-index: 1;
-  flex: 1;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
   padding-bottom: 20px;
 }
 

@@ -1,7 +1,6 @@
 package com.minsheng.app;
 
 import android.graphics.Rect;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,55 +21,47 @@ public class MainActivity extends BridgeActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // 关闭 edge-to-edge
-        WindowCompat.setDecorFitsSystemWindows(getWindow(), true);
+        Window window = getWindow();
 
-        getWindow().setSoftInputMode(
+        // 开启 edge-to-edge：系统不自动留空间，安全距离全部由 CSS 控制
+        WindowCompat.setDecorFitsSystemWindows(window, false);
+
+        window.setSoftInputMode(
             WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING |
             WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN
         );
 
-        Window window = getWindow();
+        // 状态栏和导航栏透明，内容延伸到系统栏下方
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        window.setStatusBarColor(android.graphics.Color.WHITE);
-        window.setNavigationBarColor(android.graphics.Color.WHITE);
+        window.setStatusBarColor(android.graphics.Color.TRANSPARENT);
+        window.setNavigationBarColor(android.graphics.Color.TRANSPARENT);
 
-        // 强制状态栏图标为深色，确保在所有手机上可见
-        WindowCompat.getInsetsController(window, window.getDecorView())
-            .setAppearanceLightStatusBars(true);
-
-        // 用 WindowInsets 监听实际的系统栏高度，给 WebView 父容器加 padding
-        View contentView = findViewById(android.R.id.content);
-        ViewCompat.setOnApplyWindowInsetsListener(contentView, (v, insets) -> {
-            int navBarHeight = insets.getInsets(WindowInsetsCompat.Type.navigationBars()).bottom;
-            v.setPadding(0, 0, 0, navBarHeight);
-            return insets;
+        // 状态栏图标深色，延后执行确保不被 Capacitor 的 StatusBar 插件覆盖
+        View decorView = window.getDecorView();
+        decorView.post(() -> {
+            WindowCompat.getInsetsController(window, decorView)
+                .setAppearanceLightStatusBars(true);
         });
 
-        // 状态栏和导航栏高度（用于 CSS 兜底注入）
-        float density = getResources().getDisplayMetrics().density;
-        int statusBarHeight = 0;
-        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
-        if (resourceId > 0) {
-            statusBarHeight = getResources().getDimensionPixelSize(resourceId);
-        }
-        final int statusDp = Math.round(statusBarHeight / density);
-
-        int navBarHeight = 0;
-        int navResourceId = getResources().getIdentifier("navigation_bar_height", "dimen", "android");
-        if (navResourceId > 0) {
-            navBarHeight = getResources().getDimensionPixelSize(navResourceId);
-        }
-        final int navDp = Math.round(navBarHeight / density);
-
-        // 注入精确的顶部和底部安全区域到 CSS
+        // 用 WindowInsets 获取实际的状态栏和导航栏高度，注入精确 CSS
         final WebView webView = getBridge().getWebView();
-        webView.post(() -> {
-            webView.evaluateJavascript(
-                "(function(){var s=document.getElementById('status-bar-padding');" +
-                "if(s) s.textContent='html{padding-top:" + statusDp + "px!important;padding-bottom:" + navDp + "px!important;}';})()",
-                null
-            );
+        final float density = getResources().getDisplayMetrics().density;
+
+        ViewCompat.setOnApplyWindowInsetsListener(decorView, (v, insets) -> {
+            int statusPx = insets.getInsets(WindowInsetsCompat.Type.statusBars()).top;
+            int navPx = insets.getInsets(WindowInsetsCompat.Type.navigationBars()).bottom;
+            int statusDp = Math.round(statusPx / density);
+            int navDp = Math.round(navPx / density);
+
+            webView.post(() -> {
+                webView.evaluateJavascript(
+                    "(function(){var s=document.getElementById('status-bar-padding');" +
+                    "if(s) s.textContent='html{padding-top:" + statusDp + "px!important;padding-bottom:" + navDp + "px!important;}';})()",
+                    null
+                );
+            });
+
+            return insets;
         });
 
         // 键盘监听

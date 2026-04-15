@@ -37,16 +37,39 @@
 import { ref, computed, onMounted } from 'vue'
 import { showToast } from 'vant'
 import { inviteFriends } from '@/api/assets'
+import { useConfigStore } from '@/stores/config'
+import { Capacitor } from '@capacitor/core'
 
+const isNative = Capacitor.isNativePlatform()
+const configStore = useConfigStore()
 const inviteData = ref({
   invitationCode: '',
 })
+const availableWebDomain = ref('')
 
 const inviteLink = computed(() => {
   const code = inviteData.value.invitationCode
   if (!code) return ''
-  return `${window.location.origin}/register?invitationCode=${encodeURIComponent(code)}`
+  // 浏览器访问用当前域名，App 访问用远程配置的域名
+  const baseUrl = isNative
+    ? (availableWebDomain.value || configStore.webBaseUrl || '')
+    : window.location.origin
+  if (!baseUrl) return ''
+  return `${baseUrl}/register?invitationCode=${encodeURIComponent(code)}`
 })
+
+// App 环境下检测可用的 web 域名
+const detectAvailableDomain = async () => {
+  if (!isNative) return
+  const candidates = [configStore.webBaseUrl, ...configStore.webBackupUrls].filter(Boolean)
+  for (const url of candidates) {
+    const reachable = await configStore.checkDomainConnectivity(url)
+    if (reachable) {
+      availableWebDomain.value = url
+      return
+    }
+  }
+}
 
 const loadInviteData = async () => {
   try {
@@ -61,6 +84,7 @@ const loadInviteData = async () => {
 
 onMounted(() => {
   loadInviteData()
+  detectAvailableDomain()
 })
 
 const doCopy = (text, label) => {

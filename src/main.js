@@ -36,24 +36,13 @@ config.loadConfig().then(() => {
 
 // 初始化状态栏配置（仅在 App 环境下执行）
 if (isNative) {
-  StatusBar.setStyle({ style: Style.Dark })
-  StatusBar.setOverlaysWebView({ overlay: false })
-  // CSS 兜底顶部和底部 padding（Android 会被 MainActivity 注入精确值覆盖）
+  StatusBar.setStyle({ style: Style.Light })
+  StatusBar.setOverlaysWebView({ overlay: true })
+  // CSS 兜底顶部和底部 padding（低配机保底，Android 由 MainActivity 注入精确值覆盖，iOS 由 env() 取实际值）
   if (!document.querySelector('#status-bar-padding')) {
     const style = document.createElement('style')
     style.id = 'status-bar-padding'
     style.textContent = 'html { padding-top: env(safe-area-inset-top, 28px) !important; padding-bottom: env(safe-area-inset-bottom, 28px) !important; }'
     document.head.appendChild(style)
-  }
-  // 延迟检测：仅在 iOS 上检测是否需要去掉兜底（Android 由 MainActivity 精确注入）
-  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent)
-  if (isIOS) {
-    setTimeout(() => {
-      const webviewTop = document.documentElement.getBoundingClientRect().top
-      if (webviewTop > 10 || screen.height - window.innerHeight > 80) {
-        const s = document.getElementById('status-bar-padding')
-        if (s) s.textContent = ''
-      }
-    }, 1000)
   }
 }

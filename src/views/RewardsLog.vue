@@ -36,7 +36,7 @@
           </div>
           <div class="info-row">
             <span class="label">任务奖励:</span>
-            <span class="value">{{ reward.reward }}{{ reward.id === 301 ? '次' : '元' }}</span>
+            <span class="value">{{ reward.reward }}{{ String(reward.id).startsWith('2') ? '积分' : String(reward.id).startsWith('3') ? '次' : '元' }}</span>
           </div>
           <div class="btn-container">
             <van-button 

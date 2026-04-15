@@ -215,8 +215,8 @@
               <div class="td">{{ item.realName || '未知' }}</div>
               <div class="td">{{ item.phonenumber }}</div>
               <div class="td">{{ formatDate(item.createDt) }}</div>
-              <div class="td" :class="item.isActivate === 1 ? 'status-active' : 'status-inactive'">
-                {{ item.isActivate === 1 ? '已实名' : '未实名' }}
+              <div class="td" :class="item.isVerified === 1 ? 'status-active' : 'status-inactive'">
+                {{ item.isVerified === 1 ? '已实名' : '未实名' }}
               </div>
             </div>
           </van-list>
