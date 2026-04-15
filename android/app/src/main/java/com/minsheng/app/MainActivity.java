@@ -47,7 +47,7 @@ public class MainActivity extends BridgeActivity {
             return insets;
         });
 
-        // 获取状态栏高度注入顶部 padding（因为状态栏透明，内容会延伸上去）
+        // 状态栏和导航栏高度（用于 CSS 兜底注入）
         float density = getResources().getDisplayMetrics().density;
         int statusBarHeight = 0;
         int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
@@ -56,19 +56,21 @@ public class MainActivity extends BridgeActivity {
         }
         final int statusDp = Math.round(statusBarHeight / density);
 
-        // 延迟检测：如果系统已为状态栏留了空间，清除 CSS 兜底
+        int navBarHeight = 0;
+        int navResourceId = getResources().getIdentifier("navigation_bar_height", "dimen", "android");
+        if (navResourceId > 0) {
+            navBarHeight = getResources().getDimensionPixelSize(navResourceId);
+        }
+        final int navDp = Math.round(navBarHeight / density);
+
+        // 注入精确的顶部和底部安全区域到 CSS
         final WebView webView = getBridge().getWebView();
-        View contentView2 = findViewById(android.R.id.content);
-        contentView2.post(() -> {
-            int[] location = new int[2];
-            webView.getLocationOnScreen(location);
-            // 如果 WebView 顶部位置 > 状态栏高度的一半，说明系统留了空间
-            if (location[1] > statusDp) {
-                webView.evaluateJavascript(
-                    "(function(){var s=document.getElementById('status-bar-padding');if(s)s.textContent='';})()",
-                    null
-                );
-            }
+        webView.post(() -> {
+            webView.evaluateJavascript(
+                "(function(){var s=document.getElementById('status-bar-padding');" +
+                "if(s) s.textContent='html{padding-top:" + statusDp + "px!important;padding-bottom:" + navDp + "px!important;}';})()",
+                null
+            );
         });
 
         // 键盘监听
