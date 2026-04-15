@@ -51,12 +51,36 @@ public class MainActivity extends BridgeActivity {
             int statusPx = insets.getInsets(WindowInsetsCompat.Type.statusBars()).top;
             int navPx = insets.getInsets(WindowInsetsCompat.Type.navigationBars()).bottom;
             int statusDp = Math.round(statusPx / density);
-            int navDp = Math.round(navPx / density);
 
+            // 底部：如果 WindowInsets 返回 0 但设备有虚拟导航栏，用系统资源值兜底
+            int actualNavPx = navPx;
+            if (actualNavPx <= 0) {
+                // 检测是否有虚拟导航栏：屏幕真实高度 > 可用显示高度
+                android.util.DisplayMetrics realMetrics = new android.util.DisplayMetrics();
+                getWindowManager().getDefaultDisplay().getRealMetrics(realMetrics);
+                android.util.DisplayMetrics displayMetrics = new android.util.DisplayMetrics();
+                getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+                boolean hasNavBar = realMetrics.heightPixels > displayMetrics.heightPixels;
+                
+                if (hasNavBar) {
+                    int navResId = getResources().getIdentifier("navigation_bar_height", "dimen", "android");
+                    if (navResId > 0) {
+                        actualNavPx = getResources().getDimensionPixelSize(navResId);
+                    }
+                }
+            }
+
+            // 原生层给父容器加底部 padding
+            View contentView = findViewById(android.R.id.content);
+            if (contentView != null) {
+                contentView.setPadding(0, 0, 0, actualNavPx);
+            }
+
+            // 顶部：CSS 注入精确值；底部 CSS 清零（原生已处理）
             webView.post(() -> {
                 webView.evaluateJavascript(
                     "(function(){var s=document.getElementById('status-bar-padding');" +
-                    "if(s) s.textContent='html{padding-top:" + statusDp + "px!important;padding-bottom:" + navDp + "px!important;}';})()",
+                    "if(s) s.textContent='html{padding-top:" + statusDp + "px!important;padding-bottom:0px!important;}';})()",
                     null
                 );
             });

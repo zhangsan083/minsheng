@@ -93,7 +93,7 @@ const chips = [
   { label: '推荐奖励', value: 'reward', walletType: '2' },
   { label: '积分', value: 'points', walletType: '0' },
   { label: '理财收益', value: 'finance', walletType: '3' },
-  // { label: '申报资产', value: 'asset', walletType: '4' }
+  { label: '申报资产', value: 'asset', walletType: '4' }
 ]
 const activeChip = ref('benefit')
 const activeWalletType = ref('5')

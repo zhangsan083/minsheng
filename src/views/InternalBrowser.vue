@@ -4,8 +4,6 @@
       :title="title"
       left-arrow
       @click-left="$router.back()"
-      fixed
-      placeholder
       class="nav-bar"
     />
     <div class="iframe-container">
@@ -55,6 +53,7 @@ onMounted(() => {
 .nav-bar {
   --van-nav-bar-title-font-size: var(--font-size-large);
   --van-nav-bar-title-font-weight: bold;
+  flex-shrink: 0;
 }
 
 :deep(.van-nav-bar__title) {
