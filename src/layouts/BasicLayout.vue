@@ -155,6 +155,10 @@ const onChange = index => {
   bottom: 0 !important;
   left: 0 !important;
   width: 100% !important;
+}
+
+/* 非 App 环境下 TabBar 需要底部安全区域 padding */
+body:not(.native-app) .app-tabbar {
   padding-bottom: constant(safe-area-inset-bottom) !important;
   padding-bottom: env(safe-area-inset-bottom) !important;
 }

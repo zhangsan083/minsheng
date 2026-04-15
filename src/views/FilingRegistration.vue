@@ -482,7 +482,8 @@ const handleSubmit = () => {
 
 .label {
   color: #333;
-  width: 80px;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .value {
@@ -526,7 +527,7 @@ const handleSubmit = () => {
     0 8px 24px rgba(9, 68, 252, 0.3),
     0 2px 8px rgba(0, 0, 0, 0.1),
     inset 0 1px 0 rgba(255, 255, 255, 0.2);
-  padding: 20px;
+  padding: 2px;
   margin-bottom: 24px;
   position: relative;
   overflow: hidden;
@@ -570,7 +571,6 @@ const handleSubmit = () => {
 }
 
 .selected-project {
-  margin-top: 16px;
   display: flex;
   flex-direction: column;
   align-items: center;
