@@ -72,10 +72,10 @@
         <!-- Payment Password Form -->
         <div v-else class="form-content">
           <div v-if="isPayPassword" class="form-group">
-            <div class="form-label">原支付密码</div>
+            <div class="form-label">账号密码</div>
             <van-field
               v-model="paymentForm.oldPassword"
-              placeholder="请输入原支付密码"
+              placeholder="请输入账号密码"
               :right-icon="paymentForm.showOld ? 'eye-o' : 'closed-eye'"
               @click-right-icon="paymentForm.showOld = !paymentForm.showOld"
               :type="paymentForm.showOld ? 'text' : 'password'"
@@ -213,7 +213,7 @@ const handleSubmit = async () => {
     }
     
     try {
-      // 根据 isPayPassword 决定是否包含原支付密码
+      // 根据 isPayPassword 决定是否需要验证登录密码
       const payload = {
         newPassword: paymentForm.newPassword,
         type: '1' // 1支付密码
@@ -221,7 +221,7 @@ const handleSubmit = async () => {
       
       if (isPayPassword.value) {
         if (!paymentForm.oldPassword) {
-          showToast('请填写原支付密码')
+          showToast('请填写账号密码')
           return
         }
         payload.oriPassword = paymentForm.oldPassword

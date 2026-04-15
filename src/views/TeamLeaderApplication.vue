@@ -56,7 +56,7 @@
         <p>以系统数据为唯一依据</p>
         <p><strong>三、执行要求</strong></p>
         <p>严禁刷量、虚假注册</p>
-        <p>数据统一以【会聊系统】为准</p>
+        <p>数据统一以【民生资产】为准</p>
         <p>异常数据将核查处理</p>
         <p>制度按发展阶段动态优化</p>
         <p><strong>四、工作导向</strong></p>
@@ -156,7 +156,7 @@
       </div>
 
       <!-- 签名弹窗 -->
-      <van-popup v-model:show="signaturePopup" position="bottom" round style="height: 65%;">
+      <van-popup v-model:show="signaturePopup" position="bottom" round style="height: 70%;">
         <div class="signature-popup-content">
           <div class="signature-popup-title">我的签名</div>
           <div class="signature-canvas-container">
@@ -780,8 +780,9 @@ onMounted(() => {
 /* 签名弹窗 */
 .signature-popup-content {
   height: 100%;
-  padding: 20px;
-  padding-bottom: 60px;
+  padding: 16px 20px;
+  padding-bottom: calc(16px + constant(safe-area-inset-bottom));
+  padding-bottom: calc(16px + env(safe-area-inset-bottom));
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -792,7 +793,8 @@ onMounted(() => {
   font-size: 18px;
   font-weight: bold;
   color: #333;
-  margin-bottom: 20px;
+  margin-bottom: 12px;
+  flex-shrink: 0;
 }
 
 .signature-area {
@@ -804,12 +806,12 @@ onMounted(() => {
   margin-bottom: 20px;
 }
 .signature-canvas-container {
-  flex: 1;
   width: 100%;
+  height: calc(100% - 160px);
   background: #f9f9f9;
   border-radius: 8px;
   position: relative;
-  margin-bottom: 20px;
+  margin-bottom: 12px;
   overflow: hidden;
 }
 
@@ -832,7 +834,7 @@ onMounted(() => {
 .signature-actions {
   display: flex;
   gap: 16px;
-  margin-bottom: 20px;
+  flex-shrink: 0;
 }
 
 .clear-btn {

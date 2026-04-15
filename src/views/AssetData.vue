@@ -1,3 +1,4 @@
+
 <template>
   <div class="page">
     <div class="header-bg">
@@ -11,29 +12,21 @@
     </div>
 
     <div class="content">
-      <div class="project-table">
-        <div class="table-header">
-          <div class="col col-name">登记项目名称</div>
-          <div class="col col-amount">登记项目金额</div>
-          <div class="col col-status">审核状态</div>
-        </div>
-        <div class="table-scroll">
+      <div class="publicity-board">
+        <div class="board-header">首批专项资金审批结果公示</div>
+        <div class="board-scroll">
           <van-list
             v-model:loading="loading"
             :finished="finished"
             finished-text="没有更多了"
             @load="loadData"
           >
-            <div class="table-body">
-              <div class="table-row" v-for="(item, index) in projectList" :key="item.id || index" :class="{ 'row-even': index % 2 === 1 }">
-                <div class="col col-name">{{ item.name }}</div>
-                <div class="col col-amount">¥ {{ item.amount }}万</div>
-                <div class="col col-status">
-                  <span :class="['status-tag', item.statusClass]">{{ item.statusText }}</span>
-                </div>
+            <div class="board-list">
+              <div class="board-item" v-for="(item, index) in publicityList" :key="index">
+                恭喜 <span class="highlight">{{ item.name }}</span> 成功获批专项资金<span class="highlight">{{ item.amount }}万元</span>
               </div>
-              <div v-if="projectList.length === 0 && !loading" class="table-empty">
-                暂无项目数据
+              <div v-if="publicityList.length === 0 && !loading" class="board-empty">
+                暂无公示数据
               </div>
             </div>
           </van-list>
@@ -46,37 +39,30 @@
 <script setup>
 import { ref } from 'vue'
 import { showToast } from 'vant'
-import { getAssetFilingApplyPage } from '@/api/assets'
+import { getAssetFilingPubPage } from '@/api/assets'
 
 const loading = ref(false)
 const finished = ref(false)
-const projectList = ref([])
+const publicityList = ref([])
 const pageNum = ref(1)
 const pageSize = 20
 
-const getStatusText = (status) => {
-  const map = { '0': '审核中', '1': '已通过', '2': '未通过' }
-  return map[status] || '未知'
-}
-
-const getStatusClass = (status) => {
-  const map = { '0': 'pending', '1': 'passed', '2': 'failed' }
-  return map[status] || 'pending'
+const hideName = (name) => {
+  if (!name) return ''
+  if (name.length === 1) return name
+  return name[0] + '*'.repeat(name.length - 1)
 }
 
 const loadData = async () => {
   try {
-    const res = await getAssetFilingApplyPage({ pageNum: pageNum.value, pageSize })
+    const res = await getAssetFilingPubPage({ pageNum: pageNum.value, pageSize })
     if (res.code === 200 && res.data) {
       const rows = (res.data.records || []).map(item => ({
-        id: item.id,
-        name: item.projectName,
-        amount: item.projectAmount,
-        statusText: getStatusText(item.reviewStatus),
-        statusClass: getStatusClass(item.reviewStatus)
+        name: hideName(item.realName),
+        amount: item.projectAmount
       }))
-      projectList.value.push(...rows)
-      if (projectList.value.length >= res.data.total) {
+      publicityList.value.push(...rows)
+      if (publicityList.value.length >= res.data.total) {
         finished.value = true
       } else {
         pageNum.value++
@@ -120,90 +106,51 @@ const loadData = async () => {
   z-index: 1;
 }
 
-.project-table {
+.publicity-board {
   background: #dbeeff;
   border-radius: 12px;
-  overflow: hidden;
-  padding: 0 0 8px;
+  padding: 20px 16px;
 }
 
-.table-header {
-  display: flex;
-  padding: 10px 10px;
-  background: #fff;
-  font-size: var(--font-size-small);
-  font-weight: bold;
-  color: #2b7afb;
-  border-bottom: 1px solid #c8ddf5;
+.board-header {
+  font-size: var(--font-size-base);
+  color: #333;
+  font-weight: 500;
+  text-align: center;
+  margin-bottom: 16px;
 }
 
-.table-scroll {
-  height: calc(100vh - 380px);
+.board-scroll {
+  height: calc(100vh - 420px);
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 }
 
-.table-body {
-  padding: 0;
+.board-list {
+  background: #fff;
+  border-radius: 8px;
+  border: 1px solid #c8ddf5;
 }
 
-.table-row {
-  display: flex;
-  padding: 14px 16px;
+.board-item {
+  padding: 12px 16px;
   font-size: var(--font-size-small);
-  align-items: center;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
   color: #333;
+  text-align: center;
+  border-bottom: 1px solid #e8eef5;
+  line-height: 1.6;
 }
 
-.row-even {
-  background: rgba(43, 122, 251, 0.15);
-}
-
-.table-row:last-child {
+.board-item:last-child {
   border-bottom: none;
 }
 
-.col {
-  text-align: center;
-}
-
-.col-name {
-  flex: 1.5;
-  text-align: left;
-}
-
-.col-amount {
-  flex: 1;
-}
-
-.col-status {
-  flex: 0.8;
-  text-align: right;
-}
-
-.status-tag {
-  padding: 5px 12px;
-  border-radius: 20px;
-  font-size: var(--font-size-xs);
+.highlight {
+  color: #2b70fa;
   font-weight: bold;
-  display: inline-block;
-  color: #fff;
 }
 
-.status-tag.passed {
-  background: linear-gradient(135deg, #2b7afb, #0056e0);
-}
-
-.status-tag.failed {
-  background: linear-gradient(135deg, #ff8c00, #ff6b00);
-}
-
-.status-tag.pending {
-  background: linear-gradient(135deg, #7eb8f0, #5a9de0);
-}
-
-.table-empty {
+.board-empty {
   text-align: center;
   padding: 40px 0;
   color: #999;

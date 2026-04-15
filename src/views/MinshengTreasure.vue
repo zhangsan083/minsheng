@@ -76,7 +76,7 @@
           <div class="profit-left">
             <div class="profit-title">收益详情</div>
           </div>
-          <div class="profit-date">2026-01-01 至 2026-01-01</div>
+          <div class="profit-date">{{ profitDateRange }}</div>
         </div>
 
         <div class="profit-grid">
@@ -179,6 +179,20 @@ const loadHmBaoData = async () => {
 
 const currentPlan = computed(() => {
   return hmbaoData.value.hmbaoPlanList?.find(p => p.period === activeTerm.value) || {}
+})
+
+const formatDate = (date) => {
+  const y = date.getFullYear()
+  const m = String(date.getMonth() + 1).padStart(2, '0')
+  const d = String(date.getDate()).padStart(2, '0')
+  return `${y}-${m}-${d}`
+}
+
+const profitDateRange = computed(() => {
+  const today = new Date()
+  const endDate = new Date(today)
+  endDate.setDate(endDate.getDate() + (activeTerm.value || 0))
+  return `${formatDate(today)} 至 ${formatDate(endDate)}`
 })
 
 const calculateProfit = () => {

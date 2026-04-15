@@ -35,19 +35,19 @@
       <div class="section-card wallet-card">
         <div class="card-title">我的钱包</div>
         <div class="wallet-grid">
-          <div class="wallet-item blue-box">
+          <div class="wallet-item blue-box" @click="goFundDetails">
             <div class="wallet-icon"><img :src="iconWallet1" class="wallet-icon-img" /> 钱包余额</div>
             <div class="wallet-value">{{ formatAmount(userStore.userInfo?.depositBalance) }}</div>
           </div>
-          <div class="wallet-item blue-box">
+          <div class="wallet-item blue-box" @click="goFundDetails">
             <div class="wallet-icon"><img :src="iconWallet2" class="wallet-icon-img" /> 民生保障补助金</div>
             <div class="wallet-value">{{ formatAmount(userStore.userInfo?.welfareSubsidy) }}</div>
           </div>
-          <div class="wallet-item blue-box">
+          <div class="wallet-item blue-box" @click="goFundDetails">
             <div class="wallet-icon"><img :src="iconWallet3" class="wallet-icon-img" /> 推荐奖励</div>
             <div class="wallet-value">{{ formatAmount(userStore.userInfo?.referralBonus) }}</div>
           </div>
-          <div class="wallet-item blue-box">
+          <div class="wallet-item blue-box" @click="goFundDetails">
             <div class="wallet-icon"><img :src="iconWallet4" class="wallet-icon-img" /> 理财收益</div>
             <div class="wallet-value">{{ formatAmount(userStore.userInfo?.investmentIncome) }}</div>
           </div>
