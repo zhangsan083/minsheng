@@ -277,9 +277,9 @@ const handleRedeem = async () => {
 
 onMounted(() => {
   loadDetail()
+  userStore.refreshUserInfo()
   
   // 检查 URL 参数中是否有 popup=1，如果有则自动打开弹框
-  // 这适用于页面被重新加载的情况（router.back() 有时会触发 reload，或者用户刷新了页面）
   if (route.query.popup === '1' || userStore.selectedAddress) {
     showPopup.value = true
   }

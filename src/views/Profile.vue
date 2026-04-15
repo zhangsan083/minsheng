@@ -113,10 +113,10 @@
                     <div class="service-icon"><img :src="iconService2" class="service-img" /></div>
                     <div class="service-label">我的团队</div>
                   </div>
-                  <div class="service-item" @click="goCertificate">
+                  <!-- <div class="service-item" @click="goCertificate">
                     <div class="service-icon"><img :src="iconService3" class="service-img" /></div>
                     <div class="service-label">确权证书</div>
-                  </div>
+                  </div> -->
                   <div class="service-item" @click="goGroupChat">
                     <div class="service-icon"><img :src="iconService4" class="service-img" /></div>
                     <div class="service-label">官方群聊</div>

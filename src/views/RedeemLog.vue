@@ -10,12 +10,13 @@
       />
     </div>
 
-    <div class="content">
+    <div class="content" ref="contentRef">
       <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
         <van-list
           v-model:loading="loading"
           :finished="finished"
           finished-text="没有更多了"
+          :scroller="contentRef"
           @load="onLoad"
         >
           <div class="log-list">
@@ -63,6 +64,7 @@ const finished = ref(false)
 const refreshing = ref(false)
 const pageNum = ref(1)
 const pageSize = 10
+const contentRef = ref(null)
 
 const normalizeUrl = (url) => {
   if (!url) return ''
@@ -130,9 +132,11 @@ const onRefresh = () => {
 
 <style scoped>
 .page {
-  min-height: 100vh;
+  height: 100vh;
   background: #f7f8fa;
-  padding-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 .header {
@@ -160,6 +164,10 @@ const onRefresh = () => {
   margin-top: -160px;
   position: relative;
   z-index: 1;
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 20px;
 }
 
 .log-list {

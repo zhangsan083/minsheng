@@ -56,7 +56,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { showToast } from 'vant'
 import { useUserStore } from '@/stores/user'
@@ -69,6 +69,10 @@ const finished = ref(false)
 const products = ref([])
 const page = ref(1)
 const pageSize = 10
+
+onMounted(() => {
+  userStore.refreshUserInfo()
+})
 
 const normalizeUrl = (url) => {
   if (!url) return ''
@@ -174,6 +178,8 @@ const goAddressManage = () => {
 .points-left {
   display: flex;
   flex-direction: column;
+  flex: 1;
+  min-width: 0;
 }
 
 .points-label {
@@ -186,6 +192,7 @@ const goAddressManage = () => {
   font-size: 28px;
   font-weight: bold;
   color: #1890ff;
+  word-break: break-all;
 }
 
 .points-unit {
@@ -197,6 +204,7 @@ const goAddressManage = () => {
 .points-right {
   display: flex;
   gap: 8px;
+  flex-shrink: 0;
 }
 
 .action-btn {

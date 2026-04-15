@@ -935,7 +935,7 @@ const handleNoticeClose = () => {
 }
 :deep(.van-dialog.notice-dialog) {
   background: transparent;
-  width: 320px;
+  width: 90%;
   max-width: 90%;
   overflow: visible;
 }
@@ -986,7 +986,7 @@ const handleNoticeClose = () => {
 
 .notice-content-container {
   width: 100%;
-  max-height: 60vh;
+  max-height: 65vh;
   overflow: hidden;
   background-color: #f9f9f9;
   border-radius: 5px;
@@ -994,7 +994,7 @@ const handleNoticeClose = () => {
 
 .notice-iframe {
   width: 100%;
-  height: 50vh;
+  height: 60vh;
   border: none;
   display: block;
 }
