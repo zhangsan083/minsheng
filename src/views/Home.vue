@@ -207,7 +207,13 @@
           </div>
           <div class="notice-dialog-body">
             <div class="notice-content-container">
-              <div class="notice-content" v-if="currentBulletin && currentBulletin.content" v-html="currentBulletin.content"></div>
+              <iframe
+                v-if="currentBulletin && currentBulletin.content"
+                class="notice-iframe"
+                :srcdoc="noticeHtml"
+                frameborder="0"
+                scrolling="auto"
+              ></iframe>
             </div>
           </div>
           <div class="notice-dialog-footer">
@@ -463,6 +469,29 @@ const recordCode = ref('')
 
 const currentBulletin = computed(() => {
   return homeData.value.bulletinPopupList[currentBulletinIndex.value] || null
+})
+
+const noticeHtml = computed(() => {
+  const content = currentBulletin.value?.content || ''
+  return `<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+  * { margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    font-size: 14px;
+    color: #333;
+    padding: 12px;
+    word-wrap: break-word;
+  }
+  img { max-width: 100%; height: auto; }
+</style>
+</head>
+<body>${content}</body>
+</html>`
 })
 
 const handleNoticeClose = () => {
@@ -958,58 +987,16 @@ const handleNoticeClose = () => {
 .notice-content-container {
   width: 100%;
   max-height: 60vh;
-  overflow-y: scroll;
+  overflow: hidden;
   background-color: #f9f9f9;
   border-radius: 5px;
-  /* 确保内容可以滚动 */
-  -webkit-overflow-scrolling: touch;
-  /* 隐藏滚动条但保持滚动功能 */
-  scrollbar-width: none;
-  -ms-overflow-style: none;
 }
 
-/* 隐藏 Chrome, Safari 和 Opera 的滚动条 */
-.notice-content-container::-webkit-scrollbar {
-  display: none;
-}
-
-.notice-content {
-  color: #333;
-  font-size: var(--font-size-small);
-  line-height: 1.6;
-  position: relative;
-  z-index: 1;
-  /* 确保内容可以滚动 */
-  overflow-x: hidden !important;
-  word-wrap: break-word;
-}
-
-/* 增强图片样式的优先级，确保图片能够完整显示 */
-:deep(.notice-content img) {
-  max-width: 100% !important;
-  width: 100% !important;
-  height: auto !important;
-  display: block !important;
-  margin: 10px auto !important;
-  box-sizing: border-box !important;
-  object-fit: contain !important;
-  position: relative !important;
-  z-index: 1 !important;
-}
-
-/* 确保富文本中的所有图片都能正确显示 */
-:deep(.ql-image) {
-  max-width: 100% !important;
-  width: 100% !important;
-  height: auto !important;
-  display: block !important;
-  margin: 10px auto !important;
-}
-
-/* 确保富文本中的容器不会限制图片宽度 */
-:deep(.ql-editor) {
-  max-width: 100% !important;
-  overflow-x: hidden !important;
+.notice-iframe {
+  width: 100%;
+  height: 50vh;
+  border: none;
+  display: block;
 }
 
 .notice-dialog-footer {
