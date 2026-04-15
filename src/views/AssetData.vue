@@ -1,4 +1,3 @@
-
 <template>
   <div class="page">
     <div class="header-bg">
